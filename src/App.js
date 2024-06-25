@@ -3,6 +3,8 @@ import { createGlobalStyle } from "styled-components";
 import { Reset } from "styled-reset";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
+import Login from "./component/Login";
+import Register from "./component/Register";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -42,6 +44,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Main />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+
         </Route>
       </Routes>
     </>

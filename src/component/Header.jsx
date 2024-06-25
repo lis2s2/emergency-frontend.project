@@ -37,6 +37,7 @@ const RegBtn = styled(Button)`
   border-radius: 24px;
   height: 48px;
   font-size: 16px;
+  width: 120px;
   
 
 `;
@@ -60,7 +61,7 @@ function Header() {
                 <NavDropdown.Item className="py-2 align-self-center">뉴스 게시판</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="#pricing" className="ms-3 align-self-center">포인트샵</Nav.Link>
-              <LoginBtn className="ms-3" variant="outline-success">로그인</LoginBtn>
+              <LoginBtn className="ms-4" variant="outline-success">로그인</LoginBtn>
               <RegBtn className="ms-3" variant="success">회원가입</RegBtn>
             </Nav>
           </Container>
