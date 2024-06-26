@@ -5,6 +5,8 @@ import Layout from "./pages/Layout";
 import Main from "./pages/Main";
 import Login from "./component/Login";
 import Register from "./component/Register";
+import Search from "./component/Search";
+import MyPage from "./component/MyPage";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -46,6 +48,8 @@ function App() {
           <Route index element={<Main />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="search" element={<Search />} />
+          <Route path="mypage" element={<MyPage />} />
 
         </Route>
       </Routes>

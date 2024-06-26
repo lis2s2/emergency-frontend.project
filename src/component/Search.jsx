@@ -3,7 +3,7 @@ import styled from "styled-components";
 const RegisterContainer = styled.div`
   width: 100%;
   max-width: 1440px;
-  background-color: #5FB393;
+  background-color: #5fb393;
   min-height: 820px;
 `;
 
@@ -27,32 +27,8 @@ const Autolayout = styled.div`
   z-index: 0;
 `;
 
-// const RegisterGround = styled.div`
-//   padding-top: 30px;
-//   padding-right: 600px;
-//   margin-bottom: 20px;
-//   margin: 0 auto;
-
-//   width: 187px;
-//   height: 64px;
-
-//   font-family: 'Noto Sans KR';
-//   font-style: normal;
-//   font-weight: 900;
-//   font-size: 36px;
-//   line-height: 52px;
-//   text-align: center;
-
-//   color: #FFFFFF;
-
-//   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-//   flex: none;
-//   order: 0;
-//   flex-grow: 0;
-// `;
 const RegisterGround = styled.div`
-  padding-bottom: 550px;
+  padding-bottom: 450px;
   padding-right: 150px;
   /* margin-bottom: 20px; */
   /* margin: 0 auto; */
@@ -76,7 +52,7 @@ const RegisterGround = styled.div`
   flex-grow: 0;
 `;
 
-const  RegisterWhite = styled.div`
+const RegisterWhite = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,9 +61,9 @@ const  RegisterWhite = styled.div`
   gap: 24px;
 
   width: 606px;
-  height: 685px;
+  height: 568px;
 
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -104,12 +80,12 @@ const Autobox = styled.div`
   padding: 0px;
   gap: 8px;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-  
+
   color: #111111;
 
   width: 560px;
@@ -156,26 +132,6 @@ const InfoStyle = styled.div`
   z-index: 0;
 `;
 
-const CheckStyle = styled.button`
-  margin: 0 auto;
-  /* width: 50px; */
-  /* height: 29px; */
-  border-style: none;
-
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: 900;
-  font-size: 14px;
-  line-height: 20px;
-
-  color: #007AFF;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
-`;
-
 const CommonInput = styled.input`
   display: flex;
   flex-direction: row;
@@ -186,7 +142,7 @@ const CommonInput = styled.input`
   width: 558px;
   height: 45px;
 
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
 
@@ -208,7 +164,7 @@ const CommonBtn = styled.button`
   width: 558px;
   height: 45px;
 
-  background: #5FB393;
+  background: #5fb393;
   border: 1px solid #000000;
   border-radius: 8px;
 
@@ -217,69 +173,50 @@ const CommonBtn = styled.button`
   align-self: stretch;
   flex-grow: 0;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
 
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
-function Register() {
+function Search() {
   return (
     <RegisterContainer>
       <Autolayout>
-
-        <RegisterGround> Register
-          <RegisterWhite>
+        <RegisterGround>Searching for passwords
+            <RegisterWhite>
             <Autobox>
-              <CommonInfo>
+                <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
-                <CheckStyle>중복체크</CheckStyle>
-              </CommonInfo>
-              <CommonInput />
+                </CommonInfo>
+                <CommonInput />
             </Autobox>
 
             <Autobox>
-              <CommonInfo>
-                <InfoStyle>Password</InfoStyle>
-                <CheckStyle>영문, 숫자 포함 8~15자리로 입력해주세요.</CheckStyle>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
-            
-            <Autobox>
-              <CommonInfo>
+                <CommonInfo>
                 <>Name</>
-              </CommonInfo>
-              <CommonInput />
+                </CommonInfo>
+                <CommonInput />
             </Autobox>
 
             <Autobox>
-              <CommonInfo>
+                <CommonInfo>
                 <InfoStyle>Email</InfoStyle>
-                <CheckStyle>중복체크</CheckStyle>
-              </CommonInfo>
-              <CommonInput />
+                </CommonInfo>
+                <CommonInput />
             </Autobox>
 
-            <Autobox>
-              <CommonInfo>
-                <>Nick-Name</>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
-            
             <>
-              <CommonBtn>Sign Up</CommonBtn>
-              <CommonBtn>Login Page</CommonBtn>
-            </>
-          </RegisterWhite>
+                <CommonBtn>Check</CommonBtn>
+            </>   
+            </RegisterWhite>
         </RegisterGround>
       </Autolayout>
     </RegisterContainer>
   );
-};
+}
 
-export default Register;
+export default Search;
