@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import ShopItem from "../component/ShopItem";
 
 
 
@@ -33,7 +34,7 @@ const Title = styled.span`
 `;
 
 const Content = styled.span`
-  font-size: 30px;
+  font-size: 24px;
   color: #909090;
   display: flex;
   padding-top: 10px;
@@ -79,13 +80,54 @@ const CartNum = styled.span`
   font-size: 20px;
 `;
 
-const A = styled.div`
-  width: 100px;
-  height: 200px;
-  background-color: beige;
-`;
 
 function Shop() {
+const items = [ // 나중에 실제 DB로 가져오기
+  {
+      "id": "1",
+      "title": "Arcsaber 11 Pro",
+      "content": "Even Balance Racket",
+      "price": 299000,
+      "imagePath": "https://www.yonexmall.com/shop/data/goods/1645767865278s0.png"
+  },
+  {
+      "id": "2",
+      "title": "Yonex Shirts",
+      "content": "White and Black logo",
+      "price": 135000,
+      "imagePath": "https://www.yonexmall.com/shop/data/goods/1659329583483s0.png"
+  },
+  {
+      "id": "3",
+      "title": "Aerus Z",
+      "content": "Even Balance Racket",
+      "price": 199000,
+      "imagePath": "https://www.yonexmall.com/shop/data/goods/1667190100104s0.png"
+  },
+  {
+      "id": "4",
+      "title": "요넥스 백팩",
+      "content": "229BP005U",
+      "price": 99000,
+      "imagePath": "https://www.yonexmall.com/shop/data/goods/1667282273374s0.png"
+  },
+  {
+      "id": "5",
+      "title": "라켓보이즈 모자",
+      "content": "라켓보이즈 굿즈 (모자) Neon Green",
+      "price": 24000,
+      "imagePath": "https://www.yonexmall.com/shop/data/goods/1638434200729s0.png"
+  },
+  {
+      "id": "6",
+      "title": "트레이닝 매트",
+      "content": "AC517, TRAINING MAT (트레이닝 매트) MTB",
+      "price": 71000,
+      "imagePath": "https://www.yonexmall.com/shop/data/goods/1640582675794s0.png"
+  }
+]
+
+
   return (
     <ShopWrapper>
       <ShopContainer>
@@ -101,21 +143,16 @@ function Shop() {
           slidesPerView={4}
           slidesPerGroup={4}
           navigation
-          loop={true}
+          loop={false}
           speed={1000}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
+          style={{
+            "--swiper-navigation-color": "#5FB393"
+          }}
         >
-          <SwiperSlide><A>1</A></SwiperSlide>
-          <SwiperSlide><A>2</A></SwiperSlide>
-          <SwiperSlide><A>3</A></SwiperSlide>
-          <SwiperSlide><A>4</A></SwiperSlide>
-          <SwiperSlide><A>5</A></SwiperSlide>
-          <SwiperSlide><A>6</A></SwiperSlide>
-          <SwiperSlide><A>7</A></SwiperSlide>
-          <SwiperSlide><A>8</A></SwiperSlide>
-          <SwiperSlide><A>9</A></SwiperSlide>
-          <SwiperSlide><A>10</A></SwiperSlide>
-
+          {items.map((item) => {
+            return <SwiperSlide><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
+          })}
         </Swiper>
 
       </ShopContainer>
@@ -127,7 +164,25 @@ function Shop() {
         <Content>
           곤란하기 전에 해결하자
         </Content>
+
+        <Swiper
+          modules={[Navigation, A11y, Autoplay]}
+          slidesPerView={4}
+          slidesPerGroup={4}
+          navigation
+          loop={false}
+          speed={1000}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          style={{
+            "--swiper-navigation-color": "#5FB393"
+          }}
+        >
+          {items.map((item) => {
+            return <SwiperSlide><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
+          })}
+        </Swiper>
       </ShopContainer>
+
 
       <CartIcon className="cursor-pointer">
         <svg width="50" height="53" viewBox="0 0 21 23" fill="none" xmlns="http://www.w3.org/2000/svg">
