@@ -5,6 +5,7 @@ import Layout from "./pages/Layout";
 import Main from "./pages/Main";
 import Login from "./component/Login";
 import Register from "./component/Register";
+import Shop from "./pages/Shop";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -46,7 +47,7 @@ function App() {
           <Route index element={<Main />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-
+          <Route path="shop" element={<Shop />} />
         </Route>
       </Routes>
     </>
