@@ -14,11 +14,14 @@ const Autolayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px;
+  padding-top: 200px;
+  padding-left: 400px;
   gap: 24px;
+  margin: 0 atuo;
 
   position: absolute;
   width: 819px;
-  height: 832px;
+  height: 830px;
   left: 310px;
   top: 0px;
 
@@ -28,33 +31,30 @@ const Autolayout = styled.div`
   z-index: 0;
 `;
 
-// const RegisterGround = styled.div`
-//   padding-top: 80px;
-//   padding-right: 600px;
-//   margin-bottom: 20px;
-//   margin: 0 auto;
+const Sublayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  /* padding-top: 200px; */
+  /* padding-right: 200px; */
+  gap: 24px;
+  margin: 0 auto;
+  
+  position: relative;
+  width: 606px;
+  height: 548px;
 
-//   width: 187px;
-//   height: 64px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  z-index: 0;
+`;
 
-//   font-family: 'Noto Sans KR';
-//   font-style: normal;
-//   font-weight: 900;
-//   font-size: 36px;
-//   line-height: 52px;
-//   text-align: center;
-
-//   color: #FFFFFF;
-
-//   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-//   flex: none;
-//   order: 0;
-//   flex-grow: 0;
-// `;
 const RegisterGround = styled.div`
-  padding-bottom: 450px;
-  padding-right: 150px;
+  /* padding-bottom: 450px; */
+  /* padding-right: 150px; */
   /* margin-bottom: 20px; */
   /* margin: 0 auto; */
 
@@ -84,6 +84,7 @@ const  RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
+  isolation: isolate;
 
   width: 606px;
   height: 548px;
@@ -251,29 +252,30 @@ function Login() {
   return (
     <LoginContainer>
       <Autolayout>
-        <RegisterGround>Login
+        <RegisterGround>Login</RegisterGround>
           <RegisterWhite>
-            <Autobox>
-              <CommonInfo>
-                <InfoStyle>ID</InfoStyle>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
+            <Sublayout>
+              <Autobox>
+                <CommonInfo>
+                  <InfoStyle>ID</InfoStyle>
+                </CommonInfo>
+                <CommonInput />
+              </Autobox>
 
-            <Autobox>
-              <CommonInfo>
-                <InfoStyle>Password</InfoStyle>
-                <CheckStyle>Forgot password? </CheckStyle>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
+              <Autobox>
+                <CommonInfo>
+                  <InfoStyle>Password</InfoStyle>
+                  <CheckStyle>Forgot password? </CheckStyle>
+                </CommonInfo>
+                <CommonInput />
+              </Autobox>
 
-            <>
-              <CommonBtn>Login</CommonBtn>
-              <Textbox>Don’t have account? Create new account</Textbox>
-            </>
+              <>
+                <CommonBtn>Login</CommonBtn>
+                <Textbox>Don’t have account? Create new account</Textbox>
+              </>
+            </Sublayout>
           </RegisterWhite>
-        </RegisterGround>
       </Autolayout>
     </LoginContainer>
   );

@@ -17,7 +17,7 @@ const Autolayout = styled.div`
 
   position: absolute;
   width: 819px;
-  height: 832px;
+  height: 830px;
   left: 310px;
   top: 0px;
 

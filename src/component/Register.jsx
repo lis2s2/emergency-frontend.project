@@ -13,11 +13,14 @@ const Autolayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px;
+  padding-top: 180px;
+  padding-left: 400px;
   gap: 24px;
+  margin: 0 atuo;
 
   position: absolute;
   width: 819px;
-  height: 832px;
+  height: 830px;
   left: 310px;
   top: 0px;
 
@@ -27,33 +30,30 @@ const Autolayout = styled.div`
   z-index: 0;
 `;
 
-// const RegisterGround = styled.div`
-//   padding-top: 30px;
-//   padding-right: 600px;
-//   margin-bottom: 20px;
-//   margin: 0 auto;
+const Sublayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  /* padding-top: 200px; */
+  /* padding-right: 200px; */
+  gap: 24px;
+  margin: 0 auto;
+  
+  position: relative;
+  width: 606px;
+  height: 685px;
 
-//   width: 187px;
-//   height: 64px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  z-index: 0;
+`;
 
-//   font-family: 'Noto Sans KR';
-//   font-style: normal;
-//   font-weight: 900;
-//   font-size: 36px;
-//   line-height: 52px;
-//   text-align: center;
-
-//   color: #FFFFFF;
-
-//   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-//   flex: none;
-//   order: 0;
-//   flex-grow: 0;
-// `;
 const RegisterGround = styled.div`
-  padding-bottom: 550px;
-  padding-right: 150px;
+  /* padding-bottom: 550px; */
+  /* padding-right: 150px; */
   /* margin-bottom: 20px; */
   /* margin: 0 auto; */
 
@@ -83,6 +83,7 @@ const  RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
+  isolation: isolate;
 
   width: 606px;
   height: 685px;
@@ -230,53 +231,53 @@ function Register() {
   return (
     <RegisterContainer>
       <Autolayout>
-
-        <RegisterGround> Register
+        <RegisterGround> Register</RegisterGround>
           <RegisterWhite>
-            <Autobox>
-              <CommonInfo>
-                <InfoStyle>ID</InfoStyle>
-                <CheckStyle>중복체크</CheckStyle>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
+            <Sublayout>
+              <Autobox>
+                <CommonInfo>
+                  <InfoStyle>ID</InfoStyle>
+                  <CheckStyle>중복체크</CheckStyle>
+                </CommonInfo>
+                <CommonInput />
+              </Autobox>
 
-            <Autobox>
-              <CommonInfo>
-                <InfoStyle>Password</InfoStyle>
-                <CheckStyle>영문, 숫자 포함 8~15자리로 입력해주세요.</CheckStyle>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
-            
-            <Autobox>
-              <CommonInfo>
-                <>Name</>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
+              <Autobox>
+                <CommonInfo>
+                  <InfoStyle>Password</InfoStyle>
+                  <CheckStyle>영문, 숫자 포함 8~15자리로 입력해주세요.</CheckStyle>
+                </CommonInfo>
+                <CommonInput />
+              </Autobox>
+              
+              <Autobox>
+                <CommonInfo>
+                  <>Name</>
+                </CommonInfo>
+                <CommonInput />
+              </Autobox>
 
-            <Autobox>
-              <CommonInfo>
-                <InfoStyle>Email</InfoStyle>
-                <CheckStyle>중복체크</CheckStyle>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
+              <Autobox>
+                <CommonInfo>
+                  <InfoStyle>Email</InfoStyle>
+                  <CheckStyle>중복체크</CheckStyle>
+                </CommonInfo>
+                <CommonInput />
+              </Autobox>
 
-            <Autobox>
-              <CommonInfo>
-                <>Nick-Name</>
-              </CommonInfo>
-              <CommonInput />
-            </Autobox>
-            
-            <>
-              <CommonBtn>Sign Up</CommonBtn>
-              <CommonBtn>Login Page</CommonBtn>
-            </>
+              <Autobox>
+                <CommonInfo>
+                  <>Nick-Name</>
+                </CommonInfo>
+                <CommonInput />
+              </Autobox>
+              
+              <>
+                <CommonBtn>Sign Up</CommonBtn>
+                <CommonBtn>Login Page</CommonBtn>
+              </>
+            </Sublayout>
           </RegisterWhite>
-        </RegisterGround>
       </Autolayout>
     </RegisterContainer>
   );
