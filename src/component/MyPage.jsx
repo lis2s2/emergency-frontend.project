@@ -14,7 +14,7 @@ const Autolayout = styled.div`
   align-items: center;
   padding: 0px;
   /* padding-top: 200px; */
-  padding-right: 500px;
+  padding-right: 600px;
   gap: 24px;
   margin: 0 auto;
 
