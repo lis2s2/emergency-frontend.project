@@ -3,6 +3,7 @@ import styled from "styled-components";
 const RegisterContainer = styled.div`
   /* width: 100%; */
   max-width: 1440px;
+  margin: 0 auto;
   background-color: #5fb393;
   min-height: 820px;
 `;
@@ -13,10 +14,8 @@ const Autolayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px;
-  padding-bottom: 200px;
   gap: 24px;
 
-  /* position: absolute; */
   width: 819px;
   height: 830px;
   left: 310px;
@@ -28,13 +27,28 @@ const Autolayout = styled.div`
   z-index: 0;
 `;
 
-const RegisterGround = styled.div`
-  padding-bottom: 450px;
-  padding-right: 150px;
-  /* margin-bottom: 20px; */
-  /* margin: 0 auto; */
+const Sublayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  /* padding-top: 200px; */
+  /* padding-right: 200px; */
+  gap: 24px;
+  margin: 0 auto;
+  
+  position: relative;
+  width: 606px;
+  height: 685px;
 
-  /* width: 187px; */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  z-index: 0;
+`;
+
+const RegisterGround = styled.div`
   height: 64px;
 
   font-family: "Noto Sans KR";
@@ -101,7 +115,7 @@ const Autobox = styled.div`
 const CommonInfo = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   align-items: center;
   padding: 0px;
 
@@ -127,7 +141,7 @@ const InfoStyle = styled.div`
   width: 490px;
   height: 29px;
 
-  flex: none;
+  /* flex: none; */
   order: 0;
   flex-grow: 0;
   z-index: 0;
@@ -187,34 +201,35 @@ function Search() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>Searching for passwords
-            <RegisterWhite>
-            <Autobox>
-                <CommonInfo>
-                <InfoStyle>ID</InfoStyle>
-                </CommonInfo>
-                <CommonInput />
-            </Autobox>
+        <RegisterGround>Searching for passwords</RegisterGround>
+          <RegisterWhite>
+            <Sublayout>
+              <Autobox>
+                  <CommonInfo>
+                    <InfoStyle>ID</InfoStyle>
+                  </CommonInfo>
+                  <CommonInput />
+              </Autobox>
 
-            <Autobox>
-                <CommonInfo>
-                <>Name</>
-                </CommonInfo>
-                <CommonInput />
-            </Autobox>
+              <Autobox>
+                  <CommonInfo>
+                    <>Name</>
+                    </CommonInfo>
+                  <CommonInput />
+              </Autobox>
 
-            <Autobox>
-                <CommonInfo>
-                <InfoStyle>Email</InfoStyle>
-                </CommonInfo>
-                <CommonInput />
-            </Autobox>
+              <Autobox>
+                  <CommonInfo>
+                    <InfoStyle>Email</InfoStyle>
+                  </CommonInfo>
+                  <CommonInput />
+              </Autobox>
 
-            <>
+              <>
                 <CommonBtn>Check</CommonBtn>
-            </>   
-            </RegisterWhite>
-        </RegisterGround>
+              </>   
+            </Sublayout>
+          </RegisterWhite>
       </Autolayout>
     </RegisterContainer>
   );

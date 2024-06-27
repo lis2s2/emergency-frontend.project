@@ -169,7 +169,7 @@ const CheckStyle = styled.button`
 
   color: #007AFF;
 
-  flex: none;
+  /* flex: none; */
   order: 1;
   flex-grow: 0;
   z-index: 1;

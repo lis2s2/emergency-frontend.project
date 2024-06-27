@@ -51,12 +51,6 @@ const Sublayout = styled.div`
 `;
 
 const RegisterGround = styled.div`
-  /* padding-bottom: 550px; */
-  /* padding-right: 150px; */
-  /* margin-bottom: 20px; */
-  /* margin: 0 auto; */
-
-  /* width: 187px; */
   height: 64px;
 
   font-family: "Noto Sans KR";
@@ -124,7 +118,7 @@ const Autobox = styled.div`
 const CommonInfo = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   align-items: center;
   padding: 0px;
 
@@ -150,7 +144,7 @@ const InfoStyle = styled.div`
   width: 490px;
   height: 29px;
 
-  flex: none;
+  /* flex: 1; */
   order: 0;
   flex-grow: 0;
   z-index: 0;
@@ -230,7 +224,7 @@ function Register() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround> Register</RegisterGround>
+        <RegisterGround>Register</RegisterGround>
           <RegisterWhite>
             <Sublayout>
               <Autobox>
