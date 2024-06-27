@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const ItemWrapper = styled.div`
@@ -27,11 +28,13 @@ const ItemPrice = styled.p`
 function ShopItem(props) {
   const { item } = props;
 
+  const navigate = useNavigate();
+
   const formatter = new Intl.NumberFormat('ko-KR');
 
   return (
-    <ItemWrapper>
-      <img src={item.imagePath} alt={item.title} width="100%" height="80%"/>
+    <ItemWrapper className="cursor-pointer">
+      <img src={item.imagePath} alt={item.title} width="100%" height="80%" onClick={() => navigate(`/detail/${item.id}`)}/>
       <ItemTitle>{item.title}</ItemTitle>
       <ItemPrice>{formatter.format( item.price)}원</ItemPrice>
     </ItemWrapper>

@@ -81,6 +81,7 @@ const CartNum = styled.span`
 `;
 
 
+
 function Shop() {
 const items = [ // 나중에 실제 DB로 가져오기
   {
@@ -150,6 +151,7 @@ const items = [ // 나중에 실제 DB로 가져오기
             "--swiper-navigation-color": "#5FB393"
           }}
         >
+          
           {items.map((item) => {
             return <SwiperSlide><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
           })}
