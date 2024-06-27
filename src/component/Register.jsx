@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const RegisterContainer = styled.div`
@@ -29,7 +32,7 @@ const Autolayout = styled.div`
   z-index: 0;
 `;
 
-const Sublayout = styled.div`
+const Sublayout = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -221,18 +224,68 @@ const CommonBtn = styled.button`
 `;
 
 function Register() {
+
+  const [formData, setFormData] = useState({
+    memId: "",
+    memPwd: "",
+    memName: "",
+    memEmail: "",
+    memNick: "",
+  });
+  const { memId, memPwd, memName, memEmail, memNick } = formData;
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    console.log(e.target);
+
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    console.log(formData);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8080/register', formData)
+      .then(response => {
+        alert(response.data);
+      })
+      .catch(error => {
+        console.error('회원가입 실패!', error);
+        alert('회원가입 실패');
+      });
+  };
+
+  // useEffect(() => {
+  //   axios.get('http://localhost:8080/register', {
+  //     headers: {
+  //       Authorization: `Bearer ${yourAuthToken}` // yourAuthToken은 실제 사용할 토큰입니다
+  //     }
+  //   })
+  //     .then(response => {
+  //       setGreeting(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('There was an error fetching the greeting!', error);
+  //     });
+  // }, []);
+
   return (
     <RegisterContainer>
       <Autolayout>
         <RegisterGround>Register</RegisterGround>
           <RegisterWhite>
-            <Sublayout>
+            <Sublayout onSubmit={handleSubmit}>
               <Autobox>
                 <CommonInfo>
                   <InfoStyle>ID</InfoStyle>
                   <CheckStyle>중복체크</CheckStyle>
                 </CommonInfo>
-                <CommonInput />
+                <CommonInput type="text" name="memId" value={formData.memId} onChange={handleChange} />
               </Autobox>
 
               <Autobox>
@@ -240,14 +293,14 @@ function Register() {
                   <InfoStyle>Password</InfoStyle>
                   <CheckStyle>영문, 숫자 포함 8~15자리로 입력해주세요.</CheckStyle>
                 </CommonInfo>
-                <CommonInput />
+                <CommonInput type="password" name="memPwd" value={formData.memPwd} onChange={handleChange} />
               </Autobox>
               
               <Autobox>
                 <CommonInfo>
                   <>Name</>
                 </CommonInfo>
-                <CommonInput />
+                <CommonInput type="text" name="memName" value={formData.memName} onChange={handleChange} />
               </Autobox>
 
               <Autobox>
@@ -255,19 +308,19 @@ function Register() {
                   <InfoStyle>Email</InfoStyle>
                   <CheckStyle>중복체크</CheckStyle>
                 </CommonInfo>
-                <CommonInput />
+                <CommonInput type="text" placeholder='example@example.com' name="memEmail" value={formData.memEmail} onChange={handleChange} />
               </Autobox>
 
               <Autobox>
                 <CommonInfo>
                   <>Nick-Name</>
                 </CommonInfo>
-                <CommonInput />
+                <CommonInput type="text" name="memNick" value={formData.memNick} onChange={handleChange} />
               </Autobox>
               
               <>
-                <CommonBtn>Sign Up</CommonBtn>
-                <CommonBtn>Login Page</CommonBtn>
+                <CommonBtn type="submit">Sign Up</CommonBtn>
+                <CommonBtn type="button" onClick={() => navigate('/login')}>Login Page</CommonBtn>
               </>
             </Sublayout>
           </RegisterWhite>

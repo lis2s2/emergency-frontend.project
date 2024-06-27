@@ -7,6 +7,8 @@ import Login from "./component/Login";
 import Register from "./component/Register";
 import Search from "./component/Search";
 import MyPage from "./component/MyPage";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -39,6 +41,19 @@ const GlobalStyle = createGlobalStyle`
 
 
 function App() {
+
+  const [greeting, setGreeting] = useState('');
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/register')
+      .then(response => {
+        setGreeting(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the greeting!', error);
+      });
+  }, []);
+
   return (
     <>
       <Reset />
@@ -53,6 +68,7 @@ function App() {
 
         </Route>
       </Routes>
+      <p>{greeting}</p>
     </>
   );
 }
