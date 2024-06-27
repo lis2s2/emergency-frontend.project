@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 const RegisterContainer = styled.div`
-  width: 100%;
+  /* width: 100%; */
   max-width: 1440px;
+  margin: 0 auto;
   background-color: #5FB393;
   min-height: 820px;
 `;
@@ -13,12 +14,10 @@ const Autolayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px;
-  padding-top: 180px;
-  padding-left: 400px;
   gap: 24px;
-  margin: 0 atuo;
+  /* margin: 0 atuo; */
 
-  position: absolute;
+  /* position: absolute; */
   width: 819px;
   height: 830px;
   left: 310px;

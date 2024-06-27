@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 
 const LoginContainer = styled.div`
-  width: 100%;
+  /* width: 100%; */
   max-width: 1440px;
   background-color: #5FB393;
   min-height: 820px;
@@ -14,12 +14,9 @@ const Autolayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px;
-  padding-top: 200px;
-  padding-left: 400px;
   gap: 24px;
   margin: 0 atuo;
 
-  position: absolute;
   width: 819px;
   height: 830px;
   left: 310px;
