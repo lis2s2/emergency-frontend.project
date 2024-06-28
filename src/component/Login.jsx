@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 
@@ -41,8 +41,9 @@ const Sublayout = styled.form`
   /* padding-right: 200px; */
   gap: 24px;
   margin: 0 auto;
+  padding-left: 20px;
   
-  position: relative;
+  position: absolute;
   width: 606px;
   height: 548px;
 
@@ -114,7 +115,7 @@ const Autobox = styled.div`
   
   color: #111111;
 
-  width: 560px;
+  width: 606px;
   height: 82px;
 
   flex: none;
@@ -158,7 +159,7 @@ const InfoStyle = styled.div`
   z-index: 0;
 `;
 
-const CheckStyle = styled.button`
+const CheckStyle = styled.div`
   margin: 0 auto;
   /* width: 50px; */
   /* height: 29px; */
@@ -184,6 +185,8 @@ const CommonInput = styled.input`
   justify-content: center;
   align-items: center;
   padding: 8px;
+
+  font-size: 16px;
 
   width: 558px;
   height: 45px;
@@ -227,9 +230,15 @@ const CommonBtn = styled.button`
   line-height: 29px;
 
   color: #FFFFFF;
+
+  &:hover {
+    background:  #5FB393;
+    color: black;
+    transition: 0.7s;
+  }
 `;
 
-const Textbox = styled.div`
+const Textbtn = styled.button`
   width: 558px;
   height: 20px;
 
@@ -239,6 +248,9 @@ const Textbox = styled.div`
   font-size: 14px;
   line-height: 20px;
   text-align: center;
+
+  background-color: white;
+  border: none;
 
   color: #111111;
 
@@ -250,11 +262,12 @@ const Textbox = styled.div`
 
 
 function Login() {
-
   const [formData, setFormData] = useState({
     memId: "",
     memPwd: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -262,6 +275,8 @@ function Login() {
       ...formData,
       [name]: value,
     });
+
+    console.log(formData);
   };
 
   const handleSubmit = (e) => {
@@ -270,15 +285,15 @@ function Login() {
       .then(response => {
         if (response.data) {
           alert('로그인 성공');
-          // 로직?
           Navigate('/');
 
-        } else {
-          alert('아이디 또는 비밀번호가 존재하지 않습니다.');
-        }
+        } 
+        // else {
+        //   alert('아이디 또는 비밀번호가 존재하지 않습니다.');
+        // }
       })
       .catch(error => {
-        console.error('There was an error logging in!', error);
+        console.error('아이디 또는 비밀번호가 잘못 입력되었습니다!', error);
         alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
       });
   };
@@ -299,14 +314,15 @@ function Login() {
               <Autobox>
                 <CommonInfo>
                   <InfoStyle>Password</InfoStyle>
-                  <CheckStyle>Forgot password? </CheckStyle>
+                  {/* <CheckStyle>Forgot password?</CheckStyle> */}
                 </CommonInfo>
                 <CommonInput type="password" name="memPwd" value={formData.memPwd} onChange={handleChange} />
               </Autobox>
 
               <>
                 <CommonBtn  type="submit" onClick={handleSubmit}>Login</CommonBtn>
-                <Textbox>Don’t have account? Create new account</Textbox>
+                <Textbtn onClick={() => navigate('/search')}>Forgot password? </Textbtn>
+                <Textbtn onClick={() => navigate('/register')}>Don’t have account? <span color="red">Create new account</span></Textbtn>
               </>
             </Sublayout>
           </RegisterWhite>

@@ -43,7 +43,7 @@ const Sublayout = styled.form`
   gap: 24px;
   margin: 0 auto;
   
-  position: relative;
+  position: absolute;
   width: 606px;
   height: 685px;
 
@@ -153,7 +153,7 @@ const InfoStyle = styled.div`
   z-index: 0;
 `;
 
-const CheckStyle = styled.button`
+const CheckStyle = styled.div`
   margin: 0 auto;
   /* width: 50px; */
   /* height: 29px; */
@@ -179,6 +179,8 @@ const CommonInput = styled.input`
   justify-content: center;
   align-items: center;
   padding: 8px;
+  
+  font-size: 16px;
 
   width: 558px;
   height: 45px;
@@ -206,7 +208,7 @@ const CommonBtn = styled.button`
   height: 45px;
 
   background: #5FB393;
-  border: 1px solid #000000;
+  border: none;
   border-radius: 8px;
 
   flex: none;
@@ -221,10 +223,15 @@ const CommonBtn = styled.button`
   line-height: 29px;
 
   color: #FFFFFF;
+
+  &:hover {
+    background:  #5FB393;
+    color: black;
+    transition: 0.7s;
+  }
 `;
 
 function Register() {
-
   const [formData, setFormData] = useState({
     memId: "",
     memPwd: "",
@@ -232,6 +239,8 @@ function Register() {
     memEmail: "",
     memNick: "",
   });
+
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
@@ -245,13 +254,19 @@ function Register() {
     });
 
     console.log(formData);
+
+    // setFormData('');
   };
 
   const handleSubmit = (e) => {
+    // if (!e.memId || !e.memPwd || !e.memName || !e.memEmail || !e.memNick) {
+    //   setError('아이디, 이름, 이메일은 필수 입력 사항입니다.');
+    // }
+
     e.preventDefault();
     axios.post('http://localhost:8080/register', formData)
       .then(response => {
-        alert(response.data);
+        alert('회원가입 성공');
       })
       .catch(error => {
         console.error('회원가입 실패!', error);
@@ -282,7 +297,7 @@ function Register() {
               <Autobox>
                 <CommonInfo>
                   <InfoStyle>ID</InfoStyle>
-                  <CheckStyle>중복체크</CheckStyle>
+                  {/* <CheckStyle>중복체크</CheckStyle> */}
                 </CommonInfo>
                 <CommonInput type="text" name="memId" value={formData.memId} onChange={handleChange} />
               </Autobox>
@@ -305,7 +320,7 @@ function Register() {
               <Autobox>
                 <CommonInfo>
                   <InfoStyle>Email</InfoStyle>
-                  <CheckStyle>중복체크</CheckStyle>
+                  {/* <CheckStyle>중복체크</CheckStyle> */}
                 </CommonInfo>
                 <CommonInput type="text" placeholder='example@example.com' name="memEmail" value={formData.memEmail} onChange={handleChange} />
               </Autobox>

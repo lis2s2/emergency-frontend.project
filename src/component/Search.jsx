@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useState } from "react";
 import styled from "styled-components";
 
 const RegisterContainer = styled.div`
@@ -18,8 +20,8 @@ const Autolayout = styled.div`
 
   width: 819px;
   height: 830px;
-  left: 310px;
-  top: 0px;
+  //left: 310px;
+  //top: 0px;
 
   flex: none;
   order: 0;
@@ -32,13 +34,14 @@ const Sublayout = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
+  padding: 0 20px;
   /* padding-top: 200px; */
   /* padding-right: 200px; */
   gap: 24px;
   margin: 0 auto;
+  /* padding-left: 20px; */
   
-  position: relative;
+  position: absolute;
   width: 606px;
   height: 685px;
 
@@ -103,7 +106,7 @@ const Autobox = styled.div`
 
   color: #111111;
 
-  width: 560px;
+  /* width: 606px; */
   height: 82px;
 
   flex: none;
@@ -154,7 +157,9 @@ const CommonInput = styled.input`
   align-items: center;
   padding: 8px;
 
-  width: 558px;
+  font-size: 16px;
+
+  width: 558px;/
   height: 45px;
 
   background: #ffffff;
@@ -195,9 +200,39 @@ const CommonBtn = styled.button`
   line-height: 29px;
 
   color: #ffffff;
+
+  &:hover {
+    background:  #5FB393;
+    color: black;
+    transition: 0.7s;
+  }
 `;
 
 function Search() {
+
+  const [memId, setMemId] = useState('');
+  const [memName, setMemName] = useState('');
+  const [memEmail, setMemEmail] = useState('');
+  const [memPwd, setMemPwd] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSearch = async () => {
+    if (!memId || !memName || !memEmail) {
+      setError('아이디, 이름, 이메일은 필수 입력 사항입니다.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8080/search', { memId, memName, memEmail });
+      setMemPwd(response.data.memPwd);
+      setError('');
+    } catch (error) {
+      console.error('Error fetching password:', error);
+      setMemPwd('');
+      setError('사용자를 찾을 수 없습니다.');
+    }
+  };
+
   return (
     <RegisterContainer>
       <Autolayout>
@@ -208,26 +243,28 @@ function Search() {
                   <CommonInfo>
                     <InfoStyle>ID</InfoStyle>
                   </CommonInfo>
-                  <CommonInput />
+                  <CommonInput  value={memId} onChange={(e) => setMemId(e.target.value)} />
               </Autobox>
 
               <Autobox>
                   <CommonInfo>
                     <>Name</>
                     </CommonInfo>
-                  <CommonInput />
+                  <CommonInput  value={memName} onChange={(e) => setMemName(e.target.value)} />
               </Autobox>
 
               <Autobox>
                   <CommonInfo>
                     <InfoStyle>Email</InfoStyle>
                   </CommonInfo>
-                  <CommonInput />
+                  <CommonInput value={memEmail} onChange={(e) => setMemEmail(e.target.value)} />
               </Autobox>
 
               <>
-                <CommonBtn>Check</CommonBtn>
-              </>   
+                <CommonBtn onClick={handleSearch}>Check</CommonBtn>
+              </>  
+              {memPwd && <div>비밀번호: {memPwd}</div>}
+              {error && <div>{error}</div>} 
             </Sublayout>
           </RegisterWhite>
       </Autolayout>
