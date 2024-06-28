@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import styled from "styled-components";
 
 
@@ -28,7 +31,7 @@ const Autolayout = styled.div`
   z-index: 0;
 `;
 
-const Sublayout = styled.div`
+const Sublayout = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -208,8 +211,9 @@ const CommonBtn = styled.button`
   height: 45px;
 
   background: #5FB393;
-  border: 1px solid #000000;
+  border: none;
   border-radius: 8px;
+  
 
   flex: none;
   order: 5;
@@ -246,17 +250,50 @@ const Textbox = styled.div`
 
 
 function Login() {
+
+  const [formData, setFormData] = useState({
+    memId: "",
+    memPwd: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8080/login', formData)
+      .then(response => {
+        if (response.data) {
+          alert('로그인 성공');
+          // 로직?
+          Navigate('/');
+
+        } else {
+          alert('아이디 또는 비밀번호가 존재하지 않습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('There was an error logging in!', error);
+        alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
+      });
+  };
+
   return (
     <LoginContainer>
       <Autolayout>
         <RegisterGround>Login</RegisterGround>
           <RegisterWhite>
-            <Sublayout>
+            <Sublayout onSubmit={handleSubmit}>
               <Autobox>
                 <CommonInfo>
                   <InfoStyle>ID</InfoStyle>
                 </CommonInfo>
-                <CommonInput />
+                <CommonInput type="text" name="memEmail" value={formData.memEmail} onChange={handleChange} />
               </Autobox>
 
               <Autobox>
@@ -264,11 +301,11 @@ function Login() {
                   <InfoStyle>Password</InfoStyle>
                   <CheckStyle>Forgot password? </CheckStyle>
                 </CommonInfo>
-                <CommonInput />
+                <CommonInput type="password" name="memPwd" value={formData.memPwd} onChange={handleChange} />
               </Autobox>
 
               <>
-                <CommonBtn>Login</CommonBtn>
+                <CommonBtn  type="submit" onClick={handleSubmit}>Login</CommonBtn>
                 <Textbox>Don’t have account? Create new account</Textbox>
               </>
             </Sublayout>

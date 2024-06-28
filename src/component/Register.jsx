@@ -232,7 +232,6 @@ function Register() {
     memEmail: "",
     memNick: "",
   });
-  const { memId, memPwd, memName, memEmail, memNick } = formData;
 
   const navigate = useNavigate();
 
@@ -319,7 +318,7 @@ function Register() {
               </Autobox>
               
               <>
-                <CommonBtn type="submit">Sign Up</CommonBtn>
+                <CommonBtn type="submit" onClick={handleSubmit}>Sign Up</CommonBtn>
                 <CommonBtn type="button" onClick={() => navigate('/login')}>Login Page</CommonBtn>
               </>
             </Sublayout>

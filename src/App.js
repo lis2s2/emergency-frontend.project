@@ -68,7 +68,7 @@ function App() {
 
         </Route>
       </Routes>
-      <p>{greeting}</p>
+      {/* <p>{greeting}</p> */}
     </>
   );
 }

@@ -180,7 +180,7 @@ const CommonBtn = styled.button`
   height: 45px;
 
   background: #5fb393;
-  border: 1px solid #000000;
+  border: none;
   border-radius: 8px;
 
   flex: none;

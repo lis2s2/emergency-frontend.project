@@ -331,7 +331,7 @@ const NoticeBtn = styled.div`
 
   background: #5FB393;
   border-radius: 8px;
-  border: 2px solid #5FB393;
+  border: none;
 
   flex: none;
   order: 1;
