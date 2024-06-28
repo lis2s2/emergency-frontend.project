@@ -7,6 +7,7 @@ import Login from "./component/Login";
 import Register from "./component/Register";
 import Shop from "./pages/Shop";
 import ItemDetail from "./pages/ItemDetail";
+import Cart from "./pages/Cart";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -50,6 +51,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="shop" element={<Shop />} />
           <Route path="detail/:productId" element={<ItemDetail />} />
+          <Route path="cart" element={<Cart/>} />
         </Route>
       </Routes>
     </>
