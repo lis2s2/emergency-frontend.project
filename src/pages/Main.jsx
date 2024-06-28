@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
 import styled from "styled-components";
-import logoImg from "../images/logo.png";
+import ToiletMap from "../component/ToiletMap";
+import ToiletList from "../component/ToiletList";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -14,24 +14,17 @@ const MainContainer = styled.div`
 
 const TolietListSection = styled.div`
   min-width: 492px;
-  background: #fff;
+  background: #5fb393;
   height: 100%;
   padding: 20px;
 `;
 
 const MapSection = styled.div`
   min-width: 946px;
-  background-color: #c03232;
+  background-color: #5fb393;
   height: 100%;
   padding: 20px 20px 20px 0;
 `;
-
-const CustomMap = styled(Map)`
-  width: 100%;
-  height: 100%;
-  border-radius: 24px;
-`;
-
 
 function Main() {
   const [location, setLocation] = useState({
@@ -43,7 +36,9 @@ function Main() {
     isLoading: true,
   });
 
-  const [toiletLocation, setToiletLocation] = useState([]);
+  const [closestToiletLocations, setClosestToiletLocations] = useState([]);
+
+  const [toiletLocations, setToiletLocations] = useState([]);
 
   useEffect(() => {
     // if (navigator.geolocation) {
@@ -92,8 +87,8 @@ function Main() {
             "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/3001/4000"
           ),
           axios.get(
-            "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/4001/4938"
-          )
+            "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/4001/5000"
+          ),
         ]);
 
         const data1 = responses[0].data.SearchPublicToiletPOIService.row;
@@ -103,44 +98,45 @@ function Main() {
         const data5 = responses[4].data.SearchPublicToiletPOIService.row;
         const combinedData = [...data1, ...data2, ...data3, ...data4, ...data5];
 
-        setToiletLocation(combinedData);
+        setToiletLocations(combinedData);
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchToiletLocations();
-
   }, []);
 
-  console.log(toiletLocation);
+  useEffect(() => {
+    const sortedToiletLocations = toiletLocations
+      .map((toiletlocation) => ({
+        ...toiletlocation,
+        distance: getEuclideanDistance(
+          location.center.lat,
+          location.center.lng,
+          toiletlocation.Y_WGS84,
+          toiletlocation.X_WGS84
+        ),
+      }))
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 6);
 
+    setClosestToiletLocations(sortedToiletLocations);
+  }, [toiletLocations, location]);
+
+  const getEuclideanDistance = (lat1, lng1, lat2, lng2) => {
+    return Math.sqrt(Math.pow(lat2 - lat1, 2) + Math.pow(lng2 - lng1, 2));
+  };
+  console.log(toiletLocations);
+  console.log(closestToiletLocations);
 
   return (
     <MainContainer>
-      <TolietListSection></TolietListSection>
+      <TolietListSection>
+        <ToiletList closestToiletLocations={closestToiletLocations} />
+      </TolietListSection>
       <MapSection>
-        <CustomMap
-          center={location.center}
-          style={{ width: "100%", height: "100%" }}
-          level={1}
-        >
-          {toiletLocation.map((value) => {
-            return (
-              <MapMarker
-                key={value.POI_ID}
-                position={{ lat: value.Y_WGS84, lng: value.X_WGS84 }}
-                title={value.FNAME}
-                image={{
-                  src: logoImg, 
-                  size: {
-                    width: 32,
-                    height: 32
-                  }}}
-              />
-            );
-          })}
-        </CustomMap>
+        <ToiletMap toiletLocations={toiletLocations} location={location} />
       </MapSection>
     </MainContainer>
   );
