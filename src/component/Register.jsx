@@ -18,13 +18,12 @@ const Autolayout = styled.div`
   align-items: center;
   padding: 0px;
   gap: 24px;
-  /* margin: 0 atuo; */
 
   /* position: absolute; */
   width: 819px;
   height: 830px;
-  left: 310px;
-  top: 0px;
+  /* left: 310px;
+  top: 0px; */
 
   flex: none;
   order: 0;
@@ -37,9 +36,7 @@ const Sublayout = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
-  /* padding-top: 200px; */
-  /* padding-right: 200px; */
+  padding: 0 20px;
   gap: 24px;
   margin: 0 auto;
   
@@ -109,7 +106,7 @@ const Autobox = styled.div`
   
   color: #111111;
 
-  width: 560px;
+  /* width: 560px; */
   height: 82px;
 
   flex: none;
@@ -127,10 +124,6 @@ const CommonInfo = styled.div`
 
   width: 559px;
   height: 29px;
-
-  /* margin: 0 auto;
-  width: 22px;
-  height: 29px; */
 
   flex: none;
   order: 0;
@@ -182,7 +175,7 @@ const CommonInput = styled.input`
   
   font-size: 16px;
 
-  width: 558px;
+  width: 100%;
   height: 45px;
 
   background: #FFFFFF;
@@ -259,18 +252,20 @@ function Register() {
   };
 
   const handleSubmit = (e) => {
-    // if (!e.memId || !e.memPwd || !e.memName || !e.memEmail || !e.memNick) {
-    //   setError('아이디, 이름, 이메일은 필수 입력 사항입니다.');
-    // }
-
     e.preventDefault();
+
+    if (!formData.memId || !formData.memPwd || !formData.memName || !formData.memEmail || !formData.memNick) {
+      alert("빈칸이 존재합니다.");
+      return;
+    }
+
     axios.post('http://localhost:8080/register', formData)
       .then(response => {
-        alert('회원가입 성공');
+        alert('회원가입을 성공하였습니다.');
       })
       .catch(error => {
         console.error('회원가입 실패!', error);
-        alert('회원가입 실패');
+        alert('회원가입을 실패하였습니다.');
       });
   };
 

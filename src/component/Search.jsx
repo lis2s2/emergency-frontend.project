@@ -35,11 +35,8 @@ const Sublayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  /* padding-top: 200px; */
-  /* padding-right: 200px; */
   gap: 24px;
   margin: 0 auto;
-  /* padding-left: 20px; */
   
   position: absolute;
   width: 606px;
@@ -125,10 +122,6 @@ const CommonInfo = styled.div`
   width: 559px;
   height: 29px;
 
-  /* margin: 0 auto;
-  width: 22px;
-  height: 29px; */
-
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -158,8 +151,8 @@ const CommonInput = styled.input`
   padding: 8px;
 
   font-size: 16px;
-
-  width: 558px;/
+  
+  width: 100%;
   height: 45px;
 
   background: #ffffff;
@@ -218,7 +211,7 @@ function Search() {
 
   const handleSearch = async () => {
     if (!memId || !memName || !memEmail) {
-      setError('아이디, 이름, 이메일은 필수 입력 사항입니다.');
+      setError('아이디, 이름, 이메일을 전부 입력 해주세요.');
       return;
     }
 

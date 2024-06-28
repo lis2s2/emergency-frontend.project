@@ -36,12 +36,10 @@ const Sublayout = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
-  /* padding-top: 200px; */
-  /* padding-right: 200px; */
+  padding: 0 20px;
   gap: 24px;
   margin: 0 auto;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   
   position: absolute;
   width: 606px;
@@ -54,12 +52,6 @@ const Sublayout = styled.form`
 `;
 
 const RegisterGround = styled.div`
-  /* padding-bottom: 450px; */
-  /* padding-right: 150px; */
-  /* margin-bottom: 20px; */
-  /* margin: 0 auto; */
-
-  /* width: 187px; */
   height: 64px;
 
   font-family: "Noto Sans KR";
@@ -115,7 +107,7 @@ const Autobox = styled.div`
   
   color: #111111;
 
-  width: 606px;
+  /* width: 606px; */
   height: 82px;
 
   flex: none;
@@ -188,7 +180,7 @@ const CommonInput = styled.input`
 
   font-size: 16px;
 
-  width: 558px;
+  width: 100%;
   height: 45px;
 
   background: #FFFFFF;
@@ -281,18 +273,24 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8080/login', formData)
+    
+    if (!formData.memId || !formData.memPwd) {
+      alert('아이디와 비밀번호를 입력해 주세요.');
+      return;
+    }
+
+    axios.post(`http://localhost:8080/login?${formData.memId}&${formData.memPwd}`, formData)
       .then(response => {
         if (response.data) {
-          alert('로그인 성공');
-          Navigate('/');
-
+          alert('로그인');
+          Navigate('#');
         } 
-        // else {
-        //   alert('아이디 또는 비밀번호가 존재하지 않습니다.');
-        // }
+        else {
+          alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
+        }
       })
       .catch(error => {
+        console.log(error);
         console.error('아이디 또는 비밀번호가 잘못 입력되었습니다!', error);
         alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
       });
@@ -308,7 +306,7 @@ function Login() {
                 <CommonInfo>
                   <InfoStyle>ID</InfoStyle>
                 </CommonInfo>
-                <CommonInput type="text" name="memEmail" value={formData.memEmail} onChange={handleChange} />
+                <CommonInput type="text" name="memId" value={formData.memId} onChange={handleChange} />
               </Autobox>
 
               <Autobox>
@@ -320,8 +318,8 @@ function Login() {
               </Autobox>
 
               <>
-                <CommonBtn  type="submit" onClick={handleSubmit}>Login</CommonBtn>
-                <Textbtn onClick={() => navigate('/search')}>Forgot password? </Textbtn>
+                <CommonBtn  type="submit">Login</CommonBtn>
+                <Textbtn onClick={() => navigate('/search')}>Forgot password? <span>Search for passwords</span></Textbtn>
                 <Textbtn onClick={() => navigate('/register')}>Don’t have account? <span color="red">Create new account</span></Textbtn>
               </>
             </Sublayout>

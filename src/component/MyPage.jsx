@@ -13,7 +13,6 @@ const Autolayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px;
-  /* padding-top: 200px; */
   padding-right: 600px;
   gap: 24px;
   margin: 0 auto;
@@ -35,12 +34,12 @@ const Sublayout = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
+  padding: 0 20px;
   /* padding-top: 200px; */
   /* padding-right: 200px; */
   gap: 24px;
 
-  position: relative;
+  position: absolute;
   width: 850px;
   height: 644px;
 
