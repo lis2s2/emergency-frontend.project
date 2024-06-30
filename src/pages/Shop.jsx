@@ -55,6 +55,7 @@ export const CartIcon = styled.div`
   align-items: center;
   justify-content: center;
   transition: 0.2s background ease-in;
+  z-index: 999;
 
   &:hover{
     background: #f0f0f0;

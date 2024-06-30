@@ -1,3 +1,7 @@
+import axios from "axios";
+import axios from "axios";
+import axios from "axios";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { decrement, increment, selectCount } from "../feature/counter/counterSlice";
@@ -175,12 +179,40 @@ const StyledBtn = styled.button`
 
 
 function ItemDetail() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const count = useSelector(selectCount);
+  // const count = useSelector(selectCount);
+
+  // const [no, setNo] = useState(3);
+  const [count, setCount] = useState(1);
+
+  // const api = async () => {
+  //   try {
+  //     const result = await axios.post( // DB 만들어서 주소 보내주기
+  //       data: {
+  //         no: no,
+  //         count: count;
+  //       }
+  //     )
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
+  const handleDecrement = () => {
+    if (count <= 0) {
+      setCount(0);
+    } else {
+      setCount(count - 1);
+    }
+  }
+
+  const handleIncrement = () => {
+    setCount(count + 1);
+  }
+
 
   const formatter = new Intl.NumberFormat('ko-KR');
-
 
   return (
     <DetailWarpper>
@@ -203,9 +235,9 @@ function ItemDetail() {
 
             <ProductWarpper>
               <div className="btn_group">
-                <button type="button" className="btn" onClick={() => dispatch(decrement())}>-</button>
+                <button type="button" className="btn" onClick={handleDecrement}>-</button>
                 <div className="count_area">{count}</div>
-                <button type="button" className="btn" onClick={() => dispatch(increment())}>+</button>
+                <button type="button" className="btn" onClick={handleIncrement}>+</button>
               </div>
               <div>
                 <p className="price">{formatter.format( count * 2000)}원</p>
@@ -213,13 +245,17 @@ function ItemDetail() {
               </div>
             </ProductWarpper>
             <div className="btn_container">
-              <StyledBtnWhite>장바구니</StyledBtnWhite>
+              <StyledBtnWhite>장바구니 담기</StyledBtnWhite>
+              {/* 장바구니로 이동하겠냐는 모달창 띄우기 */}
+
               <StyledBtn>바로 구매하기</StyledBtn>
+              {/* 장바구니창? 혹은 구매창 띄우기 */}
+
             </div>
           </div>
       </DetailContainer>
 
-      <CartIcon className="cursor-pointer"/>
+      {/* <CartIcon className="cursor-pointer"/> */}
     </DetailWarpper>
   );
 };
