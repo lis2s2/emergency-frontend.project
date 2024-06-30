@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import { loginSuccess } from "../features/member/memberSlice";
 
 const LoginContainer = styled.div`
   /* width: 100%; */
   max-width: 1440px;
-  background-color: #5FB393;
+  background-color: #5fb393;
   min-height: 820px;
 `;
 
@@ -40,7 +41,7 @@ const Sublayout = styled.form`
   gap: 24px;
   margin: 0 auto;
   /* padding-left: 20px; */
-  
+
   position: absolute;
   width: 606px;
   height: 548px;
@@ -70,7 +71,7 @@ const RegisterGround = styled.div`
   flex-grow: 0;
 `;
 
-const  RegisterWhite = styled.div`
+const RegisterWhite = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -82,7 +83,7 @@ const  RegisterWhite = styled.div`
   width: 606px;
   height: 548px;
 
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -99,12 +100,12 @@ const Autobox = styled.div`
   padding: 0px;
   gap: 8px;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-  
+
   color: #111111;
 
   /* width: 606px; */
@@ -157,13 +158,13 @@ const CheckStyle = styled.div`
   /* height: 29px; */
   border-style: none;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
 
-  color: #007AFF;
+  color: #007aff;
 
   /* flex: none; */
   order: 1;
@@ -183,7 +184,7 @@ const CommonInput = styled.input`
   width: 100%;
   height: 45px;
 
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
 
@@ -205,26 +206,25 @@ const CommonBtn = styled.button`
   width: 558px;
   height: 45px;
 
-  background: #5FB393;
+  background: #5fb393;
   border: none;
   border-radius: 8px;
-  
 
   flex: none;
   order: 5;
   align-self: stretch;
   flex-grow: 0;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
 
-  color: #FFFFFF;
+  color: #ffffff;
 
   &:hover {
-    background:  #5FB393;
+    background: #5fb393;
     color: black;
     transition: 0.7s;
   }
@@ -234,7 +234,7 @@ const Textbtn = styled.button`
   width: 558px;
   height: 20px;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
@@ -244,7 +244,7 @@ const Textbtn = styled.button`
   background-color: white;
   border: none;
 
-  color: #111111;
+  color: darkolivegreen;
 
   flex: none;
   order: 3;
@@ -252,17 +252,18 @@ const Textbtn = styled.button`
   flex-grow: 0;
 `;
 
-
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     memId: "",
     memPwd: "",
   });
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
@@ -271,62 +272,116 @@ function Login() {
     console.log(formData);
   };
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.memId || !formData.memPwd) {
-      alert('아이디와 비밀번호를 입력해 주세요.');
+      alert("아이디와 비밀번호를 입력해 주세요.");
       return;
     }
 
-    axios.post(`http://localhost:8080/login?${formData.memId}&${formData.memPwd}`, formData)
-      .then(response => {
-        if (response.data) {
-          alert('로그인');
-          Navigate('#');
-        } 
-        else {
-          alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        console.error('아이디 또는 비밀번호가 잘못 입력되었습니다!', error);
-        alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
-      });
+    // axios.post(`http://localhost:8080/login?${formData.memId}&${formData.memPwd}`, formData)
+    //   .then(response => {
+    //     if (response.data) {
+    //
+    //        const { token, user } = result.data;
+    //
+    //       dispatch(loginSuccess({ name: response.data.name, nickname: response.data.nickname, role: response.data.role }));
+
+    //       localStorage.setItem('token', response.data);
+
+    //       alert('로그인');
+    //       Navigate('#');
+    //     }
+    //     else {
+    //       alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     console.error('아이디 또는 비밀번호가 잘못 입력되었습니다!', error);
+    //     alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
+    //   });
+
+    try {
+      const result = await axios.post(
+        `http://localhost:8080/login?${formData.memId}&${formData.memPwd}`,formData);
+        console.log(result);
+
+      if (result.data) {
+        // 로그인 성공 시 서버가 내려준 토큰(JWT)와 사용자 정보
+        const { token, member } = result.data;
+
+        // 전역 상태에 사용자 정보 저장
+        dispatch(
+          loginSuccess({
+            name: member.name,
+            nickname: member.nickname,
+            role: member.role,
+          })
+        );
+
+        // 발급 받은 토큰 저장
+        localStorage.setItem("token", token);
+
+        // 로그인 후 페이지 이동
+        navigate("/");
+      } else {  
+        alert("아이디 또는 비밀번호가 잘못 입력되었습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("아이디 또는 비밀번호가 잘못 입력되었습니다.");
+    }
   };
 
   return (
     <LoginContainer>
       <Autolayout>
         <RegisterGround>Login</RegisterGround>
-          <RegisterWhite>
-            <Sublayout onSubmit={handleSubmit}>
-              <Autobox>
-                <CommonInfo>
-                  <InfoStyle>ID</InfoStyle>
-                </CommonInfo>
-                <CommonInput type="text" name="memId" value={formData.memId} onChange={handleChange} />
-              </Autobox>
+        <RegisterWhite>
+          <Sublayout onSubmit={handleLogin}>
+            <Autobox>
+              <CommonInfo>
+                <InfoStyle>ID</InfoStyle>
+              </CommonInfo>
+              <CommonInput
+                type="text"
+                name="memId"
+                value={formData.memId}
+                onChange={handleChange}
+              />
+            </Autobox>
 
-              <Autobox>
-                <CommonInfo>
-                  <InfoStyle>Password</InfoStyle>
-                  {/* <CheckStyle>Forgot password?</CheckStyle> */}
-                </CommonInfo>
-                <CommonInput type="password" name="memPwd" value={formData.memPwd} onChange={handleChange} />
-              </Autobox>
+            <Autobox>
+              <CommonInfo>
+                <InfoStyle>Password</InfoStyle>
+                {/* <CheckStyle>Forgot password?</CheckStyle> */}
+              </CommonInfo>
+              <CommonInput
+                type="password"
+                name="memPwd"
+                value={formData.memPwd}
+                onChange={handleChange}
+              />
+            </Autobox>
 
-              <>
-                <CommonBtn  type="submit">Login</CommonBtn>
-                <Textbtn onClick={() => navigate('/search')}>Forgot password? <span>Search for passwords</span></Textbtn>
-                <Textbtn onClick={() => navigate('/register')}>Don’t have account? <span color="red">Create new account</span></Textbtn>
-              </>
-            </Sublayout>
-          </RegisterWhite>
+            <>
+              <CommonBtn type="submit">Login</CommonBtn>
+              <Textbtn onClick={() => navigate("/search")}>
+                Forgot password? 
+                {/* <span>Search for passwords</span> */}
+              </Textbtn>
+              <Textbtn onClick={() => navigate("/register")}>
+                Don’t have account?
+                {/* <span color="red">Create new account</span> */}
+              </Textbtn>
+            </>
+          </Sublayout>
+        </RegisterWhite>
       </Autolayout>
     </LoginContainer>
   );
-};
+}
 
 export default Login;

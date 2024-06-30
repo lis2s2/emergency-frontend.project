@@ -7,16 +7,18 @@ import { BrowserRouter } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap CSS 추가
 import 'react-toastify/dist/ReactToastify.min.css'; // ReactToastify CSS 추가
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <Provider>
+  <Provider store={store}>
   <>
     <BrowserRouter>
       <App />
     </BrowserRouter>
   </>
-  // </Provider>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

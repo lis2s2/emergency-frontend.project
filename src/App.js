@@ -3,10 +3,10 @@ import { createGlobalStyle } from "styled-components";
 import { Reset } from "styled-reset";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
-import Login from "./component/Login";
-import Register from "./component/Register";
-import Search from "./component/Search";
-import MyPage from "./component/MyPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Search from "./pages/Search";
+import MyPage from "./pages/MyPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
