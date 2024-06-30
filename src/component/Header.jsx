@@ -2,6 +2,7 @@ import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 
 import logoImg from "../images/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -44,6 +45,16 @@ const RegBtn = styled(Button)`
 
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  }
+
+  const handleRegisterClick = () => {
+    navigate('/register');
+  }
+
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -61,8 +72,8 @@ function Header() {
                 <NavDropdown.Item className="py-2 align-self-center">뉴스 게시판</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="#pricing" className="ms-3 align-self-center">포인트샵</Nav.Link>
-              <LoginBtn className="ms-4" variant="outline-success">로그인</LoginBtn>
-              <RegBtn className="ms-3" variant="success">회원가입</RegBtn>
+              <LoginBtn className="ms-4" variant="outline-success" onClick={handleLoginClick}>로그인</LoginBtn>
+              <RegBtn className="ms-3" variant="success" onClick={handleRegisterClick}>회원가입</RegBtn>
             </Nav>
           </Container>
         </CustomedNavbar>
