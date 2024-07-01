@@ -234,11 +234,10 @@ function Register() {
   });
 
   const [error, setError] = useState('');
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    console.log(e.target);
+    // console.log(e.target);
 
     const { name, value } = e.target;
     setFormData({
@@ -246,8 +245,7 @@ function Register() {
       [name]: value,
     });
 
-    console.log(formData);
-
+    // console.log(formData);
     // setFormData('');
   };
 
@@ -262,6 +260,7 @@ function Register() {
     axios.post('http://localhost:8080/register', formData)
       .then(response => {
         alert('회원가입을 성공하였습니다.');
+        navigate('/login');
       })
       .catch(error => {
         console.error('회원가입 실패!', error);

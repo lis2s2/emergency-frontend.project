@@ -269,7 +269,7 @@ function Login() {
       [name]: value,
     });
 
-    console.log(formData);
+    // console.log(formData);
   };
 
   const handleLogin = async (e) => {
@@ -280,55 +280,54 @@ function Login() {
       return;
     }
 
-    // axios.post(`http://localhost:8080/login?${formData.memId}&${formData.memPwd}`, formData)
+    // axios.get(`http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`)
     //   .then(response => {
     //     if (response.data) {
-    //
-    //        const { token, user } = result.data;
-    //
-    //       dispatch(loginSuccess({ name: response.data.name, nickname: response.data.nickname, role: response.data.role }));
+    
+    //       dispatch(loginSuccess({ name: formData.memId, nick: formData.memNick, role: formData.memRole }));
 
     //       localStorage.setItem('token', response.data);
 
     //       alert('로그인');
-    //       Navigate('#');
-    //     }
-    //     else {
-    //       alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
+    //       Navigate('/');
     //     }
     //   })
     //   .catch(error => {
     //     console.log(error);
-    //     console.error('아이디 또는 비밀번호가 잘못 입력되었습니다!', error);
     //     alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
     //   });
+    // }
 
     try {
-      const result = await axios.post(
-        `http://localhost:8080/login?${formData.memId}&${formData.memPwd}`,formData);
+      const result = await axios.get(
+        `http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`);
         console.log(result);
 
-      if (result.data) {
+      // if (result.data) {
         // 로그인 성공 시 서버가 내려준 토큰(JWT)와 사용자 정보
-        const { token, member } = result.data;
+        const { token, member } = result.data;  
 
         // 전역 상태에 사용자 정보 저장
         dispatch(
           loginSuccess({
-            name: member.name,
-            nickname: member.nickname,
-            role: member.role,
+            id: formData.memId,
+            pwd: formData.memPwd,
+            email: formData.memEmail,
+            name: formData.memName,
+            nickname: formData.memNick,
+            grade: formData.memGrade,
+            role: formData.memRole,
+            point: formData.memPoint
           })
         );
 
         // 발급 받은 토큰 저장
-        localStorage.setItem("token", token);
+        localStorage.setItem('token', token);
+        localStorage.setItem('information', member);
 
         // 로그인 후 페이지 이동
         navigate("/");
-      } else {  
-        alert("아이디 또는 비밀번호가 잘못 입력되었습니다.");
-      }
+        alert('로그인');
     } catch (error) {
       console.log(error);
       alert("아이디 또는 비밀번호가 잘못 입력되었습니다.");
@@ -361,6 +360,7 @@ function Login() {
               <CommonInput
                 type="password"
                 name="memPwd"
+                autoComplete= "off"
                 value={formData.memPwd}
                 onChange={handleChange}
               />

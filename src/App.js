@@ -44,15 +44,15 @@ function App() {
 
   const [greeting, setGreeting] = useState('');
 
-  useEffect(() => {
-    axios.get('http://localhost:8080/register')
-      .then(response => {
-        setGreeting(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the greeting!', error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios.get('http://localhost:8080/register')
+  //     .then(response => {
+  //       setGreeting(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('There was an error fetching the greeting!', error);
+  //     });
+  // }, []);
 
   return (
     <>

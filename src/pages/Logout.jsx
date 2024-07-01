@@ -9,7 +9,7 @@ function Logout() {
 
   const handleLogout = async () => {
     const token = localStorage.getItem('token');
-    const result = await axios.get(`http://localhost:8080/login?${formData.memId}&${formData.memPwd}`, {
+    const result = await axios.get(`http://localhost:8080/logout?${formData.memId}&${formData.memPwd}`, {
       headers: {
         Authorization: token
       }

@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import { TbMoodEdit } from "react-icons/tb";
+import { PiShoppingCartSimpleBold } from "react-icons/pi";
+import profileImg from "../images/profile.png";
+import logoImg from "../images/logo.png";
 
 const RegisterContainer = styled.div`
   /* width: 100%; */
@@ -126,12 +130,16 @@ const NameCard = styled.div`
 
 const CardImg = styled.div`
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   left: 38px;
-  top: 5px;
+  top: 13px;
+  vertical-align: middle;
 
-  background: url(.png);
+  background: url(${profileImg});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 
   flex: none;
   order: 0;
@@ -204,12 +212,24 @@ const CardPoint = styled.div`
   z-index: 3;
 `;
 
-const EditIcons = styled.div`
+// const IconsBox = styled.div`
+//   width: 100px;
+//   height: 60px;
+
+// `;
+
+const EditIcons = styled.button`
   position: absolute;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   left: 590px;
   top: 174px;
+
+  border-style: none;
+  background-color: white;
+  font-size: 40px;
+  vertical-align: middle;
+  line-height: 20px;
 
   flex: none;
   order: 3;
@@ -217,12 +237,18 @@ const EditIcons = styled.div`
   z-index: 3;
 `;
 
-const CartIcons = styled.div`
+const CartIcons = styled.button`
   position: absolute;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   left: 660px;
   top: 174px;
+
+  border-style: none;
+  background-color: white;
+  font-size: 40px;
+  vertical-align: middle;
+  line-height: 20px;
 
   flex: none;
   order: 3;
@@ -259,8 +285,12 @@ const Favorites = styled.div`
 const FavLogo = styled.div`
   width: 100px;
   height: 100px;
+  margin-left: 20px;
 
-  /* background: url(./images/logo.png); */
+  background: url(${logoImg});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 
   flex: none;
   order: 0;
@@ -271,6 +301,7 @@ const FavLogo = styled.div`
 const FavTitle = styled.div`
   width: 70px;
   height: 26px;
+  margin-left: 10px;
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -292,10 +323,12 @@ const FavTitle = styled.div`
 
 const FavList = styled.div`
   position: absolute;
-  width: 232px;
-  height: 208px;
+  width: 180px;
+  height: 210px;
   left: 269px;
   top: 8px;
+  padding-left: 20px;
+  /* margin-left: 20px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -305,6 +338,7 @@ const FavList = styled.div`
   /* or 162% */
   display: flex;
   align-items: center;
+  text-align: left;
 
   color: #000000;
 
@@ -314,7 +348,7 @@ const FavList = styled.div`
   z-index: 2;
 `;
 
-const NoticeBtn = styled.div`
+const NoticeBtn = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -378,19 +412,19 @@ const CommonText = styled.text`
   color: #FFFFFF;
 `;
 
-const Withdrawal = styled.div`
+const Withdrawal = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 12px 24px;
+  /* padding: 12px 24px; */
   gap: 20px;
   isolation: isolate;
 
   position: absolute;
-  width: 90px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
   left: 27px;
-  top: 583px;
+  top: 590px;
 
   background: #4D4D4D;
   border-radius: 8px;
@@ -412,6 +446,7 @@ const RestText = styled.text`
   display: flex;
   align-items: center;
   text-align: center;
+  /* justify-content: end; */
   margin: 0 auto;
 
   color: #FFFFFF;
@@ -426,21 +461,21 @@ function MyPage() {
           <RegisterWhite>
             <Sublayout>
               <NameCard>
-                <CardImg>img</CardImg>
+                <CardImg />
                 <CardNick>급한공주</CardNick>
                 <CardGrade>VIP</CardGrade>
                 <CardPoint>1221P</CardPoint>
               </NameCard>
 
               <div>
-                <EditIcons>아이콘1</EditIcons>
-              </div>
-              <div>
-                <CartIcons>아이콘2</CartIcons>
+                <EditIcons><TbMoodEdit /></EditIcons>
+              {/* </div>
+              <div> */}
+                <CartIcons><PiShoppingCartSimpleBold /></CartIcons>
               </div>
 
               <Favorites>
-                <FavLogo>로고</FavLogo>
+                <FavLogo />
                 <FavTitle>즐겨찾기</FavTitle>
                 <FavList>
                     <ul>
