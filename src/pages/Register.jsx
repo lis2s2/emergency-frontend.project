@@ -230,7 +230,6 @@ function Register() {
     memPwd: "",
     memName: "",
     memEmail: "",
-    memNick: "",
   });
 
   const [error, setError] = useState('');
@@ -252,7 +251,21 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.memId || !formData.memPwd || !formData.memName || !formData.memEmail || !formData.memNick) {
+     // 아이디와 비밀번호에 대한 검증 로직 추가
+    const idPattern = /^[a-z0-9]{6,17}$/;
+    const pwdPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,15}$/;
+
+    if (!idPattern.test(formData.memId)) {
+      alert("아이디는 6~17자리의 소문자와 숫자로만 구성되어야 합니다.");
+      return;
+    }
+
+    if (!pwdPattern.test(formData.memPwd)) {
+      alert("비밀번호는 영문과 숫자를 포함한 8~15자리로 구성되어야 합니다.");
+      return;
+    }
+
+    if (!formData.memId || !formData.memPwd || !formData.memName || !formData.memEmail) {
       alert("빈칸이 존재합니다.");
       return;
     }
@@ -319,12 +332,12 @@ function Register() {
                 <CommonInput type="text" placeholder='example@example.com' name="memEmail" value={formData.memEmail} onChange={handleChange} />
               </Autobox>
 
-              <Autobox>
+              {/* <Autobox>
                 <CommonInfo>
                   <>Nick-Name</>
                 </CommonInfo>
                 <CommonInput type="text" name="memNick" value={formData.memNick} onChange={handleChange} />
-              </Autobox>
+              </Autobox> */}
               
               <>
                 <CommonBtn type="submit" onClick={handleSubmit}>Sign Up</CommonBtn>

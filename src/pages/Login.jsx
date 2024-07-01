@@ -194,7 +194,7 @@ const CommonInput = styled.input`
   flex-grow: 0;
 `;
 
-const CommonBtn = styled.button`
+const LoginBtn = styled.button`
   box-sizing: border-box;
 
   display: flex;
@@ -227,6 +227,7 @@ const CommonBtn = styled.button`
     background: #5fb393;
     color: black;
     transition: 0.7s;
+    /* border: none; */
   }
 `;
 
@@ -309,25 +310,16 @@ function Login() {
 
         // 전역 상태에 사용자 정보 저장
         dispatch(
-          loginSuccess({
-            id: formData.memId,
-            pwd: formData.memPwd,
-            email: formData.memEmail,
-            name: formData.memName,
-            nickname: formData.memNick,
-            grade: formData.memGrade,
-            role: formData.memRole,
-            point: formData.memPoint
-          })
+          loginSuccess(member)
         );
 
         // 발급 받은 토큰 저장
-        localStorage.setItem('token', token);
-        localStorage.setItem('information', member);
+        localStorage.setItem('token', JSON.stringify(token));
+        // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
+        localStorage.setItem('member', JSON.stringify(member));
 
-        // 로그인 후 페이지 이동
         navigate("/");
-        alert('로그인');
+        alert('로그인 하셨습니다.');
     } catch (error) {
       console.log(error);
       alert("아이디 또는 비밀번호가 잘못 입력되었습니다.");
@@ -367,7 +359,7 @@ function Login() {
             </Autobox>
 
             <>
-              <CommonBtn type="submit">Login</CommonBtn>
+              <LoginBtn type="submit">Login</LoginBtn>
               <Textbtn onClick={() => navigate("/search")}>
                 Forgot password? 
                 {/* <span>Search for passwords</span> */}

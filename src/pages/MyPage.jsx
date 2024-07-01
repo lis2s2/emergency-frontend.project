@@ -3,6 +3,9 @@ import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import profileImg from "../images/profile.png";
 import logoImg from "../images/logo.png";
+import memberSlice, { selectMember } from "../features/member/memberSlice";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const RegisterContainer = styled.div`
   /* width: 100%; */
@@ -106,14 +109,14 @@ const NameCard = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 12px 0px 12px 20px;
+  padding: 12px 12px 12px 20px;
   gap: 12px;
   isolation: isolate;
 
   position: absolute;
-  width: 600px;
+  width: 550px;
   height: 88px;
-  left: 125px;
+  /* left: 125px; */
   top: 61px;
 
   background: rgba(148, 210, 187, 0.29);
@@ -147,12 +150,14 @@ const CardImg = styled.div`
   z-index: 0;
 `;
 
-const CardNick = styled.div`
+const CardId = styled.div`
   position: absolute;
-  width: 133px;
+  width: 200px;
   height: 64px;
-  left: 144px;
+  /* left: 180px; */
   top: 13px;
+  margin-left: 110px;
+  /* margin: 2px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -174,8 +179,10 @@ const CardGrade = styled.div`
   position: absolute;
   width: 34px;
   height: 29px;
-  left: 419px;
+  /* right: 120px; */
   top: 29px;
+  margin-left: 410px;
+  /* margin: 2px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -195,8 +202,10 @@ const CardPoint = styled.div`
   position: absolute;
   width: 63px;
   height: 29px;
-  left: 501px;
+  /* left: 501px; */
   top: 30px;
+  margin-left: 320px;
+  /* margin: 2px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -211,12 +220,6 @@ const CardPoint = styled.div`
   flex-grow: 0;
   z-index: 3;
 `;
-
-// const IconsBox = styled.div`
-//   width: 100px;
-//   height: 60px;
-
-// `;
 
 const EditIcons = styled.button`
   position: absolute;
@@ -454,6 +457,10 @@ const RestText = styled.text`
 
 
 function MyPage() {
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const member = useSelector(selectMember);
+  
   return (
     <RegisterContainer>
       <Autolayout>
@@ -462,16 +469,16 @@ function MyPage() {
             <Sublayout>
               <NameCard>
                 <CardImg />
-                <CardNick>급한공주</CardNick>
-                <CardGrade>VIP</CardGrade>
-                <CardPoint>1221P</CardPoint>
+                <CardId>{member?.memId}</CardId>
+                <CardPoint>{member?.memPoint}P</CardPoint>
+                <CardGrade>{member?.memGrade}</CardGrade>
               </NameCard>
 
               <div>
                 <EditIcons><TbMoodEdit /></EditIcons>
               {/* </div>
               <div> */}
-                <CartIcons><PiShoppingCartSimpleBold /></CartIcons>
+                <CartIcons onClick={() => navigate('/cart')}><PiShoppingCartSimpleBold /></CartIcons>
               </div>
 
               <Favorites>

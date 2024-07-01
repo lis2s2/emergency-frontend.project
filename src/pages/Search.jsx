@@ -165,7 +165,7 @@ const CommonInput = styled.input`
   flex-grow: 0;
 `;
 
-const CommonBtn = styled.button`
+const CheckBtn = styled.button`
   box-sizing: border-box;
 
   display: flex;
@@ -254,7 +254,7 @@ function Search() {
               </Autobox>
 
               <>
-                <CommonBtn onClick={handleSearch}>Check</CommonBtn>
+                <CheckBtn onClick={handleSearch}>Check</CheckBtn>
               </>  
               {memPwd && <div>비밀번호: {memPwd}</div>}
               {error && <div>{error}</div>} 
