@@ -1,8 +1,9 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ToiletMap from "../component/ToiletMap";
 import ToiletList from "../component/ToiletList";
+import { useEffect, useState } from "react";
+
+import { fetchToiletLocations } from "../api/toiletAPI";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -71,47 +72,19 @@ function Main() {
     //   }));
     // }
 
-    const fetchToiletLocations = async () => {
-      try {
-        const responses = await Promise.all([
-          axios.get(
-            "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/1/1000"
-          ),
-          axios.get(
-            "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/1001/2000"
-          ),
-          axios.get(
-            "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/2001/3000"
-          ),
-          axios.get(
-            "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/3001/4000"
-          ),
-          axios.get(
-            "http://openAPI.seoul.go.kr:8088/4f61414175726b7135334b6d434b45/json/SearchPublicToiletPOIService/4001/5000"
-          ),
-        ]);
-
-        const data1 = responses[0].data.SearchPublicToiletPOIService.row;
-        const data2 = responses[1].data.SearchPublicToiletPOIService.row;
-        const data3 = responses[2].data.SearchPublicToiletPOIService.row;
-        const data4 = responses[3].data.SearchPublicToiletPOIService.row;
-        const data5 = responses[4].data.SearchPublicToiletPOIService.row;
-        const combinedData = [...data1, ...data2, ...data3, ...data4, ...data5];
-
-        setToiletLocations(combinedData);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchToiletLocations();
+    const getFetchedToiletList = async () => {
+      const result = await fetchToiletLocations();
+      setToiletLocations(result);
+    }
+    getFetchedToiletList();
   }, []);
+  
 
   useEffect(() => {
     const sortedToiletLocations = toiletLocations
       .map((toiletlocation) => ({
         ...toiletlocation,
-        distance: getEuclideanDistance(
+        distance: getDistanceInMeters(
           location.center.lat,
           location.center.lng,
           toiletlocation.Y_WGS84,
@@ -124,11 +97,24 @@ function Main() {
     setClosestToiletLocations(sortedToiletLocations);
   }, [toiletLocations, location]);
 
-  const getEuclideanDistance = (lat1, lng1, lat2, lng2) => {
-    return Math.sqrt(Math.pow(lat2 - lat1, 2) + Math.pow(lng2 - lng1, 2));
+  const getDistanceInMeters = (lat1, lng1, lat2, lng2) => {
+    const R = 6371000; // 지구의 반지름 (미터 단위)
+    const toRadians = (degree) => degree * (Math.PI / 180);
+  
+    const dLat = toRadians(lat2 - lat1);
+    const dLng = toRadians(lng2 - lng1);
+  
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  
+    const distance = R * c;
+  
+    return Math.round(distance); // 소수점 없이 정수로 반올림
   };
-  console.log(toiletLocations);
-  console.log(closestToiletLocations);
 
   return (
     <MainContainer>

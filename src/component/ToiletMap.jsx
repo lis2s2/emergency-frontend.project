@@ -5,21 +5,23 @@ import logoImg from "../images/logo.png";
 const CustomMap = styled(Map)`
   width: 100%;
   height: 100%;
-  border-radius: 24px;
+  border-radius: 16px;
 `;
 
 function ToiletMap(props) {
-    
-  
   const { toiletLocations, location } = props;
-  
+
   
   return (
     <CustomMap
       center={location.center}
       style={{ width: "100%", height: "100%" }}
       level={1}
-    >
+    > 
+      <MapMarker 
+        position={ location.center }
+        title="현위치"
+      />
       {toiletLocations.map((value) => {
         return (
           <MapMarker

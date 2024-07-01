@@ -1,0 +1,42 @@
+[
+  {
+    "comment_no": "2",
+    "writer_id": "user",
+    "toilet_no": "102547",
+    "score": "5",
+    "content": "깨끗합니다.",
+    "regDate": "2024-07-01"
+  },
+  {
+    "comment_no": "1",
+    "writer_id": "user",
+    "toilet_no": "102547",
+    "score": "5",
+    "content": "더러워요.",
+    "regDate": "2024-07-02"
+  },
+  {
+    "comment_no": "3",
+    "writer_id": "user3",
+    "toilet_no": "102547",
+    "score": "2",
+    "content": "좀 더러워요.",
+    "regDate": "2024-07-03"
+  },
+  {
+    "comment_no": "4",
+    "writer_id": "user2",
+    "toilet_no": "102547",
+    "score": "3",
+    "content": "깨끗합니다.",
+    "regDate": "2024-07-04"
+  },
+  {
+    "comment_no": "5",
+    "writer_id": "user2",
+    "toilet_no": "102545",
+    "score": "3",
+    "content": "깨끗합니다.",
+    "regDate": "2024-07-02"
+  }
+]

@@ -1,17 +1,28 @@
 import styled from "styled-components";
-import { TbRoadSign } from "react-icons/tb";
+import { Roadview } from "react-kakao-maps-sdk";
 import { PiStarFill } from "react-icons/pi";
+import { TbRoadSign } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
+import toiletComments from "./toiletComments.json";
+import ToiletComment from "./ToiletComment";
 
-const ListItemContainer = styled.div`
-  padding: 10px;
-  height: 108px;
-  width: 100%;
+const ToiletDetailContainer = styled.div`
   background-color: #ffffff;
+  width: 100%;
+  height: 100%;
   border-radius: 16px;
+  overflow: hidden;
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const RoadViewWrapper = styled.div`
+  border-radius: 12px;
+  height: 280px;
+  overflow: hidden;
 `;
 
 const ListItemInfoContainer = styled.div`
@@ -19,14 +30,7 @@ const ListItemInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex: 1;
-`;
-
-const ListItemButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 12px;
-  justify-content: center;
 `;
 
 const ListItemScoreDistanceContainer = styled.div`
@@ -34,10 +38,24 @@ const ListItemScoreDistanceContainer = styled.div`
   align-items: center;
   gap: 12px;
 `;
+
 const ListItemScoreContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+`;
+
+const ToiletCommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const ListItemButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
 `;
 
 const SearchButton = styled.button`
@@ -77,7 +95,7 @@ const StyledTbRoadSign = styled(TbRoadSign)`
 `;
 
 const StyledPiStarFill = styled(PiStarFill)`
-  color: #F6C002;
+  color: #f6c002;
   height: 16px;
   width: 16px;
 `;
@@ -98,24 +116,49 @@ const StyledContent = styled.p`
   vertical-align: middle;
 `;
 
+const StlyedHr = styled.hr`
+  margin: 0;
+`;
 
-function ToiletListItem(props) {
-  const { toiletLocation: {FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }, setDetailView, setDetailViewKey } = props;
-  const [address, setAddress] = useState('');
-  
+function ToiletDetail(props) {
+  const { closestToiletLocations, detailViewKey } = props;
+  const viewToilet = closestToiletLocations.filter((location) => {
+    return location.POI_ID === detailViewKey;
+  });
+  const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = viewToilet[0];
+  const [address, setAddress] = useState();
+
+  const filteredCommentList = toiletComments.filter((comment) => {
+    return comment.toilet_no === detailViewKey;
+  });
+
   useEffect(() => {
     const getAddress = async () => {
       const address = await fetchAddressFromCoords(X_WGS84, Y_WGS84);
       setAddress(address);
-    }
+    };
     getAddress();
-  }, [ X_WGS84, Y_WGS84]);
-  
+  }, [X_WGS84, Y_WGS84]);
 
   return (
-    <ListItemContainer>
+    <ToiletDetailContainer>
+      <RoadViewWrapper>
+        <Roadview
+          position={{
+            lat: Y_WGS84,
+            lng: X_WGS84,
+            radius: 50,
+          }}
+          style={{
+            width: "100%",
+            height: "280px",
+          }}
+        />
+      </RoadViewWrapper>
       <ListItemInfoContainer>
-        <StyledTitle>{FNAME} ({ANAME})</StyledTitle>
+        <StyledTitle>
+          {FNAME} ({ANAME})
+        </StyledTitle>
         <ListItemScoreDistanceContainer>
           <ListItemScoreContainer>
             <StyledPiStarFill />
@@ -125,20 +168,21 @@ function ToiletListItem(props) {
         </ListItemScoreDistanceContainer>
         <StyledContent>{address}</StyledContent>
       </ListItemInfoContainer>
+      <StlyedHr />
+      <ToiletCommentContainer>
+        {filteredCommentList.map((comment) => {
+          return <ToiletComment key={comment.comment_no} comment={comment}/>
+        })}
+      </ToiletCommentContainer>
       <ListItemButtonContainer>
         <SearchButton>
           <StyledTbRoadSign />
           길찾기
         </SearchButton>
-        <DetailButton
-          onClick={() => {
-            setDetailView(true);
-            setDetailViewKey(POI_ID);
-          }}
-        >상세 정보</DetailButton>
+        <DetailButton>리스트로</DetailButton>
       </ListItemButtonContainer>
-    </ListItemContainer>
+    </ToiletDetailContainer>
   );
 }
 
-export default ToiletListItem;
+export default ToiletDetail;
