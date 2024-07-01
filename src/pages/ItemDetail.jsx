@@ -1,17 +1,13 @@
 import axios from "axios";
-import axios from "axios";
-import axios from "axios";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { decrement, increment, selectCount } from "../feature/counter/counterSlice";
-import { CartIcon } from "./Shop";
+
 
 const DetailWarpper = styled.div`
   width: 1440px;
   margin: 0 auto;
   background-color: #fff;
-  height: 900px;
   border-top: 20px solid #5FB393;
   border-bottom: 20px solid #5FB393;
   padding: 20px;
@@ -179,21 +175,32 @@ const StyledBtn = styled.button`
 
 
 function ItemDetail() {
-  // const dispatch = useDispatch();
-
-  // const count = useSelector(selectCount);
-
   // const [no, setNo] = useState(3);
   const [count, setCount] = useState(1);
+  const [item, setItem] = useState([]);
+  const { productId } = useParams();
 
-  // const api = async () => {
+  useEffect(() => {
+    try {
+      axios.get(`http://localhost:8080/shops/detail?no=${productId}`)
+      .then((res)=> {
+        // console.log(res.data);
+        setItem(res.data);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }, []);
+
+  // const getItem = async () => {
   //   try {
-  //     const result = await axios.post( // DB 만들어서 주소 보내주기
+  //     const result = await axios.gey((`http://localhost:8080/shops`),{
   //       data: {
   //         no: no,
-  //         count: count;
+  //         count: count
   //       }
-  //     )
+  //     })
   //   } catch (e) {
   //     console.log(e);
   //   }
@@ -218,19 +225,19 @@ function ItemDetail() {
     <DetailWarpper>
       <DetailContainer>
           <div className="img_warpper">
-            <ImgEx src="https://www.yonexmall.com/shop/data/goods/1645767865278s0.png"/>
+            <ImgEx src={item.imgpath}/>
           </div>
           <div className="content_warpper">
             <div className="title_container">
-              <p className="title">곤란한 일이 생기기 전 바로 준비해놓는 휴지</p>
+              <p className="title">{item.title}</p>
             </div>
             <div className="price_warpper">
 
               {/* 10% 고정 / strike...를 price에서 더한값으로 내기 */}
               {/* 하드코딩 고치기 */}
               <p className="discount_rate">10%</p>
-              <p className="price">2,000원</p>
-              <p className="strike_through">2,200</p>
+              <p className="price">{formatter.format(item.price)}원</p>
+              <p className="strike_through">{formatter.format(item.price * 1.1)}</p>
             </div>
 
             <ProductWarpper>
@@ -240,8 +247,7 @@ function ItemDetail() {
                 <button type="button" className="btn" onClick={handleIncrement}>+</button>
               </div>
               <div>
-                <p className="price">{formatter.format( count * 2000)}원</p>
-                {/* 이부분 나중에 count * price 로 바꿔야 함 */}
+                <p className="price">{formatter.format( count * item.price)}원</p>
               </div>
             </ProductWarpper>
             <div className="btn_container">
@@ -253,9 +259,9 @@ function ItemDetail() {
 
             </div>
           </div>
-      </DetailContainer>
 
-      {/* <CartIcon className="cursor-pointer"/> */}
+      </DetailContainer>
+          <img src={item.detailImgpath} alt={item.title} />
     </DetailWarpper>
   );
 };

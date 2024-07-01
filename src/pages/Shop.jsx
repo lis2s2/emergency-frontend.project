@@ -6,6 +6,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import ShopItem from "../component/ShopItem";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 
@@ -84,53 +86,35 @@ const CartNum = styled.span`
 
 
 function Shop() {
-const items = [ // 나중에 실제 DB로 가져오기
-  {
-      "id": "1",
-      "title": "Arcsaber 11 Pro",
-      "content": "Even Balance Racket",
-      "price": 299000,
-      "imagePath": "https://www.yonexmall.com/shop/data/goods/1645767865278s0.png"
-  },
-  {
-      "id": "2",
-      "title": "Yonex Shirts",
-      "content": "White and Black logo",
-      "price": 135000,
-      "imagePath": "https://www.yonexmall.com/shop/data/goods/1659329583483s0.png"
-  },
-  {
-      "id": "3",
-      "title": "Aerus Z",
-      "content": "Even Balance Racket",
-      "price": 199000,
-      "imagePath": "https://www.yonexmall.com/shop/data/goods/1667190100104s0.png"
-  },
-  {
-      "id": "4",
-      "title": "요넥스 백팩",
-      "content": "229BP005U",
-      "price": 99000,
-      "imagePath": "https://www.yonexmall.com/shop/data/goods/1667282273374s0.png"
-  },
-  {
-      "id": "5",
-      "title": "라켓보이즈 모자",
-      "content": "라켓보이즈 굿즈 (모자) Neon Green",
-      "price": 24000,
-      "imagePath": "https://www.yonexmall.com/shop/data/goods/1638434200729s0.png"
-  },
-  {
-      "id": "6",
-      "title": "트레이닝 매트",
-      "content": "AC517, TRAINING MAT (트레이닝 매트) MTB",
-      "price": 71000,
-      "imagePath": "https://www.yonexmall.com/shop/data/goods/1640582675794s0.png"
+const [items, setItems] = useState([]);
+const [toiletItems, setToiletItems] = useState([]);
+
+useEffect(() => {
+  try {
+    axios.get(`http://localhost:8080/shops`)
+    .then((res)=> {
+      // console.log(res.data);
+      setItems(res.data);
+    })
+  } catch (error) {
+    console.log(error);
   }
-]
+  
+}, []);
+
+useEffect(() => {
+  try {
+    axios.get(`http://localhost:8080/shops/category?category=화장실`)
+    .then((res) => {
+      setToiletItems(res.data);
+    })
+  } catch (error) {
+    console.log(error);
+  }
+},[]);
+
 
 const navigate = useNavigate();
-
 
   return (
     <ShopWrapper>
@@ -156,7 +140,7 @@ const navigate = useNavigate();
         >
           
           {items.map((item) => {
-            return <SwiperSlide><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
+            return <SwiperSlide key={item.imgpath}><ShopItem key={item.id} item={item}>{item.title}</ShopItem></SwiperSlide>
           })}
         </Swiper>
 
@@ -182,8 +166,8 @@ const navigate = useNavigate();
             "--swiper-navigation-color": "#5FB393"
           }}
         >
-          {items.map((item) => {
-            return <SwiperSlide><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
+          {toiletItems.map((item) => {
+            return <SwiperSlide key={item.imgpath}><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
           })}
         </Swiper>
       </ShopContainer>
