@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { loginSuccess } from "../features/member/memberSlice";
+import kakaoBtn from "../images/kakao_login_large_wide.png";
 
 const LoginContainer = styled.div`
   /* width: 100%; */
@@ -193,6 +194,34 @@ const LoginBtn = styled.button`
   }
 `;
 
+const KakaoBtn = styled.button`
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+
+  width: 558px;
+  height: 45px;
+
+  border: none;
+  border-radius: 8px;
+
+  flex: none;
+  order: 5;
+  align-self: stretch;
+  flex-grow: 0;
+
+  background: url(${kakaoBtn});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  color: #ffffff;
+`;
+
 const Textbtn = styled.button`
   width: 558px;
   height: 20px;
@@ -214,6 +243,9 @@ const Textbtn = styled.button`
   align-self: stretch;
   flex-grow: 0;
 `;
+
+const REST_API_KEY = '6725e27a1c1047905dfd6bad61521355';
+const REDIRECT_URI = 'http://localhost:8080/login/oauth2/code/kakao';
 
 function Login() {
   const dispatch = useDispatch();
@@ -287,6 +319,19 @@ function Login() {
     }
   };
 
+  // 카카오톡 로그인
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  
+  const loginHandler = () => {
+    window.location.href = link;
+  };
+
+  // useEffect(() => {
+  //   axios.post( `http://localhost:8080/login`)
+  //   .then(result => result.data);
+  //   navigate("/");
+  // }, []);
+
   return (
     <LoginContainer>
       <Autolayout>
@@ -320,6 +365,8 @@ function Login() {
 
             <>
               <LoginBtn type="submit">Login</LoginBtn>
+              <KakaoBtn type="button" onClick={loginHandler} />
+              {/* <LoginBtn type="submit" onClick={loginHandler}>카카오톡</LoginBtn> */}
               <Textbtn onClick={() => navigate("/search")}>
                 Forgot password?
                 {/* <span>Search for passwords</span> */}
