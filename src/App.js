@@ -3,8 +3,13 @@ import { createGlobalStyle } from "styled-components";
 import { Reset } from "styled-reset";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
-import Login from "./component/Login";
-import Register from "./component/Register";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Search from "./pages/Search";
+import MyPage from "./pages/MyPage";
+
+
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -37,6 +42,8 @@ const GlobalStyle = createGlobalStyle`
 
 
 function App() {
+
+
   return (
     <>
       <Reset />
@@ -46,7 +53,8 @@ function App() {
           <Route index element={<Main />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-
+          <Route path="search" element={<Search />} />
+          <Route path="mypage" element={<MyPage />} />
         </Route>
       </Routes>
     </>
