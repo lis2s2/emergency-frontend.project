@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess, selectMember } from "../features/member/memberSlice";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -97,8 +98,8 @@ function Header() {
       <HeaderInner>
         <CustomedNavbar bg="white" data-bs-theme="light">
           <Container>
-            <Navbar.Brand href="#home">
-              <img src={logoImg} alt="logoImg" width="60px" />
+            <Navbar.Brand href="#">
+              <img src={logoImg} alt="logoImg" width="60px" onClick={() => navigate('/')}/>
             </Navbar.Brand>
             <Nav className="ml-auto" style={{ alignItems: 'center' }}>
               <Nav.Link href="#" className="align-self-center">나지금급해</Nav.Link>
@@ -125,6 +126,9 @@ function Header() {
               ) 
             }
             
+              <Nav.Link href="#" className="ms-3 align-self-center" onClick={() => navigate('/shop')}>포인트샵</Nav.Link>
+              <LoginBtn className="ms-4" variant="outline-success" onClick={() => navigate('/login')}>로그인</LoginBtn>
+              <RegBtn className="ms-3" variant="success" onClick={() => navigate('/register')}>회원가입</RegBtn>
             </Nav>
           </Container>
         </CustomedNavbar>

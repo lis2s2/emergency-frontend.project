@@ -3,12 +3,19 @@ import { createGlobalStyle } from "styled-components";
 import { Reset } from "styled-reset";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+import Login from "./component/Login";
+import Register from "./component/Register";
+import Shop from "./pages/Shop";
+import ItemDetail from "./pages/ItemDetail";
+
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -65,7 +72,8 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
-
+          <Route path="shop" element={<Shop />} />
+          <Route path="detail/:productId" element={<ItemDetail />} />
         </Route>
       </Routes>
       {/* <p>{greeting}</p> */}
