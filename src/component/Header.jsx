@@ -2,7 +2,7 @@ import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 
 import logoImg from "../images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess, selectMember } from "../features/member/memberSlice";
 import axios from "axios";
@@ -97,8 +97,8 @@ function Header() {
       <HeaderInner>
         <CustomedNavbar bg="white" data-bs-theme="light">
           <Container>
-            <Navbar.Brand href="#home">
-              <img src={logoImg} alt="logoImg" width="60px" />
+            <Navbar.Brand href="#">
+              <img src={logoImg} alt="logoImg" width="60px" onClick={() => navigate('/')}/>
             </Navbar.Brand>
             <Nav className="ml-auto" style={{ alignItems: 'center' }}>
               <Nav.Link href="#" className="align-self-center">나지금급해</Nav.Link>
@@ -114,7 +114,7 @@ function Header() {
                   <>
                     <Nav.Link href="#" className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memId}님</Nav.Link>
                     <LoginBtn className="ms-3" variant="outline-succes" onClick={handleLogout}>로그아웃</LoginBtn>
-                    {/* <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>   */}
+                    <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>  
                   </>
               )
               : (

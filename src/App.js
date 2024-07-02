@@ -3,12 +3,13 @@ import { createGlobalStyle } from "styled-components";
 import { Reset } from "styled-reset";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
-import { useEffect, useState } from "react";
-import axios from "axios";
+
+
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -42,17 +43,6 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
 
-  const [greeting, setGreeting] = useState('');
-
-  // useEffect(() => {
-  //   axios.get('http://localhost:8080/register')
-  //     .then(response => {
-  //       setGreeting(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('There was an error fetching the greeting!', error);
-  //     });
-  // }, []);
 
   return (
     <>
@@ -65,10 +55,8 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
-
         </Route>
       </Routes>
-      {/* <p>{greeting}</p> */}
     </>
   );
 }

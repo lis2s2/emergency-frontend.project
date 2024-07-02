@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { loginSuccess } from "../features/member/memberSlice";
 
@@ -52,24 +52,6 @@ const Sublayout = styled.form`
   z-index: 0;
 `;
 
-const RegisterGround = styled.div`
-  height: 64px;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 900;
-  font-size: 36px;
-  line-height: 52px;
-  text-align: center;
-
-  color: #ffffff;
-
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-`;
 
 const RegisterWhite = styled.div`
   display: flex;
@@ -150,26 +132,6 @@ const InfoStyle = styled.div`
   order: 0;
   flex-grow: 0;
   z-index: 0;
-`;
-
-const CheckStyle = styled.div`
-  margin: 0 auto;
-  /* width: 50px; */
-  /* height: 29px; */
-  border-style: none;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 900;
-  font-size: 14px;
-  line-height: 20px;
-
-  color: #007aff;
-
-  /* flex: none; */
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
 `;
 
 const CommonInput = styled.input`
@@ -284,7 +246,7 @@ function Login() {
     // axios.get(`http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`)
     //   .then(response => {
     //     if (response.data) {
-    
+
     //       dispatch(loginSuccess({ name: formData.memId, nick: formData.memNick, role: formData.memRole }));
 
     //       localStorage.setItem('token', response.data);
@@ -301,25 +263,24 @@ function Login() {
 
     try {
       const result = await axios.get(
-        `http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`);
-        console.log(result);
+        `http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`
+      );
+      console.log(result);
 
       // if (result.data) {
-        // 로그인 성공 시 서버가 내려준 토큰(JWT)와 사용자 정보
-        const { token, member } = result.data;  
+      // 로그인 성공 시 서버가 내려준 토큰(JWT)와 사용자 정보
+      const { token, member } = result.data;
 
-        // 전역 상태에 사용자 정보 저장
-        dispatch(
-          loginSuccess(member)
-        );
+      // 전역 상태에 사용자 정보 저장
+      dispatch(loginSuccess(member));
 
         // 발급 받은 토큰 저장
         localStorage.setItem('token', token);
         // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
         localStorage.setItem('member', JSON.stringify(member));
 
-        navigate("/");
-        alert('로그인 하셨습니다.');
+      navigate("/");
+      alert("로그인 하셨습니다.");
     } catch (error) {
       console.log(error);
       alert("아이디 또는 비밀번호가 잘못 입력되었습니다.");
@@ -329,7 +290,6 @@ function Login() {
   return (
     <LoginContainer>
       <Autolayout>
-        <RegisterGround>Login</RegisterGround>
         <RegisterWhite>
           <Sublayout onSubmit={handleLogin}>
             <Autobox>
@@ -352,7 +312,7 @@ function Login() {
               <CommonInput
                 type="password"
                 name="memPwd"
-                autoComplete= "off"
+                autoComplete="off"
                 value={formData.memPwd}
                 onChange={handleChange}
               />
@@ -361,7 +321,7 @@ function Login() {
             <>
               <LoginBtn type="submit">Login</LoginBtn>
               <Textbtn onClick={() => navigate("/search")}>
-                Forgot password? 
+                Forgot password?
                 {/* <span>Search for passwords</span> */}
               </Textbtn>
               <Textbtn onClick={() => navigate("/register")}>
