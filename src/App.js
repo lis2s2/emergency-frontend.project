@@ -9,8 +9,6 @@ import Register from "./pages/Register";
 import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
 
-
-
 const GlobalStyle = createGlobalStyle`
   body {
     box-sizing: border-box;
@@ -40,10 +38,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-
 function App() {
-
-
   return (
     <>
       <Reset />
@@ -55,6 +50,8 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
+          <Route path="detail/:toiletId" element={<Main />} />
+          <Route path="/*" element={<Main />} />
         </Route>
       </Routes>
     </>

@@ -3,6 +3,7 @@ import { TbRoadSign } from "react-icons/tb";
 import { PiStarFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
+import { useNavigate } from "react-router-dom";
 
 const ItemContainer = styled.div`
   padding: 10px;
@@ -34,6 +35,7 @@ const ItemScoreDistanceContainer = styled.div`
   align-items: center;
   gap: 12px;
 `;
+
 const ItemScoreContainer = styled.div`
   display: flex;
   align-items: center;
@@ -77,7 +79,7 @@ const StyledTbRoadSign = styled(TbRoadSign)`
 `;
 
 const StyledPiStarFill = styled(PiStarFill)`
-  color: #F6C002;
+  color: #f6c002;
   height: 16px;
   width: 16px;
 `;
@@ -98,24 +100,27 @@ const StyledContent = styled.p`
   vertical-align: middle;
 `;
 
-
 function ToiletListItem(props) {
-  const { toiletLocation: {FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }, setDetailView, setDetailViewKey } = props;
-  const [address, setAddress] = useState('');
-  
+  const {
+    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }
+  } = props;
+  const [address, setAddress] = useState("");
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getAddress = async () => {
       const address = await fetchAddressFromCoords(X_WGS84, Y_WGS84);
       setAddress(address);
-    }
+    };
     getAddress();
-  }, [ X_WGS84, Y_WGS84]);
-  
+  }, [X_WGS84, Y_WGS84]);
 
   return (
     <ItemContainer>
       <ItemInfoContainer>
-        <StyledTitle>{FNAME} ({ANAME})</StyledTitle>
+        <StyledTitle>
+          {FNAME} ({ANAME})
+        </StyledTitle>
         <ItemScoreDistanceContainer>
           <ItemScoreContainer>
             <StyledPiStarFill />
@@ -132,10 +137,11 @@ function ToiletListItem(props) {
         </SearchButton>
         <DetailButton
           onClick={() => {
-            setDetailView(true);
-            setDetailViewKey(POI_ID);
+            navigate(`/detail/${POI_ID}`);
           }}
-        >상세 정보</DetailButton>
+        >
+          상세 정보
+        </DetailButton>
       </ItemButtonContainer>
     </ItemContainer>
   );

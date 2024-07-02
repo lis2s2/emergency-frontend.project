@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { MdTune } from "react-icons/md";
 import ToiletListItem from "./ToiletListItem";
-import { useState } from "react";
-import ToiletDetail from "./ToiletDetail";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -40,38 +38,25 @@ const ListContainer = styled.div`
 
 function ToiletList(props) {
   const { closestToiletLocations } = props;
-  const [detailView, setDetailView] = useState(false);
-  const [detailViewKey, setDetailViewKey] = useState(null);
 
   return (
     <>
-      {detailView ? (
-        <ToiletDetail 
-          closestToiletLocations={closestToiletLocations}
-          detailViewKey={detailViewKey}
-        />
-      ) : (
-        <>
-          <ButtonContainer>
-            <ToggleButton>주유소</ToggleButton>
-            <ToggleButton>대형 까페</ToggleButton>
-            <ToggleButton>사용자 등록 화장실</ToggleButton>
-            <StyledMdTune />
-          </ButtonContainer>
-          <ListContainer>
-            {closestToiletLocations.map((toiletLocation) => {
-              return (
-                <ToiletListItem
-                  key={toiletLocation.POI_ID}
-                  toiletLocation={toiletLocation}
-                  setDetailView={setDetailView}
-                  setDetailViewKey={setDetailViewKey}
-                />
-              );
-            })}
-          </ListContainer>
-        </>
-      )}
+      <ButtonContainer>
+        <ToggleButton>주유소</ToggleButton>
+        <ToggleButton>대형 까페</ToggleButton>
+        <ToggleButton>사용자 등록 화장실</ToggleButton>
+        <StyledMdTune />
+      </ButtonContainer>
+      <ListContainer>
+        {closestToiletLocations.map((toiletLocation) => {
+          return (
+            <ToiletListItem
+              key={toiletLocation.POI_ID}
+              toiletLocation={toiletLocation}
+            />
+          );
+        })}
+      </ListContainer>
     </>
   );
 }

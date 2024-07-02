@@ -4,6 +4,8 @@ import ToiletList from "../component/ToiletList";
 import { useEffect, useState } from "react";
 
 import { fetchToiletLocations } from "../api/toiletAPI";
+import { useParams } from "react-router-dom";
+import ToiletDetail from "../component/ToiletDetail";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -38,8 +40,8 @@ function Main() {
   });
 
   const [closestToiletLocations, setClosestToiletLocations] = useState([]);
-
   const [toiletLocations, setToiletLocations] = useState([]);
+  const { toiletId } = useParams();
 
   useEffect(() => {
     // if (navigator.geolocation) {
@@ -75,10 +77,9 @@ function Main() {
     const getFetchedToiletList = async () => {
       const result = await fetchToiletLocations();
       setToiletLocations(result);
-    }
+    };
     getFetchedToiletList();
   }, []);
-  
 
   useEffect(() => {
     const sortedToiletLocations = toiletLocations
@@ -98,28 +99,39 @@ function Main() {
   }, [toiletLocations, location]);
 
   const getDistanceInMeters = (lat1, lng1, lat2, lng2) => {
-    const R = 6371000; // 지구의 반지름 (미터 단위)
+    const R = 6371000;
     const toRadians = (degree) => degree * (Math.PI / 180);
-  
+
     const dLat = toRadians(lat2 - lat1);
     const dLng = toRadians(lng2 - lng1);
-  
-    const a = 
+
+    const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-      Math.sin(dLng / 2) * Math.sin(dLng / 2);
-  
+      Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  
+
     const distance = R * c;
-  
-    return Math.round(distance); // 소수점 없이 정수로 반올림
+
+    return Math.round(distance);
   };
+
+  console.log(toiletId);
 
   return (
     <MainContainer>
       <TolietListSection>
-        <ToiletList closestToiletLocations={closestToiletLocations} />
+        {toiletId ? (
+          <ToiletDetail
+            closestToiletLocations={closestToiletLocations}
+            toiletId={toiletId}
+          />
+        ) : (
+          <ToiletList closestToiletLocations={closestToiletLocations} />
+        )}
       </TolietListSection>
       <MapSection>
         <ToiletMap toiletLocations={toiletLocations} location={location} />

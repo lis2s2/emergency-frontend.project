@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import { Roadview } from "react-kakao-maps-sdk";
-import { PiStarFill } from "react-icons/pi";
+import { PiStarFill, PiStarLight } from "react-icons/pi";
 import { TbRoadSign } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
 import toiletComments from "./toiletComments.json";
 import ToiletComment from "./ToiletComment";
 import { Button, Form, InputGroup } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { selectMember } from "../features/member/memberSlice";
+import { useNavigate } from "react-router-dom";
 
 const ToiletDetailContainer = styled.div`
   background-color: #ffffff;
@@ -17,6 +20,7 @@ const ToiletDetailContainer = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 12px;
 `;
 
@@ -26,7 +30,14 @@ const RoadViewWrapper = styled.div`
   overflow: hidden;
 `;
 
-const ItemInfoContainer = styled.div`
+const ToiletInfoCommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+`;
+
+const ToiletInfoContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -34,13 +45,13 @@ const ItemInfoContainer = styled.div`
   gap: 12px;
 `;
 
-const ItemScoreDistanceContainer = styled.div`
+const ToiletScoreDistanceContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
 `;
 
-const ItemScoreContainer = styled.div`
+const ToiletScoreContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -52,44 +63,57 @@ const ToiletCommentContainer = styled.div`
   gap: 12px;
 `;
 
-const ItemButtonContainer = styled.div`
+const MemIdScoreInputContainer = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 12px;
 `;
 
+const ScoreWrapper = styled.div`
+  cursor: pointer;
+`;
+
+const MemIdScoreContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+`;
+
 const SearchButton = styled.button`
-  padding: 0 12px;
+  padding: 0 16px;
   font-size: 16px;
   border-radius: 18px;
   border: none;
   background-color: #050505;
   color: #ffffff;
   font-weight: 600;
-  height: 36px;
-  width: 100px;
+  height: 40px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 `;
 
-const DetailButton = styled.button`
-  padding: 0 12px;
+const GoToListButton = styled.button`
+  padding: 0 16px;
   font-size: 16px;
   border-radius: 18px;
   border: none;
   background-color: #050505;
   color: #ffffff;
   font-weight: 600;
-  height: 36px;
-  width: 100px;
+  height: 40px;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
-
 
 const StyledTbRoadSign = styled(TbRoadSign)`
   height: 22px;
@@ -97,6 +121,12 @@ const StyledTbRoadSign = styled(TbRoadSign)`
 `;
 
 const StyledPiStarFill = styled(PiStarFill)`
+  color: #f6c002;
+  height: 16px;
+  width: 16px;
+`;
+
+const StyledPiStarLight = styled(PiStarLight)`
   color: #f6c002;
   height: 16px;
   width: 16px;
@@ -123,17 +153,25 @@ const StlyedHr = styled.hr`
 `;
 
 function ToiletDetail(props) {
-  const { closestToiletLocations, detailViewKey } = props;
-  const viewToilet = closestToiletLocations.filter((location) => {
-    return location.POI_ID === detailViewKey;
+  const { closestToiletLocations, toiletId } = props;
+
+  const selectedToilet = closestToiletLocations.filter((location) => {
+    return location.POI_ID === toiletId;
   });
-  const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = viewToilet[0];
+  const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = selectedToilet[0];
+
+  const member = useSelector(selectMember);
+
   const [address, setAddress] = useState();
+  const [comment, setComment] = useState();
+  const [score, setScore] = useState(3);
+
+  const navigate = useNavigate();
 
   const filteredCommentList = toiletComments
-  .filter((comment) => comment.toilet_no === detailViewKey)  
-  .sort((a, b) => new Date(b.regDate) - new Date(a.regDate))
-  .slice(0, 4);
+    .filter((comment) => comment.toilet_no === toiletId)
+    .sort((a, b) => new Date(b.regDate) - new Date(a.regDate))
+    .slice(0, 4);
 
   useEffect(() => {
     const getAddress = async () => {
@@ -158,44 +196,72 @@ function ToiletDetail(props) {
           }}
         />
       </RoadViewWrapper>
-      <ItemInfoContainer>
-        <StyledTitle>
-          {FNAME} ({ANAME})
-        </StyledTitle>
-        <ItemScoreDistanceContainer>
-          <ItemScoreContainer>
-            <StyledPiStarFill />
-            <StyledContent>4.8</StyledContent>
-          </ItemScoreContainer>
-          <StyledContent>{distance}m</StyledContent>
-        </ItemScoreDistanceContainer>
-        <StyledContent>{address}</StyledContent>
-      </ItemInfoContainer>
-      <StlyedHr />
-      <ToiletCommentContainer>
-        {filteredCommentList.map((comment) => {
-          return <ToiletComment key={comment.comment_no} comment={comment}/>
-        })}
-      </ToiletCommentContainer>
-      <StlyedHr />
-      <InputGroup>
-        <Form.Control
-          placeholder="Recipient's username"
-          aria-label="Recipient's username"
-          aria-describedby="basic-addon2"
-        />
-        <Button variant="outline-secondary" id="button-addon2">
-          Button
-        </Button>
-      </InputGroup>
-
-      <ItemButtonContainer>
+      <ToiletInfoCommentContainer>
+        <ToiletInfoContainer>
+          <StyledTitle>
+            {FNAME} ({ANAME})
+          </StyledTitle>
+          <ToiletScoreDistanceContainer>
+            <ToiletScoreContainer>
+              <StyledPiStarFill />
+              <StyledContent>4.8</StyledContent>
+            </ToiletScoreContainer>
+            <StyledContent>{distance}m</StyledContent>
+          </ToiletScoreDistanceContainer>
+          <StyledContent>{address}</StyledContent>
+        </ToiletInfoContainer>
+        {filteredCommentList.length > 0 && <StlyedHr />}
+        <ToiletCommentContainer>
+          {filteredCommentList.map((comment) => {
+            return <ToiletComment key={comment.comment_no} comment={comment} />;
+          })}
+        </ToiletCommentContainer>
+        {filteredCommentList.length > 0 && <StlyedHr />}
+        <MemIdScoreInputContainer>
+          <MemIdScoreContainer>
+            <StyledTitle>{member.memId}</StyledTitle>
+            <ScoreWrapper>
+              {[...Array(score)].map((a, i) => (
+                <StyledPiStarFill
+                  className="star-lg"
+                  key={i}
+                  onClick={() => setScore(i + 1)}
+                />
+              ))}
+              {[...Array(5 - score)].map((a, i) => (
+                <StyledPiStarLight
+                  className="star-lg"
+                  key={i}
+                  onClick={() => setScore(score + i + 1)}
+                />
+              ))}
+            </ScoreWrapper>
+          </MemIdScoreContainer>
+          <InputGroup>
+            <Form.Control
+              placeholder="댓글을 입력하세요."
+              value={comment}
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+            />
+            <Button variant="outline-secondary" id="button-addon2">
+              저장
+            </Button>
+          </InputGroup>
+        </MemIdScoreInputContainer>
+      </ToiletInfoCommentContainer>
+      <ButtonContainer>
         <SearchButton>
           <StyledTbRoadSign />
           길찾기
         </SearchButton>
-        <DetailButton>리스트로</DetailButton>
-      </ItemButtonContainer>
+        <SearchButton>
+          <StyledTbRoadSign />
+          편의점 경유 길찾기
+        </SearchButton>
+        <GoToListButton onClick={() => navigate("/")}>돌아가기</GoToListButton>
+      </ButtonContainer>
     </ToiletDetailContainer>
   );
 }
