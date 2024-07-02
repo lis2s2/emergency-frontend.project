@@ -113,6 +113,13 @@ useEffect(() => {
   }
 },[]);
 
+const getRandomItems = (arr, num) => {
+  const shuffled = [...arr].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, num);
+};
+
+const random10Items = getRandomItems(items, 10);
+
 
 const navigate = useNavigate();
 
@@ -139,7 +146,7 @@ const navigate = useNavigate();
           }}
         >
           
-          {items.map((item) => {
+          {random10Items.map((item) => {
             return <SwiperSlide key={item.imgpath}><ShopItem key={item.id} item={item}>{item.title}</ShopItem></SwiperSlide>
           })}
         </Swiper>

@@ -1,4 +1,8 @@
 import styled  from "styled-components";
+import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
+import { useState } from "react";
+import CartItem from "../component/CartItem";
+
 
 const CartWarpper = styled.div`
   max-width: 1440px;
@@ -15,7 +19,7 @@ const CartWarpper = styled.div`
       width: 635px;
       max-height: 579px;;
       border: 1px solid #fff;
-      padding: 10px;
+      padding: 8px 20px;
       background: #FFFFFF;
       border: 1px solid #928F8F;
     }
@@ -27,9 +31,58 @@ const CartWarpper = styled.div`
       border: 1px solid #928F8F;
     }
   }
-`;
 
-// const 
+  .cartlist_btn_group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid black;
+    /* width: 50px; */
+    height: 50px;
+
+    .cartlist_btn_group_left {
+      display: flex;
+      
+      .cursor-pointer {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        .select_all_btn {
+          font-weight: 900;
+          font-size: 22px;
+          margin-left: 16px;
+        }
+      }
+
+    }
+    .cartlist_btn_group_right {
+      display: flex;
+
+      .btn_group {
+        font-size: 22px;
+        margin: 15px;
+        font-weight: 300;
+      }
+
+      .cursor-pointer::before {
+        content: ""; /* ::before의 필수 속성*/
+        display: block;
+        width: 1px;
+        height: 26px;
+        background-color: #cccccc;
+        position: absolute;
+        right: 1040px;
+      }
+      .cursor-pointer:first-child::before {
+        display: none;
+      }
+    }
+  }
+
+
+
+`;
 
 const Title = styled.div`
   font-weight: 700;
@@ -41,15 +94,49 @@ const Title = styled.div`
   padding: 0 30px;
 `;
 
+const StyledCheckbox = styled(IoIosCheckbox)`
+  width: 35px;
+  height: 35px;
+  color: #5FB393;
+`;
+
+const StyledOutlinCheckbox = styled(IoIosCheckboxOutline)`
+   color: #5FB393;
+   width: 35px;
+   height: 35px;
+`;
+
+
+
+
+
 function Cart() {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheck = () => {
+    setIsChecked(!isChecked);
+  }
   return (
     <CartWarpper>
       <Title>장바구니</Title>
       <div className="cartlist_warpper">
         <div className="cartlist_warpper_left">
-          <div>
-            {/* 체크박스, 전체 선택 */}
+
+          {/* 체크박스, 전체 선택 */}
+          <div className="cartlist_btn_group">
+            <div className="cartlist_btn_group_left">
+              <label className="cursor-pointer" onClick={handleCheck}>
+                {isChecked ? <StyledCheckbox /> : <StyledOutlinCheckbox />}
+                <p className="select_all_btn">전체선택</p>
+              </label>
+            </div>
+            <div className="cartlist_btn_group_right">
+              <div className="btn_group cursor-pointer">선택 삭제</div>
+              <div className="btn_group cursor-pointer">전체 삭제</div>
+            </div>
           </div>
+
+          <CartItem isChecked={isChecked}/>
         </div>
 
         <div className="cartlist_warpper_right">

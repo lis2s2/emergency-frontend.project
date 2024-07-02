@@ -195,7 +195,7 @@ function ItemDetail() {
 
   // const getItem = async () => {
   //   try {
-  //     const result = await axios.gey((`http://localhost:8080/shops`),{
+  //     const result = await axios.post((`http://localhost:8080/shops`),{
   //       data: {
   //         no: no,
   //         count: count
@@ -207,8 +207,8 @@ function ItemDetail() {
   // };
 
   const handleDecrement = () => {
-    if (count <= 0) {
-      setCount(0);
+    if (count <= 1) {
+      setCount(1);
     } else {
       setCount(count - 1);
     }
