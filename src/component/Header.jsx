@@ -112,7 +112,7 @@ function Header() {
               {member
               ? (
                   <>
-                    <Nav.Link href="#" className="ms-4"  variant="success" onClick={handleMyPageClick}>{member.memId}님</Nav.Link>
+                    <Nav.Link href="#" className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memId}님</Nav.Link>
                     <LoginBtn className="ms-3" variant="outline-succes" onClick={handleLogout}>로그아웃</LoginBtn>
                     {/* <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>   */}
                   </>
