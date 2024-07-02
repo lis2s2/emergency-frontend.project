@@ -4,7 +4,7 @@ import { PiStarFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
 
-const ListItemContainer = styled.div`
+const ItemContainer = styled.div`
   padding: 10px;
   height: 108px;
   width: 100%;
@@ -14,7 +14,7 @@ const ListItemContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ListItemInfoContainer = styled.div`
+const ItemInfoContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -22,19 +22,19 @@ const ListItemInfoContainer = styled.div`
   flex: 1;
 `;
 
-const ListItemButtonContainer = styled.div`
+const ItemButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
   justify-content: center;
 `;
 
-const ListItemScoreDistanceContainer = styled.div`
+const ItemScoreDistanceContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
 `;
-const ListItemScoreContainer = styled.div`
+const ItemScoreContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -113,19 +113,19 @@ function ToiletListItem(props) {
   
 
   return (
-    <ListItemContainer>
-      <ListItemInfoContainer>
+    <ItemContainer>
+      <ItemInfoContainer>
         <StyledTitle>{FNAME} ({ANAME})</StyledTitle>
-        <ListItemScoreDistanceContainer>
-          <ListItemScoreContainer>
+        <ItemScoreDistanceContainer>
+          <ItemScoreContainer>
             <StyledPiStarFill />
             <StyledContent>4.8</StyledContent>
-          </ListItemScoreContainer>
+          </ItemScoreContainer>
           <StyledContent>{distance}m</StyledContent>
-        </ListItemScoreDistanceContainer>
+        </ItemScoreDistanceContainer>
         <StyledContent>{address}</StyledContent>
-      </ListItemInfoContainer>
-      <ListItemButtonContainer>
+      </ItemInfoContainer>
+      <ItemButtonContainer>
         <SearchButton>
           <StyledTbRoadSign />
           길찾기
@@ -136,8 +136,8 @@ function ToiletListItem(props) {
             setDetailViewKey(POI_ID);
           }}
         >상세 정보</DetailButton>
-      </ListItemButtonContainer>
-    </ListItemContainer>
+      </ItemButtonContainer>
+    </ItemContainer>
   );
 }
 

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
 import toiletComments from "./toiletComments.json";
 import ToiletComment from "./ToiletComment";
+import { Button, Form, InputGroup } from "react-bootstrap";
 
 const ToiletDetailContainer = styled.div`
   background-color: #ffffff;
@@ -25,7 +26,7 @@ const RoadViewWrapper = styled.div`
   overflow: hidden;
 `;
 
-const ListItemInfoContainer = styled.div`
+const ItemInfoContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -33,13 +34,13 @@ const ListItemInfoContainer = styled.div`
   gap: 12px;
 `;
 
-const ListItemScoreDistanceContainer = styled.div`
+const ItemScoreDistanceContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
 `;
 
-const ListItemScoreContainer = styled.div`
+const ItemScoreContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -51,11 +52,9 @@ const ToiletCommentContainer = styled.div`
   gap: 12px;
 `;
 
-const ListItemButtonContainer = styled.div`
+const ItemButtonContainer = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 12px;
-  justify-content: center;
 `;
 
 const SearchButton = styled.button`
@@ -89,6 +88,9 @@ const DetailButton = styled.button`
   justify-content: center;
   align-items: center;
 `;
+
+
+
 const StyledTbRoadSign = styled(TbRoadSign)`
   height: 22px;
   width: 22px;
@@ -128,9 +130,10 @@ function ToiletDetail(props) {
   const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = viewToilet[0];
   const [address, setAddress] = useState();
 
-  const filteredCommentList = toiletComments.filter((comment) => {
-    return comment.toilet_no === detailViewKey;
-  });
+  const filteredCommentList = toiletComments
+  .filter((comment) => comment.toilet_no === detailViewKey)  
+  .sort((a, b) => new Date(b.regDate) - new Date(a.regDate))
+  .slice(0, 4);
 
   useEffect(() => {
     const getAddress = async () => {
@@ -155,32 +158,44 @@ function ToiletDetail(props) {
           }}
         />
       </RoadViewWrapper>
-      <ListItemInfoContainer>
+      <ItemInfoContainer>
         <StyledTitle>
           {FNAME} ({ANAME})
         </StyledTitle>
-        <ListItemScoreDistanceContainer>
-          <ListItemScoreContainer>
+        <ItemScoreDistanceContainer>
+          <ItemScoreContainer>
             <StyledPiStarFill />
             <StyledContent>4.8</StyledContent>
-          </ListItemScoreContainer>
+          </ItemScoreContainer>
           <StyledContent>{distance}m</StyledContent>
-        </ListItemScoreDistanceContainer>
+        </ItemScoreDistanceContainer>
         <StyledContent>{address}</StyledContent>
-      </ListItemInfoContainer>
+      </ItemInfoContainer>
       <StlyedHr />
       <ToiletCommentContainer>
         {filteredCommentList.map((comment) => {
           return <ToiletComment key={comment.comment_no} comment={comment}/>
         })}
       </ToiletCommentContainer>
-      <ListItemButtonContainer>
+      <StlyedHr />
+      <InputGroup>
+        <Form.Control
+          placeholder="Recipient's username"
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon2"
+        />
+        <Button variant="outline-secondary" id="button-addon2">
+          Button
+        </Button>
+      </InputGroup>
+
+      <ItemButtonContainer>
         <SearchButton>
           <StyledTbRoadSign />
           길찾기
         </SearchButton>
         <DetailButton>리스트로</DetailButton>
-      </ListItemButtonContainer>
+      </ItemButtonContainer>
     </ToiletDetailContainer>
   );
 }
