@@ -275,7 +275,7 @@ function Login() {
       dispatch(loginSuccess(member));
 
       // 발급 받은 토큰 저장
-      localStorage.setItem("token", JSON.stringify(token));
+      localStorage.setItem("token", token);
       // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
       localStorage.setItem("member", JSON.stringify(member));
 
