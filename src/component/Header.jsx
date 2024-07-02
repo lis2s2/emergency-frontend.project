@@ -2,11 +2,10 @@ import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 
 import logoImg from "../images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess, selectMember } from "../features/member/memberSlice";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -115,7 +114,7 @@ function Header() {
                   <>
                     <Nav.Link href="#" className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memId}님</Nav.Link>
                     <LoginBtn className="ms-3" variant="outline-succes" onClick={handleLogout}>로그아웃</LoginBtn>
-                    {/* <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>   */}
+                    <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>  
                   </>
               )
               : (
@@ -126,9 +125,6 @@ function Header() {
               ) 
             }
             
-              <Nav.Link href="#" className="ms-3 align-self-center" onClick={() => navigate('/shop')}>포인트샵</Nav.Link>
-              <LoginBtn className="ms-4" variant="outline-success" onClick={() => navigate('/login')}>로그인</LoginBtn>
-              <RegBtn className="ms-3" variant="success" onClick={() => navigate('/register')}>회원가입</RegBtn>
             </Nav>
           </Container>
         </CustomedNavbar>

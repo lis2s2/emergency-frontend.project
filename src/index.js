@@ -7,10 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // bootstrap CSS 추가
 import 'react-toastify/dist/ReactToastify.min.css'; // ReactToastify CSS 추가
-import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { loginSuccess } from './features/member/memberSlice';
-import { store } from "./app/store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

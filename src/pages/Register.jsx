@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -7,7 +7,7 @@ const RegisterContainer = styled.div`
   /* width: 100%; */
   max-width: 1440px;
   margin: 0 auto;
-  background-color: #5FB393;
+  background-color: #5fb393;
   min-height: 820px;
 `;
 
@@ -18,13 +18,8 @@ const Autolayout = styled.div`
   align-items: center;
   padding: 0px;
   gap: 24px;
-
-  /* position: absolute; */
   width: 819px;
   height: 830px;
-  /* left: 310px;
-  top: 0px; */
-
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -39,7 +34,7 @@ const Sublayout = styled.form`
   padding: 0 20px;
   gap: 24px;
   margin: 0 auto;
-  
+
   position: absolute;
   width: 606px;
   height: 685px;
@@ -50,26 +45,7 @@ const Sublayout = styled.form`
   z-index: 0;
 `;
 
-const RegisterGround = styled.div`
-  height: 64px;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 900;
-  font-size: 36px;
-  line-height: 52px;
-  text-align: center;
-
-  color: #ffffff;
-
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-`;
-
-const  RegisterWhite = styled.div`
+const RegisterWhite = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -81,7 +57,7 @@ const  RegisterWhite = styled.div`
   width: 606px;
   height: 685px;
 
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -98,12 +74,12 @@ const Autobox = styled.div`
   padding: 0px;
   gap: 8px;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-  
+
   color: #111111;
 
   /* width: 560px; */
@@ -152,13 +128,13 @@ const CheckStyle = styled.div`
   /* height: 29px; */
   border-style: none;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
 
-  color: #007AFF;
+  color: #007aff;
 
   flex: none;
   order: 1;
@@ -172,13 +148,13 @@ const CommonInput = styled.input`
   justify-content: center;
   align-items: center;
   padding: 8px;
-  
+
   font-size: 16px;
 
   width: 100%;
   height: 45px;
 
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
 
@@ -200,7 +176,7 @@ const CommonBtn = styled.button`
   width: 558px;
   height: 45px;
 
-  background: #5FB393;
+  background: #5fb393;
   border: none;
   border-radius: 8px;
 
@@ -209,16 +185,16 @@ const CommonBtn = styled.button`
   align-self: stretch;
   flex-grow: 0;
 
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
 
-  color: #FFFFFF;
+  color: #ffffff;
 
   &:hover {
-    background:  #5FB393;
+    background: #5fb393;
     color: black;
     transition: 0.7s;
   }
@@ -232,7 +208,6 @@ function Register() {
     memEmail: "",
   });
 
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -251,7 +226,7 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-     // 아이디와 비밀번호에 대한 검증 로직 추가
+    // 아이디와 비밀번호에 대한 검증 로직 추가
     const idPattern = /^[a-z0-9]{6,17}$/;
     const pwdPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,15}$/;
 
@@ -265,19 +240,25 @@ function Register() {
       return;
     }
 
-    if (!formData.memId || !formData.memPwd || !formData.memName || !formData.memEmail) {
+    if (
+      !formData.memId ||
+      !formData.memPwd ||
+      !formData.memName ||
+      !formData.memEmail
+    ) {
       alert("빈칸이 존재합니다.");
       return;
     }
 
-    axios.post('http://localhost:8080/register', formData)
-      .then(response => {
-        alert('회원가입을 성공하였습니다.');
-        navigate('/login');
+    axios
+      .post("http://localhost:8080/register", formData)
+      .then((response) => {
+        alert("회원가입을 성공하였습니다.");
+        navigate("/login");
       })
-      .catch(error => {
-        console.error('회원가입 실패!', error);
-        alert('회원가입을 실패하였습니다.');
+      .catch((error) => {
+        console.error("회원가입 실패!", error);
+        alert("회원가입을 실패하였습니다.");
       });
   };
 
@@ -298,56 +279,82 @@ function Register() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>Register</RegisterGround>
-          <RegisterWhite>
-            <Sublayout onSubmit={handleSubmit}>
-              <Autobox>
-                <CommonInfo>
-                  <InfoStyle>ID</InfoStyle>
-                  {/* <CheckStyle>중복체크</CheckStyle> */}
-                </CommonInfo>
-                <CommonInput type="text" name="memId" value={formData.memId} onChange={handleChange} />
-              </Autobox>
+        <RegisterWhite>
+          <Sublayout onSubmit={handleSubmit}>
+            <Autobox>
+              <CommonInfo>
+                <InfoStyle>ID</InfoStyle>
+                {/* <CheckStyle>중복체크</CheckStyle> */}
+              </CommonInfo>
+              <CommonInput
+                type="text"
+                name="memId"
+                value={formData.memId}
+                onChange={handleChange}
+              />
+            </Autobox>
 
-              <Autobox>
-                <CommonInfo>
-                  <InfoStyle>Password</InfoStyle>
-                  <CheckStyle>영문, 숫자 포함 8~15자리로 입력해주세요.</CheckStyle>
-                </CommonInfo>
-                <CommonInput type="password" name="memPwd" value={formData.memPwd} onChange={handleChange} />
-              </Autobox>
-              
-              <Autobox>
-                <CommonInfo>
-                  <>Name</>
-                </CommonInfo>
-                <CommonInput type="text" name="memName" value={formData.memName} onChange={handleChange} />
-              </Autobox>
+            <Autobox>
+              <CommonInfo>
+                <InfoStyle>Password</InfoStyle>
+                <CheckStyle>
+                  영문, 숫자 포함 8~15자리로 입력해주세요.
+                </CheckStyle>
+              </CommonInfo>
+              <CommonInput
+                type="password"
+                name="memPwd"
+                value={formData.memPwd}
+                onChange={handleChange}
+              />
+            </Autobox>
 
-              <Autobox>
-                <CommonInfo>
-                  <InfoStyle>Email</InfoStyle>
-                  {/* <CheckStyle>중복체크</CheckStyle> */}
-                </CommonInfo>
-                <CommonInput type="text" placeholder='example@example.com' name="memEmail" value={formData.memEmail} onChange={handleChange} />
-              </Autobox>
+            <Autobox>
+              <CommonInfo>
+                <>Name</>
+              </CommonInfo>
+              <CommonInput
+                type="text"
+                name="memName"
+                value={formData.memName}
+                onChange={handleChange}
+              />
+            </Autobox>
 
-              {/* <Autobox>
+            <Autobox>
+              <CommonInfo>
+                <InfoStyle>Email</InfoStyle>
+                {/* <CheckStyle>중복체크</CheckStyle> */}
+              </CommonInfo>
+              <CommonInput
+                type="text"
+                placeholder="example@example.com"
+                name="memEmail"
+                value={formData.memEmail}
+                onChange={handleChange}
+              />
+            </Autobox>
+
+            {/* <Autobox>
                 <CommonInfo>
                   <>Nick-Name</>
                 </CommonInfo>
                 <CommonInput type="text" name="memNick" value={formData.memNick} onChange={handleChange} />
               </Autobox> */}
-              
-              <>
-                <CommonBtn type="submit" onClick={handleSubmit}>Sign Up</CommonBtn>
-                <CommonBtn type="button" onClick={() => navigate('/login')}>Login Page</CommonBtn>
-              </>
-            </Sublayout>
-          </RegisterWhite>
+
+            <>
+              <CommonBtn type="submit" onClick={handleSubmit}>
+                Sign Up
+              </CommonBtn>
+              <CommonBtn type="button" onClick={() => navigate("/login")}>
+                Login Page
+              </CommonBtn>
+            </>
+          </Sublayout>
+        </RegisterWhite>
       </Autolayout>
     </RegisterContainer>
   );
-};
+}
 
 export default Register;
