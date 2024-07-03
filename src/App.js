@@ -10,6 +10,7 @@ import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import OAuth2RedirectHandler from "./component/OAuth2RedirectHandle";
 
 
 
@@ -66,6 +67,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
+          <Route path="/login/oauth2/code/kakao" element={<OAuth2RedirectHandler />} />
         </Route>
       </Routes>
     </>

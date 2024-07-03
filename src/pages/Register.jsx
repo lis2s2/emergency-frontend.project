@@ -276,6 +276,21 @@ function Register() {
   //     });
   // }, []);
 
+  // 아이디 중복 체크
+  // const handleIdCheck = () => {
+  //   axios.get(`http://localhost:8080/id/${formData.memId}`)
+  //     .then(response => {
+  //       if (response.data) {
+  //         alert('ID is already taken');
+  //       } else {
+  //         alert('ID is available');
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('There was an error checking the ID!', error);
+  //     });
+  // };
+
   return (
     <RegisterContainer>
       <Autolayout>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { loginSuccess } from "../features/member/memberSlice";
 import kakaoBtn from "../images/kakao_login_large_wide.png";
+import naverBtn from "../images/btnW_완성형.png";
 
 const LoginContainer = styled.div`
   /* width: 100%; */
@@ -222,6 +223,34 @@ const KakaoBtn = styled.button`
   color: #ffffff;
 `;
 
+const NaverBtn = styled.button`
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+
+  width: 558px;
+  height: 45px;
+
+  border: none;
+  border-radius: 8px;
+
+  flex: none;
+  order: 5;
+  align-self: stretch;
+  flex-grow: 0;
+
+  background: url(${naverBtn});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  color: #ffffff;
+`;
+
 const Textbtn = styled.button`
   width: 558px;
   height: 20px;
@@ -244,8 +273,12 @@ const Textbtn = styled.button`
   flex-grow: 0;
 `;
 
-const REST_API_KEY = '6725e27a1c1047905dfd6bad61521355';
-const REDIRECT_URI = 'http://localhost:8080/login/oauth2/code/kakao';
+const REST_API_KEY_K = '6725e27a1c1047905dfd6bad61521355';
+const REDIRECT_URI_K = 'http://localhost:3000/login/oauth2/code/kakao';
+
+const REST_API_KEY_N = 'QiZW7Xq40T2iOCfUC6EH';
+const REDIRECT_URI_N = 'http://localhost:3000/login/oauth2/code/naver';
+const CLIENT_SECRET_N = 'vEffUzBSSt';
 
 function Login() {
   const dispatch = useDispatch();
@@ -296,12 +329,15 @@ function Login() {
     try {
       const result = await axios.get(
         `http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`
+        // `'http://localhost:8080/login', formData`
       );
       console.log(result);
+      // const { data } = result;
 
-      // if (result.data) {
       // 로그인 성공 시 서버가 내려준 토큰(JWT)와 사용자 정보
       const { token, member } = result.data;
+      // const token = result.headers.authorization;
+      // const member = data;
 
       // 전역 상태에 사용자 정보 저장
       dispatch(loginSuccess(member));
@@ -320,10 +356,15 @@ function Login() {
   };
 
   // 카카오톡 로그인
-  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  
-  const loginHandler = () => {
-    window.location.href = link;
+  const kakaolink = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY_K}&redirect_uri=${REDIRECT_URI_K}&response_type=code`;
+  const kakaoLoginHandler = () => {
+    window.location.href = kakaolink;
+  };
+
+  // 네이버 로그인
+  const naverlink = `https://nid.naver.com/oauth2.0/authorize?client_id=${REST_API_KEY_N}&response_type=code&redirect_uri=${REDIRECT_URI_N}&state=${CLIENT_SECRET_N}`;
+  const naverLoginHandler = () => {
+    window.location.href = naverlink;
   };
 
   // useEffect(() => {
@@ -365,8 +406,8 @@ function Login() {
 
             <>
               <LoginBtn type="submit">Login</LoginBtn>
-              <KakaoBtn type="button" onClick={loginHandler} />
-              {/* <LoginBtn type="submit" onClick={loginHandler}>카카오톡</LoginBtn> */}
+              <KakaoBtn type="button" onClick={kakaoLoginHandler} />
+              <NaverBtn type="button" onClick={naverLoginHandler} />
               <Textbtn onClick={() => navigate("/search")}>
                 Forgot password?
                 {/* <span>Search for passwords</span> */}
