@@ -1,7 +1,8 @@
 import styled  from "styled-components";
 import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartItem from "../component/CartItem";
+import axios from "axios";
 
 
 const CartWarpper = styled.div`
@@ -17,7 +18,7 @@ const CartWarpper = styled.div`
     
     .cartlist_warpper_left {
       width: 635px;
-      max-height: 579px;;
+      /* max-height: 579px; */
       border: 1px solid #fff;
       padding: 8px 20px;
       background: #FFFFFF;
@@ -79,10 +80,8 @@ const CartWarpper = styled.div`
       }
     }
   }
-
-
-
 `;
+
 
 const Title = styled.div`
   font-weight: 700;
@@ -92,19 +91,19 @@ const Title = styled.div`
   width: 1200px;
   text-align: start;
   padding: 0 30px;
-`;
+  `;
 
 const StyledCheckbox = styled(IoIosCheckbox)`
   width: 35px;
   height: 35px;
   color: #5FB393;
-`;
+  `;
 
 const StyledOutlinCheckbox = styled(IoIosCheckboxOutline)`
    color: #5FB393;
    width: 35px;
    height: 35px;
-`;
+   `;
 
 
 
@@ -112,10 +111,24 @@ const StyledOutlinCheckbox = styled(IoIosCheckboxOutline)`
 
 function Cart() {
   const [isChecked, setIsChecked] = useState(false);
-
+  const [cartList, setCartList] = useState([]);
+  
   const handleCheck = () => {
     setIsChecked(!isChecked);
   }
+
+  useEffect(() => {
+    try {
+      axios.get(`http://localhost:8080/carts`)
+      .then((res)=> {
+        setCartList(res.data);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }, []);
+
   return (
     <CartWarpper>
       <Title>장바구니</Title>
@@ -136,7 +149,9 @@ function Cart() {
             </div>
           </div>
 
-          <CartItem isChecked={isChecked}/>
+          {cartList.map((cartitem) => {
+            return <CartItem key={cartitem.no} cartitem={cartitem} isChecked={isChecked}/>
+          })}
         </div>
 
         <div className="cartlist_warpper_right">

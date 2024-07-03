@@ -41,10 +41,9 @@ border-bottom: 1px solid #cdcdcd;
   }
 `;
 
-const CartItemImg = styled.div`
+const CartItemImg = styled.img`
   width: 150px;
   height: 150px;
-  background-color: #5f5f5f;
 `;
 
 const StyledCheckbox = styled(IoIosCheckbox)`
@@ -81,22 +80,23 @@ const CloseBtn = styled(IoCloseOutline)`
 `;
 
 function CartItem(props) {
-  const { isChecked } = props;
+  const { isChecked, cartitem } = props;
   
+  const formatter = new Intl.NumberFormat('ko-KR');
 
 
   return (
     <CartItemWrapper>
       {isChecked ? <StyledCheckbox/> : <StyledOutlinCheckbox/>}
 
-        <CartItemImg/> {/* 실제 이미지로 받아와서 변경 */}
-        <CartItemTitle>가방에 쏘옥 넣고 다니는 물티슈 18개입</CartItemTitle>
+        <CartItemImg src={cartitem.prodImgpath}/> {/* 실제 이미지로 받아와서 변경 */}
+        <CartItemTitle>{cartitem.prodTitle}</CartItemTitle>
       <div className="btn_wrapper">
         <button type="button" className="btn">-</button>
-        <div className="count_area">1</div>
+        <div className="count_area">{cartitem.prodCount}</div>
         <button type="button" className="btn">+</button>
       </div>
-      <CartItemPrice>20,000원</CartItemPrice>
+      <CartItemPrice>{formatter.format(cartitem.prodPrice * cartitem.prodCount)}원</CartItemPrice>
       <CloseBtn />
   </CartItemWrapper>
   );

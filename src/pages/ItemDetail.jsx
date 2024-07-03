@@ -193,18 +193,22 @@ function ItemDetail() {
     
   }, []);
 
-  // const getItem = async () => {
-  //   try {
-  //     const result = await axios.post((`http://localhost:8080/shops`),{
-  //       data: {
-  //         no: no,
-  //         count: count
-  //       }
-  //     })
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
+  const addCartItem = async () => {
+    try {
+      await axios.post('http://localhost:8080/carts/add', {
+        prodNo: productId,
+        memberId: "user", // 예를 들어 로그인한 사용자의 ID
+        prodCount: count
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      // 장바구니 확인 모달 띄우기
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleDecrement = () => {
     if (count <= 1) {
@@ -251,7 +255,7 @@ function ItemDetail() {
               </div>
             </ProductWarpper>
             <div className="btn_container">
-              <StyledBtnWhite>장바구니 담기</StyledBtnWhite>
+              <StyledBtnWhite onClick={addCartItem}>장바구니 담기</StyledBtnWhite>
               {/* 장바구니로 이동하겠냐는 모달창 띄우기 */}
 
               <StyledBtn>바로 구매하기</StyledBtn>
