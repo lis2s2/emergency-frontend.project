@@ -8,6 +8,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
+import ToiletDetail from "./component/ToiletDetail";
+import ToiletList from "./component/ToiletList";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -45,12 +47,15 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Main />} />
+          <Route path="/" element={<Main />}>
+            <Route index element={<ToiletList />} />
+            <Route path="detail/:toiletNo" element={<ToiletDetail />} />
+          </Route>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
-          <Route path="detail/:toiletId" element={<Main />} />
+          {/* <Route path="detail/:toiletId" element={<Main />} /> */}
           <Route path="/*" element={<Main />} />
         </Route>
       </Routes>

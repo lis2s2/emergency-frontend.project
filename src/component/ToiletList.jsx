@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { MdTune } from "react-icons/md";
 import ToiletListItem from "./ToiletListItem";
+import { useOutletContext } from "react-router-dom";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -37,7 +38,9 @@ const ListContainer = styled.div`
 `;
 
 function ToiletList(props) {
-  const { closestToiletLocations } = props;
+  // const { closestToiletLocations } = props;
+  const closestToiletLocations = useOutletContext();
+  console.log(closestToiletLocations);
 
   return (
     <>
@@ -48,7 +51,7 @@ function ToiletList(props) {
         <StyledMdTune />
       </ButtonContainer>
       <ListContainer>
-        {closestToiletLocations.map((toiletLocation) => {
+        {closestToiletLocations?.map((toiletLocation) => {
           return (
             <ToiletListItem
               key={toiletLocation.POI_ID}

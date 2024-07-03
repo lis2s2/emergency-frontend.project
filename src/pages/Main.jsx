@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import ToiletMap from "../component/ToiletMap";
-import ToiletList from "../component/ToiletList";
 import { useEffect, useState } from "react";
 
 import { fetchToiletLocations } from "../api/toiletAPI";
-import { useParams } from "react-router-dom";
-import ToiletDetail from "../component/ToiletDetail";
+import { Outlet } from "react-router-dom";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -41,7 +39,7 @@ function Main() {
 
   const [closestToiletLocations, setClosestToiletLocations] = useState([]);
   const [toiletLocations, setToiletLocations] = useState([]);
-  const { toiletId } = useParams();
+  // const { toiletId } = useParams();
 
   useEffect(() => {
     // if (navigator.geolocation) {
@@ -75,8 +73,12 @@ function Main() {
     // }
 
     const getFetchedToiletList = async () => {
-      const result = await fetchToiletLocations();
-      setToiletLocations(result);
+      try {
+        const result = await fetchToiletLocations();
+        setToiletLocations(result);
+      } catch (error) {
+        console.error("Error fetching toilet locations:", error);
+      }
     };
     getFetchedToiletList();
   }, []);
@@ -119,19 +121,18 @@ function Main() {
     return Math.round(distance);
   };
 
-  console.log(toiletId);
-
   return (
     <MainContainer>
       <TolietListSection>
-        {toiletId ? (
+        {/* {toiletId ? (
           <ToiletDetail
             closestToiletLocations={closestToiletLocations}
             toiletId={toiletId}
           />
         ) : (
           <ToiletList closestToiletLocations={closestToiletLocations} />
-        )}
+        )} */}
+        <Outlet context={closestToiletLocations} />
       </TolietListSection>
       <MapSection>
         <ToiletMap toiletLocations={toiletLocations} location={location} />

@@ -4,12 +4,18 @@ export const fetchAddressFromCoords = async (lng, lat) => {
       headers: {
         'Authorization': `KakaoAK ${process.env.REACT_APP_KAKAO_RESTAPI_KEY}`
       }
-    
     });
+
     const data = await response.json();
-    const address = data.documents[0].address.address_name;
-    return (`${address}`);
+    const address = data.documents?.[0]?.address?.address_name;
+
+    if (address) {
+      return address;
+    } else {
+      throw new Error('No address found');
+    }
   } catch (error) {
     console.error('주소를 가져오는 중 에러가 발생했습니다.', error);
+    return '주소 오류';
   }
 };
