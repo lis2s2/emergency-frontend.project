@@ -118,16 +118,37 @@ function Cart() {
   }
 
   useEffect(() => {
+    fetchCartItems();
+  }, [cartList]);
+
+  const fetchCartItems = async () => {
     try {
-      axios.get(`http://localhost:8080/carts`)
-      .then((res)=> {
-        setCartList(res.data);
-      })
+      const response = await axios.get(`http://localhost:8080/carts`);
+      setCartList(response.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-    
-  }, []);
+  };
+
+  const handleDeleteCartItem = (cartNo) => {
+    axios
+      .put(`http://localhost:8080/carts/${cartNo}/delete`)
+      .then(() => {
+        setCartList(cartList.filter((item) => item.cartNo !== cartNo));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const onUpdateCount = (cartNo, newCount) => {
+    const updatedCartList = cartList.map(item =>
+      item.cartNo === cartNo ? { ...item, prodCount: newCount } : item
+    );
+    setCartList(updatedCartList);
+  };
+
+
 
   return (
     <CartWarpper>
@@ -150,7 +171,13 @@ function Cart() {
           </div>
 
           {cartList.map((cartitem) => {
-            return <CartItem key={cartitem.no} cartitem={cartitem} isChecked={isChecked}/>
+            return <CartItem 
+                      key={cartitem.no} 
+                      cartitem={cartitem} 
+                      onDelete={() => handleDeleteCartItem(cartitem.cartNo)} 
+                      isChecked={isChecked}
+                      onUpdateCount={onUpdateCount}
+            />
           })}
         </div>
 

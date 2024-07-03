@@ -1,6 +1,8 @@
 import { IoCloseOutline } from "react-icons/io5";
 import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
 import styled from "styled-components";
+import axios from "axios";
+import { useState } from "react";
 
 const CartItemWrapper = styled.div`
 
@@ -54,10 +56,10 @@ const StyledCheckbox = styled(IoIosCheckbox)`
 `;
 
 const StyledOutlinCheckbox = styled(IoIosCheckboxOutline)`
-   color: #5FB393;
-   width: 35px;
-   height: 35px;
-   cursor: pointer;
+  color: #5FB393;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
 `;
 
 const CartItemTitle = styled.div`
@@ -80,26 +82,61 @@ const CloseBtn = styled(IoCloseOutline)`
 `;
 
 function CartItem(props) {
-  const { isChecked, cartitem } = props;
+  const { isChecked, cartitem, onDelete, onUpdateCount } = props;
+
+  const [count, setCount] = useState(cartitem.prodCount);
   
   const formatter = new Intl.NumberFormat('ko-KR');
 
+  const handleDelete = () => {
+    axios.put(`http://localhost:8080/carts/${cartitem.no}/delete`)
+      .then(() => {
+        onDelete(); // 삭제 성공 시 UI 업데이트
+        console.log(cartitem);
+      })
+      .catch((error) => {
+        console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
+        console.log(cartitem);
+      });
+  };
+
+  const updateCartCount = async (newCount) => {
+    try {
+      await axios.put(`http://localhost:8080/carts/${cartitem.no}/updateCount?prodCount=${newCount}`);
+      onUpdateCount(cartitem.no, newCount);
+    } catch (error) {
+      console.error('Error updating cart item count:', error);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (count > 1) {
+      setCount(count - 1);
+      updateCartCount(count - 1);
+    }
+  };
+
+  const handleIncrease = () => {
+    setCount(count + 1);
+    updateCartCount(count + 1);
+  };
 
   return (
     <CartItemWrapper>
       {isChecked ? <StyledCheckbox/> : <StyledOutlinCheckbox/>}
 
-        <CartItemImg src={cartitem.prodImgpath}/> {/* 실제 이미지로 받아와서 변경 */}
+        <CartItemImg src={cartitem.prodImgpath}/> 
         <CartItemTitle>{cartitem.prodTitle}</CartItemTitle>
       <div className="btn_wrapper">
-        <button type="button" className="btn">-</button>
+        <button type="button" className="btn" onClick={handleDecrease}>-</button>
         <div className="count_area">{cartitem.prodCount}</div>
-        <button type="button" className="btn">+</button>
+        <button type="button" className="btn" onClick={handleIncrease}>+</button>
       </div>
       <CartItemPrice>{formatter.format(cartitem.prodPrice * cartitem.prodCount)}원</CartItemPrice>
-      <CloseBtn />
+      {/* <CloseBtn onClick={handleDelete}/> */}
+      <CloseBtn onClick={() => handleDelete(cartitem.cartNo)}/>
   </CartItemWrapper>
   );
 };
 
-export default CartItem;
+export default CartItem;  

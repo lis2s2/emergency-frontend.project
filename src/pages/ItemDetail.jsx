@@ -197,7 +197,7 @@ function ItemDetail() {
     try {
       await axios.post('http://localhost:8080/carts/add', {
         prodNo: productId,
-        memberId: "user", // 예를 들어 로그인한 사용자의 ID
+        memberId: "user", // 나중에 객체에서 뽑아오기
         prodCount: count
       }, {
         headers: {
@@ -237,8 +237,6 @@ function ItemDetail() {
             </div>
             <div className="price_warpper">
 
-              {/* 10% 고정 / strike...를 price에서 더한값으로 내기 */}
-              {/* 하드코딩 고치기 */}
               <p className="discount_rate">10%</p>
               <p className="price">{formatter.format(item.price)}원</p>
               <p className="strike_through">{formatter.format(item.price * 1.1)}</p>
