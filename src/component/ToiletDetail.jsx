@@ -260,13 +260,13 @@ function ToiletDetail() {
           </ToiletScoreDistanceContainer>
           <StyledContent>{address}</StyledContent>
         </ToiletInfoContainer>
-        {sortedCommentList.length > 0 && <StlyedHr />}
+        {sortedCommentList?.length > 0 && <StlyedHr />}
         <ToiletCommentContainer>
-          {sortedCommentList.map((comment) => {
+          {sortedCommentList?.map((comment) => {
             return <ToiletComment key={comment.reviewNo} comment={comment} />;
           })}
         </ToiletCommentContainer>
-        {sortedCommentList.length > 0 && <StlyedHr />}
+        {sortedCommentList?.length > 0 && <StlyedHr />}
         <MemIdScoreInputContainer>
           <MemIdScoreContainer>
             <StyledTitle>{member ? member.memId : '로그인해 주세요.'}</StyledTitle>
