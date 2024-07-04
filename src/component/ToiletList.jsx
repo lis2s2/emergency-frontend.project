@@ -37,8 +37,7 @@ const ListContainer = styled.div`
   margin-top: 16px;
 `;
 
-function ToiletList(props) {
-  // const { closestToiletLocations } = props;
+function ToiletList() {
   const closestToiletLocations = useOutletContext();
   console.log(closestToiletLocations);
 
