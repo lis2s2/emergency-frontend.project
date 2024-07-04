@@ -11,6 +11,7 @@ import { selectMember } from "../features/member/memberSlice";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
   fetchReviewListByToiletNo,
+  getAvgScoreByToiletNo,
   registerToiletReview,
 } from "../api/toiletReviewAPI";
 
@@ -159,7 +160,7 @@ const StlyedHr = styled.hr`
   margin: 0;
 `;
 
-function ToiletDetail(props) {
+function ToiletDetail() {
   const closestToiletLocations = useOutletContext();
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
@@ -175,6 +176,7 @@ function ToiletDetail(props) {
   const [inputScore, setInputScore] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
   const [commentList, setCommentList] = useState([]);
+  const [toiletScore, setToiletScore] = useState(3.0);
 
   useEffect(() => {
     const getAddress = async () => {
@@ -194,6 +196,12 @@ function ToiletDetail(props) {
       setCommentList(result);
     };
     getReviewList();
+
+    const getAvgScore = async () => {
+      const result = await getAvgScoreByToiletNo(toiletNo);
+      setToiletScore(result);
+    };
+    getAvgScore();
   }, [toiletNo]);
 
   const sortedCommentList = commentList
@@ -221,9 +229,10 @@ function ToiletDetail(props) {
     return;
   }
 
+  
+
   return (
     <ToiletDetailContainer>
-      {X_WGS84 && (
         <RoadViewWrapper>
           <Roadview
             position={{
@@ -237,7 +246,6 @@ function ToiletDetail(props) {
             }}
           />
         </RoadViewWrapper>
-      )}
       <ToiletInfoCommentContainer>
         <ToiletInfoContainer>
           <StyledTitle>
@@ -246,7 +254,7 @@ function ToiletDetail(props) {
           <ToiletScoreDistanceContainer>
             <ToiletScoreContainer>
               <StyledPiStarFill />
-              <StyledContent>4.8</StyledContent>
+              <StyledContent>{toiletScore}</StyledContent>
             </ToiletScoreContainer>
             <StyledContent>{distance}m</StyledContent>
           </ToiletScoreDistanceContainer>
@@ -261,7 +269,7 @@ function ToiletDetail(props) {
         {sortedCommentList.length > 0 && <StlyedHr />}
         <MemIdScoreInputContainer>
           <MemIdScoreContainer>
-            <StyledTitle>{member.memId}</StyledTitle>
+            <StyledTitle>{member ? member.memId : '로그인해 주세요.'}</StyledTitle>
             <ScoreWrapper>
               {[...Array(inputScore)].map((a, i) => (
                 <StyledPiStarFill
@@ -282,6 +290,7 @@ function ToiletDetail(props) {
           <InputGroup>
             <Form.Control
               placeholder="댓글을 입력하세요."
+              disabled={!member}
               value={comment}
               onChange={(e) => {
                 setComment(e.target.value);
@@ -290,6 +299,7 @@ function ToiletDetail(props) {
             <Button
               variant="outline-secondary"
               id="button-addon2"
+              disabled={!member}
               onClick={handleReviewButton}
             >
               저장

@@ -4,6 +4,7 @@ import { PiStarFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
 import { useNavigate } from "react-router-dom";
+import { getAvgScoreByToiletNo } from "../api/toiletReviewAPI";
 
 const ItemContainer = styled.div`
   padding: 10px;
@@ -105,6 +106,7 @@ function ToiletListItem(props) {
     toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }
   } = props;
   const [address, setAddress] = useState("");
+  const [toiletScore, setToiletScore] = useState(3.0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -113,7 +115,13 @@ function ToiletListItem(props) {
       setAddress(address);
     };
     getAddress();
-  }, [X_WGS84, Y_WGS84]);
+
+    const getAvgScore = async () => {
+      const result = await getAvgScoreByToiletNo(POI_ID);
+      setToiletScore(result);
+    };
+    getAvgScore();
+  }, [POI_ID, X_WGS84, Y_WGS84]);
 
   return (
     <ItemContainer>
@@ -124,7 +132,7 @@ function ToiletListItem(props) {
         <ItemScoreDistanceContainer>
           <ItemScoreContainer>
             <StyledPiStarFill />
-            <StyledContent>4.8</StyledContent>
+            <StyledContent>{toiletScore}</StyledContent>
           </ItemScoreContainer>
           <StyledContent>{distance}m</StyledContent>
         </ItemScoreDistanceContainer>
