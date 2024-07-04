@@ -10,8 +10,6 @@ import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
 
 
-import Login from "./component/Login";
-import Register from "./component/Register";
 import Shop from "./pages/Shop";
 import ItemDetail from "./pages/ItemDetail";
 import Cart from "./pages/Cart";
