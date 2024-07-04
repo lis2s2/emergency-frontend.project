@@ -63,7 +63,7 @@ export const registerToiletReview = async (toiletNo, content, score) => {
   };
   const result = await axios.post(
     `${process.env.REACT_APP_API_URL}/review/register`,
-    sendData, // 데이터 객체는 바로 넘겨줍니다
+    sendData, 
     {
       headers: {
         Authorization: token,

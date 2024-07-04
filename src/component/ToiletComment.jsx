@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { PiStarFill } from "react-icons/pi";
 import styled from "styled-components";
 
@@ -15,7 +16,7 @@ const WriterToiletScoreContainer = styled.div`
 `;
 
 const StyledId = styled.p`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #000000;
   text-align: start;
@@ -51,22 +52,27 @@ const StarRating = ({ count }) => {
   );
 };
 
+
+
 function ToiletComment(props) {
   const {
-    comment: { writer_id, score, content, regDate },
+    comment: { writer, reviewScore, reviewContent, regDate },
   } = props;
+
+  const idMasking = writer.slice(0, 3) + '*'.repeat(6 - writer.slice(0, 3).length);
+
 
   return (
     <ToiletCommentContainer>
       <WriterToiletScoreContainer>
-        <StyledId>{writer_id}</StyledId>
+        <StyledId>{idMasking}</StyledId>
         <StyledContent>
-          <StarRating count={score} />
+          <StarRating count={reviewScore} />
         </StyledContent>
-        <StyledContent>{score}</StyledContent>
-        <StyledContentGray>{regDate}</StyledContentGray>
+        <StyledContent>{reviewScore}</StyledContent>
+        <StyledContentGray>{dayjs(regDate).format('YYYY-MM-DD')}</StyledContentGray>
       </WriterToiletScoreContainer>
-      <StyledContent>{content}</StyledContent>
+      <StyledContent>{reviewContent}</StyledContent>
     </ToiletCommentContainer>
   );
 }

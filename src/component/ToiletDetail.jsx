@@ -4,13 +4,15 @@ import { PiStarFill, PiStarLight } from "react-icons/pi";
 import { TbRoadSign } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
-import toiletComments from "./toiletComments.json";
 import ToiletComment from "./ToiletComment";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { selectMember } from "../features/member/memberSlice";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { registerToiletReview } from "../api/toiletReviewAPI";
+import {
+  fetchReviewListByToiletNo,
+  registerToiletReview,
+} from "../api/toiletReviewAPI";
 
 const ToiletDetailContainer = styled.div`
   background-color: #ffffff;
@@ -36,6 +38,7 @@ const ToiletInfoCommentContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
+  gap: 12px;
 `;
 
 const ToiletInfoContainer = styled.div`
@@ -62,6 +65,9 @@ const ToiletCommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 200px;
 `;
 
 const MemIdScoreInputContainer = styled.div`
@@ -164,10 +170,11 @@ function ToiletDetail(props) {
   });
   const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = selectedToilet[0] || {};
 
-  const [address, setAddress] = useState('');
-  const [comment, setComment] = useState('');
+  const [address, setAddress] = useState("");
+  const [comment, setComment] = useState("");
   const [inputScore, setInputScore] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
+  const [commentList, setCommentList] = useState([]);
 
   useEffect(() => {
     const getAddress = async () => {
@@ -181,14 +188,33 @@ function ToiletDetail(props) {
     getAddress();
   }, [X_WGS84, Y_WGS84]);
 
-  const filteredCommentList = toiletComments
-    .filter((comment) => comment.toilet_no === toiletNo)
-    .sort((a, b) => new Date(b.regDate) - new Date(a.regDate))
-    .slice(0, 4);
+  useEffect(() => {
+    const getReviewList = async () => {
+      const result = await fetchReviewListByToiletNo(toiletNo);
+      setCommentList(result);
+    };
+    getReviewList();
+  }, [toiletNo]);
+
+  const sortedCommentList = commentList
+    ?.sort((a, b) => new Date(b.regDate) - new Date(a.regDate));
+
 
   const handleReviewButton = async () => {
-    const result = await registerToiletReview(toiletNo, comment, inputScore);
-    console.log(result);
+    if (comment) {
+      const result = await registerToiletReview(toiletNo, comment, inputScore);
+      setComment("");
+      if (result) {
+        const getReviewList = async () => {
+          const result = await fetchReviewListByToiletNo(toiletNo);
+          setCommentList(result);
+        };
+        getReviewList();
+      }
+    } else {
+      window.alert('내용을 입력하세요');
+    }
+    
   };
 
   if (!isLoading) {
@@ -226,13 +252,13 @@ function ToiletDetail(props) {
           </ToiletScoreDistanceContainer>
           <StyledContent>{address}</StyledContent>
         </ToiletInfoContainer>
-        {filteredCommentList.length > 0 && <StlyedHr />}
+        {sortedCommentList.length > 0 && <StlyedHr />}
         <ToiletCommentContainer>
-          {filteredCommentList.map((comment) => {
-            return <ToiletComment key={comment.comment_no} comment={comment} />;
+          {sortedCommentList.map((comment) => {
+            return <ToiletComment key={comment.reviewNo} comment={comment} />;
           })}
         </ToiletCommentContainer>
-        {filteredCommentList.length > 0 && <StlyedHr />}
+        {sortedCommentList.length > 0 && <StlyedHr />}
         <MemIdScoreInputContainer>
           <MemIdScoreContainer>
             <StyledTitle>{member.memId}</StyledTitle>
