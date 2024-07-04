@@ -120,7 +120,8 @@ function Cart() {
   useEffect(() => {
     const fetchCartList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/carts`);
+        const memId = JSON.parse(localStorage.getItem("member")).memId;
+        const response = await axios.get(`http://localhost:8080/carts?id=${memId}`);
         setCartList(response.data);
       } catch (error) {
         console.error(error);

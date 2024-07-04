@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { selectMember } from "../features/member/memberSlice";
 
 
 const DetailWarpper = styled.div`
@@ -175,16 +177,15 @@ const StyledBtn = styled.button`
 
 
 function ItemDetail() {
-  // const [no, setNo] = useState(3);
   const [count, setCount] = useState(1);
   const [item, setItem] = useState([]);
   const { productId } = useParams();
+  const member = useSelector(selectMember);
 
   useEffect(() => {
     try {
       axios.get(`http://localhost:8080/shops/detail?no=${productId}`)
       .then((res)=> {
-        // console.log(res.data);
         setItem(res.data);
       })
     } catch (error) {
@@ -192,21 +193,26 @@ function ItemDetail() {
     }
     
   }, []);
-
+  
   const addCartItem = async () => {
+    const token = localStorage.getItem("token");
+    const memId = JSON.parse(localStorage.getItem("member")).memId;
     try {
-      await axios.post('http://localhost:8080/carts/add', {
+     const result = await axios.post('http://localhost:8080/carts/add', {
         prodNo: productId,
-        memberId: "user", // 나중에 객체에서 뽑아오기
+        memberId: memId,
         prodCount: count
       }, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          // 'Content-Type': 'application/json',
+          Authorization: token,
+        },
       });
+      return result.data;
       // 장바구니 확인 모달 띄우기
     } catch (error) {
       console.error(error);
+      console.log(memId);
     }
   };
 
