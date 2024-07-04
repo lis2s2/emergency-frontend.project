@@ -201,7 +201,7 @@ const CheckBtn = styled.button`
   }
 `;
 
-function Search() {
+function Find() {
 
   const [memId, setMemId] = useState('');
   const [memName, setMemName] = useState('');
@@ -209,16 +209,17 @@ function Search() {
   const [memPwd, setMemPwd] = useState('');
   const [error, setError] = useState('');
 
-  const handleSearch = async () => {
+  const handleFind = async () => {
     if (!memId || !memName || !memEmail) {
-      setError('아이디, 이름, 이메일을 전부 입력 해주세요.');
+      alert('아이디, 이름, 이메일을 전부 입력 해주세요.');
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/search', { memId, memName, memEmail });
+      const response = await axios.post('http://localhost:8080/find', { memId, memName, memEmail });
       setMemPwd(response.data.memPwd);
-      setError('');
+      setError('찾음');
+      console.log(response.data.memPwd);
     } catch (error) {
       console.error('Error fetching password:', error);
       setMemPwd('');
@@ -229,7 +230,7 @@ function Search() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>Searching for passwords</RegisterGround>
+        <RegisterGround>Find passwords</RegisterGround>
           <RegisterWhite>
             <Sublayout>
               <Autobox>
@@ -254,9 +255,9 @@ function Search() {
               </Autobox>
 
               <>
-                <CheckBtn onClick={handleSearch}>Check</CheckBtn>
+                <CheckBtn onClick={handleFind}>Check</CheckBtn>
               </>  
-              {memPwd && <div>비밀번호: {memPwd}</div>}
+              {memPwd && <div>비밀번호: {setMemPwd()}</div>}
               {error && <div>{error}</div>} 
             </Sublayout>
           </RegisterWhite>
@@ -265,4 +266,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default Find;

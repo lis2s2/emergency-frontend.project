@@ -296,8 +296,6 @@ function Login() {
       ...formData,
       [name]: value,
     });
-
-    // console.log(formData);
   };
 
   const handleLogin = async (e) => {
@@ -308,44 +306,19 @@ function Login() {
       return;
     }
 
-    // axios.get(`http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`)
-    //   .then(response => {
-    //     if (response.data) {
-
-    //       dispatch(loginSuccess({ name: formData.memId, nick: formData.memNick, role: formData.memRole }));
-
-    //       localStorage.setItem('token', response.data);
-
-    //       alert('로그인');
-    //       Navigate('/');
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
-    //   });
-    // }
-
     try {
       const result = await axios.get(
         `http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`
         // `'http://localhost:8080/login', formData`
       );
       console.log(result);
-      // const { data } = result;
 
-      // 로그인 성공 시 서버가 내려준 토큰(JWT)와 사용자 정보
       const { token, member } = result.data;
-      // const token = result.headers.authorization;
-      // const member = data;
 
-      // 전역 상태에 사용자 정보 저장
       dispatch(loginSuccess(member));
 
-        // 발급 받은 토큰 저장
-        localStorage.setItem('token', token);
-        // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
-        localStorage.setItem('member', JSON.stringify(member));
+      localStorage.setItem('token', token);
+      localStorage.setItem('member', JSON.stringify(member));
 
       navigate("/");
       alert("로그인 하셨습니다.");
@@ -363,14 +336,32 @@ function Login() {
 
   // 네이버 로그인
   const naverlink = `https://nid.naver.com/oauth2.0/authorize?client_id=${REST_API_KEY_N}&response_type=code&redirect_uri=${REDIRECT_URI_N}&state=${CLIENT_SECRET_N}`;
-  const naverLoginHandler = () => {
+  // const naverlink = `https://nid.naver.com/oauth2.0/authorize?client_id=QiZW7Xq40T2iOCfUC6EH&redirect_uri=http://localhost:3000/login/oauth2/code/naver&state=vEffUzBSSt&response_type=code`;
+  const naverLoginHandler = ()  => {
     window.location.href = naverlink;
   };
 
-  // useEffect(() => {
-  //   axios.post( `http://localhost:8080/login`)
-  //   .then(result => result.data);
-  //   navigate("/");
+  // useEffect(() => { 
+  //   const token = new URL(naverlink).searchParams.get("code");
+  //     const tokenParams = {
+  //     client_id: REST_API_KEY_N,
+  //     client_secret: CLIENT_SECRET_N,
+  //     code: token,
+  //     grant_type : 'authorization_code',
+  //     state: CLIENT_SECRET_N,
+  //   }
+    // axios.post( `https://nid.naver.com/oauth2.0/token?code=${token}&state=${CLIENT_SECRET_N}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
+    // axios.post('https://nid.naver.com/oauth2.0/token?' + tokenParams)
+    // .then(response => {
+    //   // this.token.access_token = response.data.result.access_token;
+    //   // this.token.refresh_token = response.data.result.refresh_token;
+    //   alert('성공');
+    //   console.log(response, token);
+    // })
+    // .catch(error => {
+    //   alert('실패');
+    //   console.log(error);
+    // })
   // }, []);
 
   return (
@@ -408,7 +399,7 @@ function Login() {
               <LoginBtn type="submit">Login</LoginBtn>
               <KakaoBtn type="button" onClick={kakaoLoginHandler} />
               <NaverBtn type="button" onClick={naverLoginHandler} />
-              <Textbtn onClick={() => navigate("/search")}>
+              <Textbtn onClick={() => navigate("/find")}>
                 Forgot password?
                 {/* <span>Search for passwords</span> */}
               </Textbtn>

@@ -6,13 +6,11 @@ import Main from "./pages/Main";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import OAuth2RedirectHandler from "./component/OAuth2RedirectHandle";
-
-
+import Find from "./pages/Find";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -65,9 +63,10 @@ function App() {
           <Route index element={<Main />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="search" element={<Search />} />
+          <Route path="find" element={<Find />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="/login/oauth2/code/kakao" element={<OAuth2RedirectHandler />} />
+          <Route path="/login/oauth2/code/naver" element={<OAuth2RedirectHandler />} />
         </Route>
       </Routes>
     </>

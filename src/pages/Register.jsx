@@ -227,16 +227,22 @@ function Register() {
     e.preventDefault();
 
     // 아이디와 비밀번호에 대한 검증 로직 추가
-    const idPattern = /^[a-z0-9]{6,17}$/;
-    const pwdPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,15}$/;
+    const idPattern = /^[a-z0-9]{6,15}$/;
+    const pwdPattern = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{6,15}$/;
+    const emailPattern = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
     if (!idPattern.test(formData.memId)) {
-      alert("아이디는 6~17자리의 소문자와 숫자로만 구성되어야 합니다.");
+      alert("아이디는 소문자와 숫자를 포함한 6~15자리로 입력해주세요.");
       return;
     }
 
     if (!pwdPattern.test(formData.memPwd)) {
-      alert("비밀번호는 영문과 숫자를 포함한 8~15자리로 구성되어야 합니다.");
+      alert("비밀번호는 소문자와 숫자를 포함한 6~15자리로 입력해주세요.");
+      return;
+    }
+
+    if (!emailPattern.test(formData.memEmail)) {
+      alert("이메일 형식이 아닙니다.");
       return;
     }
 
@@ -299,7 +305,7 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
-                {/* <CheckStyle>중복체크</CheckStyle> */}
+                <CheckStyle>소문자+숫자 6~15자리</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -312,9 +318,7 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Password</InfoStyle>
-                <CheckStyle>
-                  영문, 숫자 포함 8~15자리로 입력해주세요.
-                </CheckStyle>
+                <CheckStyle>소문자+숫자 6~15자리</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="password"
