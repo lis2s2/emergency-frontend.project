@@ -198,7 +198,7 @@ function ItemDetail() {
     const token = localStorage.getItem("token");
     const memId = JSON.parse(localStorage.getItem("member")).memId;
     try {
-     const result = await axios.post('http://localhost:8080/carts/add', {
+    const result = await axios.post('http://localhost:8080/carts/add', {
         prodNo: productId,
         memberId: memId,
         prodCount: count

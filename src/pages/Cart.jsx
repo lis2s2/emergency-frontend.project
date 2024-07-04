@@ -112,6 +112,8 @@ function Cart() {
   const [isChecked, setIsChecked] = useState(false);
   const [cartList, setCartList] = useState([]);
   
+  const [selectedItems, setSelectedItems] = useState([]);
+  
 
   const handleCheck = () => {
     setIsChecked(!isChecked);

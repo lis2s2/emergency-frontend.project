@@ -95,11 +95,12 @@ function CartItem(props) {
 
   const handleDeleteCartItem = async () => {
     try {
+      const memId = JSON.parse(localStorage.getItem("member")).memId;
       await axios.put(`http://localhost:8080/carts/${cartitem.no}/delete`);
       setCartList(cartList.filter((item) => item.cartNo !== cartitem.no));
       console.log("cartNo: " + cartitem.no);
   
-      const response = await axios.get(`http://localhost:8080/carts`);
+      const response = await axios.get(`http://localhost:8080/carts?id=${memId}`);
       setCartList(response.data);
     } catch (error) {
       console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
@@ -109,9 +110,10 @@ function CartItem(props) {
 
   const updateCartCount = async (newCount) => {
     try {
+      const memId = JSON.parse(localStorage.getItem("member")).memId;
       await axios.put(`http://localhost:8080/carts/${cartitem.no}/updateCount?prodCount=${newCount}`);
       onUpdateCount(cartitem.no, newCount);
-      const response = await axios.get(`http://localhost:8080/carts`);
+      const response = await axios.get(`http://localhost:8080/carts?id=${memId}`);
       setCartList(response.data);
     } catch (error) {
       console.error('Error updating cart item count:', error);
