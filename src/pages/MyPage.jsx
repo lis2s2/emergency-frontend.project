@@ -3,7 +3,7 @@ import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import profileImg from "../images/profile.png";
 import logoImg from "../images/logo.png";
-import memberSlice, { selectMember } from "../features/member/memberSlice";
+import { selectMember } from "../features/member/memberSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
