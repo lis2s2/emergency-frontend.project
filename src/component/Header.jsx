@@ -108,7 +108,7 @@ function Header() {
                 <NavDropdown.Item className="mb-2 py-2 align-self-center">긴급 요청 게시판</NavDropdown.Item>
                 <NavDropdown.Item className="py-2 align-self-center">뉴스 게시판</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#pricing" className="ms-3 align-self-center">포인트샵</Nav.Link>
+              <Nav.Link href="#pricing" className="ms-3 align-self-center" onClick={() => navigate('/shop')}>포인트샵</Nav.Link>
               {member
               ? (
                   <>
