@@ -11,7 +11,6 @@ import MyPage from "./pages/MyPage";
 import ToiletDetail from "./component/ToiletDetail";
 import ToiletList from "./component/ToiletList";
 import Shop from "./pages/Shop";
-import ItemDetail from "./pages/ItemDetail";
 import Cart from "./pages/Cart";
 
 const GlobalStyle = createGlobalStyle`
@@ -60,6 +59,7 @@ function App() {
           <Route path="mypage" element={<MyPage />} />
           <Route path="shop" element={<Shop />} />
           <Route path="cart" element={<Cart/>} />
+          <Route path="/*" element={<Main/>} />
         </Route>
       </Routes>
     </>

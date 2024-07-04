@@ -191,7 +191,7 @@ function ItemDetail() {
       console.log(error);
     }
     
-  }, []);
+  }, [productId]);
 
   const addCartItem = async () => {
     try {
