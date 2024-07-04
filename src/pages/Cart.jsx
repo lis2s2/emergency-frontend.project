@@ -18,7 +18,6 @@ const CartWarpper = styled.div`
     
     .cartlist_warpper_left {
       width: 635px;
-      /* max-height: 579px; */
       border: 1px solid #fff;
       padding: 8px 20px;
       background: #FFFFFF;
@@ -67,7 +66,7 @@ const CartWarpper = styled.div`
       }
 
       .cursor-pointer::before {
-        content: ""; /* ::before의 필수 속성*/
+        content: "";
         display: block;
         width: 1px;
         height: 26px;
@@ -113,33 +112,24 @@ function Cart() {
   const [isChecked, setIsChecked] = useState(false);
   const [cartList, setCartList] = useState([]);
   
+
   const handleCheck = () => {
     setIsChecked(!isChecked);
   }
 
   useEffect(() => {
-    fetchCartItems();
-  }, [cartList]);
-
-  const fetchCartItems = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/carts`);
-      setCartList(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleDeleteCartItem = (cartNo) => {
-    axios
-      .put(`http://localhost:8080/carts/${cartNo}/delete`)
-      .then(() => {
-        setCartList(cartList.filter((item) => item.cartNo !== cartNo));
-      })
-      .catch((error) => {
+    const fetchCartList = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/carts`);
+        setCartList(response.data);
+      } catch (error) {
         console.error(error);
-      });
-  };
+      }
+    };
+  
+    fetchCartList();
+  }, []);
+
 
   const onUpdateCount = (cartNo, newCount) => {
     const updatedCartList = cartList.map(item =>
@@ -161,7 +151,7 @@ function Cart() {
             <div className="cartlist_btn_group_left">
               <label className="cursor-pointer" onClick={handleCheck}>
                 {isChecked ? <StyledCheckbox /> : <StyledOutlinCheckbox />}
-                <p className="select_all_btn">전체선택</p>
+                <p className="select_all_btn">{isChecked? '전체해체': '전체선택'}</p>
               </label>
             </div>
             <div className="cartlist_btn_group_right">
@@ -170,14 +160,17 @@ function Cart() {
             </div>
           </div>
 
-          {cartList.map((cartitem) => {
-            return <CartItem 
-                      key={cartitem.no} 
-                      cartitem={cartitem} 
-                      onDelete={() => handleDeleteCartItem(cartitem.cartNo)} 
-                      isChecked={isChecked}
-                      onUpdateCount={onUpdateCount}
-            />
+          {cartList && cartList.length > 0 && cartList.map((cartitem) => {
+            return (
+              <CartItem 
+                key={cartitem.no} 
+                cartitem={cartitem} 
+                isChecked={isChecked}
+                onUpdateCount={onUpdateCount}
+                cartList={cartList}
+                setCartList={setCartList}
+              />
+            );
           })}
         </div>
 

@@ -2,7 +2,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
 import styled from "styled-components";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CartItemWrapper = styled.div`
 
@@ -82,28 +82,37 @@ const CloseBtn = styled(IoCloseOutline)`
 `;
 
 function CartItem(props) {
-  const { isChecked, cartitem, onDelete, onUpdateCount } = props;
+  // const { isChecked, cartitem, onDelete, onUpdateCount } = props;
+  const { isChecked, cartitem, onUpdateCount, setCartList, cartList} = props;
 
   const [count, setCount] = useState(cartitem.prodCount);
+
+
+
   
   const formatter = new Intl.NumberFormat('ko-KR');
 
-  const handleDelete = () => {
-    axios.put(`http://localhost:8080/carts/${cartitem.no}/delete`)
-      .then(() => {
-        onDelete(); // 삭제 성공 시 UI 업데이트
-        console.log(cartitem);
-      })
-      .catch((error) => {
-        console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
-        console.log(cartitem);
-      });
+
+  const handleDeleteCartItem = async () => {
+    try {
+      await axios.put(`http://localhost:8080/carts/${cartitem.no}/delete`);
+      setCartList(cartList.filter((item) => item.cartNo !== cartitem.no));
+      console.log("cartNo: " + cartitem.no);
+  
+      const response = await axios.get(`http://localhost:8080/carts`);
+      setCartList(response.data);
+    } catch (error) {
+      console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
+      console.log("cartNo: " + cartitem.no);
+    }
   };
 
   const updateCartCount = async (newCount) => {
     try {
       await axios.put(`http://localhost:8080/carts/${cartitem.no}/updateCount?prodCount=${newCount}`);
       onUpdateCount(cartitem.no, newCount);
+      const response = await axios.get(`http://localhost:8080/carts`);
+      setCartList(response.data);
     } catch (error) {
       console.error('Error updating cart item count:', error);
     }
@@ -133,8 +142,7 @@ function CartItem(props) {
         <button type="button" className="btn" onClick={handleIncrease}>+</button>
       </div>
       <CartItemPrice>{formatter.format(cartitem.prodPrice * cartitem.prodCount)}원</CartItemPrice>
-      {/* <CloseBtn onClick={handleDelete}/> */}
-      <CloseBtn onClick={() => handleDelete(cartitem.cartNo)}/>
+      <CloseBtn onClick={() => handleDeleteCartItem(cartitem.cartNo)}/>
   </CartItemWrapper>
   );
 };
