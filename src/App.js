@@ -10,6 +10,9 @@ import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
 import ToiletDetail from "./component/ToiletDetail";
 import ToiletList from "./component/ToiletList";
+import Shop from "./pages/Shop";
+import ItemDetail from "./pages/ItemDetail";
+import Cart from "./pages/Cart";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -55,8 +58,8 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
-          {/* <Route path="detail/:toiletId" element={<Main />} /> */}
-          <Route path="/*" element={<Main />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="cart" element={<Cart/>} />
         </Route>
       </Routes>
     </>
