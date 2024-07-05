@@ -112,6 +112,8 @@ function Cart() {
   const [isChecked, setIsChecked] = useState(false);
   const [cartList, setCartList] = useState([]);
   
+  const [selectedItems, setSelectedItems] = useState([]);
+  
 
   const handleCheck = () => {
     setIsChecked(!isChecked);
@@ -120,7 +122,8 @@ function Cart() {
   useEffect(() => {
     const fetchCartList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/carts`);
+        const memId = JSON.parse(localStorage.getItem("member")).memId;
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
         setCartList(response.data);
       } catch (error) {
         console.error(error);

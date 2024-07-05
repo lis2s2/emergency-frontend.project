@@ -78,7 +78,7 @@ function Header() {
 
   const handleLogout = async () => {
     const token = localStorage.getItem('token');
-    const result = await axios.get(`http://localhost:8080/logout`, {
+    const result = await axios.get(`${process.env.REACT_APP_API_URL}/logout`, {
       headers: {
         Authorization: token
       }

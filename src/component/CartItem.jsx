@@ -95,11 +95,11 @@ function CartItem(props) {
 
   const handleDeleteCartItem = async () => {
     try {
-      await axios.put(`http://localhost:8080/carts/${cartitem.no}/delete`);
+      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartitem.no}/delete`);
       setCartList(cartList.filter((item) => item.cartNo !== cartitem.no));
       console.log("cartNo: " + cartitem.no);
   
-      const response = await axios.get(`http://localhost:8080/carts`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts`);
       setCartList(response.data);
     } catch (error) {
       console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
@@ -109,9 +109,9 @@ function CartItem(props) {
 
   const updateCartCount = async (newCount) => {
     try {
-      await axios.put(`http://localhost:8080/carts/${cartitem.no}/updateCount?prodCount=${newCount}`);
+      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartitem.no}/updateCount?prodCount=${newCount}`);
       onUpdateCount(cartitem.no, newCount);
-      const response = await axios.get(`http://localhost:8080/carts`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts`);
       setCartList(response.data);
     } catch (error) {
       console.error('Error updating cart item count:', error);
@@ -133,7 +133,6 @@ function CartItem(props) {
   return (
     <CartItemWrapper>
       {isChecked ? <StyledCheckbox/> : <StyledOutlinCheckbox/>}
-
         <CartItemImg src={cartitem.prodImgpath}/> 
         <CartItemTitle>{cartitem.prodTitle}</CartItemTitle>
       <div className="btn_wrapper">

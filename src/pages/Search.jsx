@@ -216,7 +216,7 @@ function Search() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/search', { memId, memName, memEmail });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/search`, { memId, memName, memEmail });
       setMemPwd(response.data.memPwd);
       setError('');
     } catch (error) {

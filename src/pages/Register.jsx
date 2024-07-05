@@ -251,7 +251,7 @@ function Register() {
     }
 
     axios
-      .post("http://localhost:8080/register", formData)
+      .post(`${process.env.REACT_APP_API_URL}/register`, formData)
       .then((response) => {
         alert("회원가입을 성공하였습니다.");
         navigate("/login");

@@ -175,38 +175,47 @@ const StyledBtn = styled.button`
 
 
 function ItemDetail() {
-  // const [no, setNo] = useState(3);
   const [count, setCount] = useState(1);
   const [item, setItem] = useState([]);
   const { productId } = useParams();
 
   useEffect(() => {
     try {
-      axios.get(`http://localhost:8080/shops/detail?no=${productId}`)
+      axios.get(`${process.env.REACT_APP_API_URL}/shops/detail?no=${productId}` ,{
+        headers:{
+          Authorization: token,
+        }
+      })
       .then((res)=> {
-        // console.log(res.data);
         setItem(res.data);
       })
     } catch (error) {
       console.log(error);
     }
     
-  }, [productId]);
+
+  }, []);
+  
+  const memId = JSON.parse(localStorage.getItem("member")).memId;
+  const token = localStorage.getItem("token");
 
   const addCartItem = async () => {
     try {
-      await axios.post('http://localhost:8080/carts/add', {
+    const result = await axios.post(`${process.env.REACT_APP_API_URL}/carts/add`, {
         prodNo: productId,
-        memberId: "user", // 나중에 객체에서 뽑아오기
+        memberId: memId,
         prodCount: count
       }, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          // 'Content-Type': 'application/json',
+          Authorization: token,
+        },
       });
+      return result.data;
       // 장바구니 확인 모달 띄우기
     } catch (error) {
       console.error(error);
+      console.log(memId);
     }
   };
 

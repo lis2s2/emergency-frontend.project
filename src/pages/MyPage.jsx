@@ -476,8 +476,6 @@ function MyPage() {
 
               <div>
                 <EditIcons><TbMoodEdit /></EditIcons>
-              {/* </div>
-              <div> */}
                 <CartIcons onClick={() => navigate('/cart')}><PiShoppingCartSimpleBold /></CartIcons>
               </div>
 
