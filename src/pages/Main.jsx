@@ -121,7 +121,7 @@ function Main() {
     return Math.round(distance);
   };
 
-  console.log(process.env.REACT_APP_KAKAO_RESTAPI_KEY);
+  console.log(process.env.REACT_APP_API_URL);
 
   return (
     <MainContainer>
