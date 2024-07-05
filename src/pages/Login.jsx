@@ -263,7 +263,7 @@ function Login() {
 
     try {
       const result = await axios.get(
-        `http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`
+        `${process.env.REACT_APP_API_URL}/login?id=${formData.memId}&pw=${formData.memPwd}`
       );
       console.log(result);
 

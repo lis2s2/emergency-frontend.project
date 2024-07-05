@@ -91,7 +91,7 @@ const [toiletItems, setToiletItems] = useState([]);
 
 useEffect(() => {
   try {
-    axios.get(`http://localhost:8080/shops`)
+    axios.get(`${process.env.REACT_APP_API_URL}/shops`)
     .then((res)=> {
       // console.log(res.data);
       setItems(res.data);
@@ -104,7 +104,7 @@ useEffect(() => {
 
 useEffect(() => {
   try {
-    axios.get(`http://localhost:8080/shops/category?category=화장실`)
+    axios.get(`${process.env.REACT_APP_API_URL}/shops/category?category=화장실`)
     .then((res) => {
       setToiletItems(res.data);
     })

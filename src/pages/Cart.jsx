@@ -123,7 +123,7 @@ function Cart() {
     const fetchCartList = async () => {
       try {
         const memId = JSON.parse(localStorage.getItem("member")).memId;
-        const response = await axios.get(`http://localhost:8080/carts?id=${memId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
         setCartList(response.data);
       } catch (error) {
         console.error(error);

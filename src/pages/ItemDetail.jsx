@@ -183,7 +183,7 @@ function ItemDetail() {
 
   useEffect(() => {
     try {
-      axios.get(`http://localhost:8080/shops/detail?no=${productId}` ,{
+      axios.get(`${process.env.REACT_APP_API_URL}/shops/detail?no=${productId}` ,{
         headers:{
           Authorization: token,
         }
@@ -203,7 +203,7 @@ function ItemDetail() {
 
   const addCartItem = async () => {
     try {
-    const result = await axios.post('http://localhost:8080/carts/add', {
+    const result = await axios.post(`${process.env.REACT_APP_API_URL}/carts/add`, {
         prodNo: productId,
         memberId: memId,
         prodCount: count
