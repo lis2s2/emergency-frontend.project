@@ -146,8 +146,8 @@ const navigate = useNavigate();
           }}
         >
           
-          {random10Items.map((item) => {
-            return <SwiperSlide key={item.imgpath}><ShopItem key={item.id} item={item}>{item.title}</ShopItem></SwiperSlide>
+          {random10Items?.map((item) => {
+            return <SwiperSlide key={item.no}><ShopItem key={item.id} item={item}>{item.title}</ShopItem></SwiperSlide>
           })}
         </Swiper>
 
@@ -173,8 +173,9 @@ const navigate = useNavigate();
             "--swiper-navigation-color": "#5FB393"
           }}
         >
-          {toiletItems.map((item) => {
-            return <SwiperSlide key={item.imgpath}><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
+          {toiletItems?.map((item) => {
+            console.log(item);
+            return <SwiperSlide key={item.no}><ShopItem item={item} key={item.id}>{item.title}</ShopItem></SwiperSlide>
           })}
         </Swiper>
       </ShopContainer>

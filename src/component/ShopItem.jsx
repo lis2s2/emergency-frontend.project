@@ -27,16 +27,16 @@ const ItemPrice = styled.p`
 
 function ShopItem(props) {
   const { item } = props;
-
+  console.log( item );
   const navigate = useNavigate();
 
   const formatter = new Intl.NumberFormat('ko-KR');
 
   return (
     <ItemWrapper className="cursor-pointer">
-      <img src={item.imgpath} alt={item.title} width="100%" height="75%" onClick={() => navigate(`detail/${item.no}`)}/>
-      <ItemTitle>{item.title}</ItemTitle>
-      <ItemPrice>{formatter.format( item.price)}원</ItemPrice>
+      <img src={item?.imgpath} alt={item?.title} width="100%" height="75%" onClick={() => navigate(`detail/${item?.no}`)}/>
+      <ItemTitle>{item?.title}</ItemTitle>
+      <ItemPrice>{formatter.format( item?.price)}원</ItemPrice>
     </ItemWrapper>
   );
 };

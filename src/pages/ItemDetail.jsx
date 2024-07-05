@@ -180,11 +180,14 @@ function ItemDetail() {
   const [count, setCount] = useState(1);
   const [item, setItem] = useState([]);
   const { productId } = useParams();
-  const member = useSelector(selectMember);
 
   useEffect(() => {
     try {
-      axios.get(`http://localhost:8080/shops/detail?no=${productId}`)
+      axios.get(`http://localhost:8080/shops/detail?no=${productId}` ,{
+        headers:{
+          Authorization: token,
+        }
+      })
       .then((res)=> {
         setItem(res.data);
       })
@@ -195,10 +198,10 @@ function ItemDetail() {
 
   }, []);
   
+  const memId = JSON.parse(localStorage.getItem("member")).memId;
+  const token = localStorage.getItem("token");
 
   const addCartItem = async () => {
-    const token = localStorage.getItem("token");
-    const memId = JSON.parse(localStorage.getItem("member")).memId;
     try {
     const result = await axios.post('http://localhost:8080/carts/add', {
         prodNo: productId,

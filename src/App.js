@@ -60,7 +60,7 @@ function App() {
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="shop" element={<Shop />} />
-          <Route path="shop/detail/:productId" element={<ShopItem />} />
+          <Route path="shop/detail/:productId" element={<ItemDetail />} />
           <Route path="cart" element={<Cart/>} />
           <Route path="/*" element={<Main/>} />
         </Route>
