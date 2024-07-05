@@ -192,8 +192,10 @@ function ItemDetail() {
       console.log(error);
     }
     
+
   }, []);
   
+
   const addCartItem = async () => {
     const token = localStorage.getItem("token");
     const memId = JSON.parse(localStorage.getItem("member")).memId;

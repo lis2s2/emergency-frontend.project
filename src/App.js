@@ -8,11 +8,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
 import MyPage from "./pages/MyPage";
-
-
+import ToiletDetail from "./component/ToiletDetail";
+import ToiletList from "./component/ToiletList";
 import Shop from "./pages/Shop";
-import ItemDetail from "./pages/ItemDetail";
 import Cart from "./pages/Cart";
+import ItemDetail from "./pages/ItemDetail";
+import ShopItem from "./component/ShopItem";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -43,24 +44,25 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-
 function App() {
-
-
   return (
     <>
       <Reset />
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Main />} />
+          <Route path="/" element={<Main />}>
+            <Route index element={<ToiletList />} />
+            <Route path="detail/:toiletNo" element={<ToiletDetail />} />
+          </Route>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="shop" element={<Shop />} />
-          <Route path="detail/:productId" element={<ItemDetail />} />
+          <Route path="shop/detail/:productId" element={<ShopItem />} />
           <Route path="cart" element={<Cart/>} />
+          <Route path="/*" element={<Main/>} />
         </Route>
       </Routes>
     </>

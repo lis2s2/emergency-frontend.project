@@ -2,7 +2,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
 import styled from "styled-components";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const CartItemWrapper = styled.div`
 
