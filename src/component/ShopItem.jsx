@@ -27,7 +27,6 @@ const ItemPrice = styled.p`
 
 function ShopItem(props) {
   const { item } = props;
-  console.log( item );
   const navigate = useNavigate();
 
   const formatter = new Intl.NumberFormat('ko-KR');
