@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { selectMember } from "../features/member/memberSlice";
 
 
 const DetailWarpper = styled.div`
