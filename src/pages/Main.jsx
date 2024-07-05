@@ -95,7 +95,7 @@ function Main() {
         ),
       }))
       .sort((a, b) => a.distance - b.distance)
-      .slice(0, 6);
+      .filter((value) => value.distance < 500);
 
     setClosestToiletLocations(sortedToiletLocations);
   }, [toiletLocations, location]);
@@ -124,18 +124,10 @@ function Main() {
   return (
     <MainContainer>
       <TolietListSection>
-        {/* {toiletId ? (
-          <ToiletDetail
-            closestToiletLocations={closestToiletLocations}
-            toiletId={toiletId}
-          />
-        ) : (
-          <ToiletList closestToiletLocations={closestToiletLocations} />
-        )} */}
         <Outlet context={closestToiletLocations} />
       </TolietListSection>
       <MapSection>
-        <ToiletMap toiletLocations={toiletLocations} location={location} />
+        <ToiletMap closestToiletLocations={closestToiletLocations} location={location} />
       </MapSection>
     </MainContainer>
   );

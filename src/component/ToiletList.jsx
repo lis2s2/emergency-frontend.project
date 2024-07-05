@@ -3,6 +3,10 @@ import { MdTune } from "react-icons/md";
 import ToiletListItem from "./ToiletListItem";
 import { useOutletContext } from "react-router-dom";
 
+const ButtonListContainer = styled.div`
+  max-height: 780px;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
@@ -35,6 +39,8 @@ const ListContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   margin-top: 16px;
+  overflow-y: auto;
+  max-height: 728px;
 `;
 
 function ToiletList() {
@@ -42,7 +48,7 @@ function ToiletList() {
   console.log(closestToiletLocations);
 
   return (
-    <>
+    <ButtonListContainer>
       <ButtonContainer>
         <ToggleButton>주유소</ToggleButton>
         <ToggleButton>대형 까페</ToggleButton>
@@ -59,7 +65,7 @@ function ToiletList() {
           );
         })}
       </ListContainer>
-    </>
+    </ButtonListContainer>
   );
 }
 
