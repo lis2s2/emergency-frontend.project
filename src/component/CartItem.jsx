@@ -82,7 +82,6 @@ const CloseBtn = styled(IoCloseOutline)`
 `;
 
 function CartItem(props) {
-  // const { isChecked, cartitem, onDelete, onUpdateCount } = props;
   const { isChecked, cartitem, onUpdateCount, setCartList, cartList} = props;
 
   const [count, setCount] = useState(cartitem.prodCount);

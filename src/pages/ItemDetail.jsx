@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import CartListIcon from "../component/CartListIcon";
 
 
 const DetailWarpper = styled.div`
@@ -200,6 +201,7 @@ function ItemDetail() {
   const token = localStorage.getItem("token");
 
   const addCartItem = async () => {
+    // alert('장바구니');
     try {
     const result = await axios.post(`${process.env.REACT_APP_API_URL}/carts/add`, {
         prodNo: productId,
@@ -217,6 +219,7 @@ function ItemDetail() {
       console.error(error);
       console.log(memId);
     }
+
   };
 
   const handleDecrement = () => {
@@ -272,6 +275,7 @@ function ItemDetail() {
           </div>
 
       </DetailContainer>
+          <CartListIcon/>
           <img src={item.detailImgpath} alt={item.title} />
     </DetailWarpper>
   );

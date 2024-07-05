@@ -7,6 +7,7 @@ import axios from "axios";
 
 const CartWarpper = styled.div`
   max-width: 1440px;
+  min-height: 820px;
   margin: 0 auto;
   padding: 40px 0;
 
@@ -26,9 +27,43 @@ const CartWarpper = styled.div`
 
     .cartlist_warpper_right {
       width: 500px;
-      height: 379px;
+      /* height: 379px; */
       background: #FFFFFF;
       border: 1px solid #928F8F;
+      padding: 20px;
+
+      .cartList_payment_info {
+        border-bottom: 2px solid black;
+        text-align: left;
+        font-size: 24px;
+        padding: 10px 0px 30px;
+        font-weight: 700;
+      }
+      
+      .total_product_amount {
+        display: flex;
+        justify-content: space-between;
+        font-size: 20px;
+        padding: 50px 0px 20px;
+        border-bottom: 1px solid #928F8F;
+        color: #928F8F;
+        font-weight: 500;
+      }
+
+      .total_payment_amount {
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 0px;
+        align-items: center;
+
+        .total_payment_amount_left {
+          font-size: 20px;
+        }
+
+        .total_payment_amount_right {
+          font-size: 28px;
+        }
+      }
     }
   }
 
@@ -102,7 +137,27 @@ const StyledOutlinCheckbox = styled(IoIosCheckboxOutline)`
    color: #5FB393;
    width: 35px;
    height: 35px;
-   `;
+`;
+
+const ToShopBtn = styled.button`
+  margin-top: -1px;
+  width: 250px;
+  border: 1px solid #928F8F;
+  padding: 20px 0;
+  background-color: #fff;
+  color: #928F8F;
+  
+`;
+
+const ToPaymentBtn = styled.button`
+  margin-top: -1px;
+  width: 250px;
+  border: 1px solid #928F8F;
+  padding: 20px 0;
+  background-color: #000;
+  color: #fff;
+  
+`;
 
 
 
@@ -176,10 +231,23 @@ function Cart() {
             );
           })}
         </div>
-
-        <div className="cartlist_warpper_right">
-
-        </div>
+        
+        <div>
+          <div className="cartlist_warpper_right">
+            <div className="cartList_payment_info">결제 정보</div>
+            <div className="total_product_amount">
+              <p>총 상품 금액</p>
+              <p>20,000원</p>
+            </div>
+            
+            <div className="total_payment_amount">
+              <p className="total_payment_amount_left">총 결제 금액</p>
+              <p className="total_payment_amount_right">20,000원</p>
+            </div>
+          </div>
+            <ToShopBtn>쇼핑하기</ToShopBtn>
+            <ToPaymentBtn>주문하기</ToPaymentBtn>
+          </div>
       </div>
     </CartWarpper>
   );
