@@ -82,7 +82,6 @@ const Autobox = styled.div`
 
   color: #111111;
 
-  /* width: 560px; */
   height: 82px;
 
   flex: none;
@@ -116,7 +115,6 @@ const InfoStyle = styled.div`
   width: 490px;
   height: 29px;
 
-  /* flex: 1; */
   order: 0;
   flex-grow: 0;
   z-index: 0;
@@ -124,8 +122,6 @@ const InfoStyle = styled.div`
 
 const CheckStyle = styled.div`
   margin: 0 auto;
-  /* width: 50px; */
-  /* height: 29px; */
   border-style: none;
 
   font-family: "Noto Sans KR";
@@ -135,6 +131,24 @@ const CheckStyle = styled.div`
   line-height: 20px;
 
   color: #007aff;
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
+`;
+
+const CheckBtn = styled.button`
+  margin: 0 auto;
+  border-style: none;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 20px;
+
+  color: #ff0015;
 
   flex: none;
   order: 1;
@@ -218,9 +232,34 @@ function Register() {
       ...formData,
       [name]: value,
     });
+  };
 
-    // console.log(formData);
-    // setFormData('');
+  const handleIdCheck = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/register/checkid?name=${formData.memId}`);
+      console.log(response);
+      if (!response.data) {
+        alert("이미 존재하는 아이디입니다.");
+      } else {
+        alert("사용 가능한 아이디입니다.");
+      }
+    } catch (error) {
+      console.error("아이디 중복 체크 실패!", error);
+    }
+  };
+
+  const handleEmailCheck = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/register/checkemail?name=${formData.memEmail}`);
+      console.log(response);
+      if (!response.data) {
+        alert("이미 존재하는 이메일입니다.");
+      } else {
+        alert("사용 가능한 이메일입니다.");
+      }
+    } catch (error) {
+      console.error("이메일 중복 체크 실패!", error);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -282,21 +321,6 @@ function Register() {
   //     });
   // }, []);
 
-  // 아이디 중복 체크
-  // const handleIdCheck = () => {
-  //   axios.get(`http://localhost:8080/id/${formData.memId}`)
-  //     .then(response => {
-  //       if (response.data) {
-  //         alert('ID is already taken');
-  //       } else {
-  //         alert('ID is available');
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('There was an error checking the ID!', error);
-  //     });
-  // };
-
   return (
     <RegisterContainer>
       <Autolayout>
@@ -305,13 +329,14 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
-                <CheckStyle>소문자+숫자 6~15자리</CheckStyle>
+                <CheckBtn type="button">중복체크</CheckBtn>
               </CommonInfo>
               <CommonInput
                 type="text"
                 name="memId"
                 value={formData.memId}
                 onChange={handleChange}
+                onBlur={handleIdCheck}
               />
             </Autobox>
 
@@ -343,7 +368,7 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Email</InfoStyle>
-                {/* <CheckStyle>중복체크</CheckStyle> */}
+                <CheckBtn type="button">중복체크</CheckBtn>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -351,6 +376,7 @@ function Register() {
                 name="memEmail"
                 value={formData.memEmail}
                 onChange={handleChange}
+                onBlur={handleEmailCheck}
               />
             </Autobox>
 

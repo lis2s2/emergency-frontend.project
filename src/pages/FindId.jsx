@@ -201,28 +201,27 @@ const CheckBtn = styled.button`
   }
 `;
 
-function Find() {
+function FindId() {
 
   const [memId, setMemId] = useState('');
   const [memName, setMemName] = useState('');
   const [memEmail, setMemEmail] = useState('');
-  const [memPwd, setMemPwd] = useState('');
   const [error, setError] = useState('');
 
   const handleFind = async () => {
-    if (!memId || !memName || !memEmail) {
+    if (!memName || !memEmail) {
       alert('아이디, 이름, 이메일을 전부 입력 해주세요.');
       return;
     }
-
+    console.log("http://localhost:8080/find", {memName, memEmail });
     try {
-      const response = await axios.post('http://localhost:8080/find', { memId, memName, memEmail });
-      setMemPwd(response.data.memPwd);
-      setError('찾음');
-      console.log(response.data.memPwd);
+      const response = await axios.post("http://localhost:8080/find/id", {memName, memEmail });
+      setMemId(response.data.memId);
+      setError('아이디는 "' + response.data + '" 입니다');
+
     } catch (error) {
       console.error('Error fetching password:', error);
-      setMemPwd('');
+      setMemId('');
       setError('사용자를 찾을 수 없습니다.');
     }
   };
@@ -230,16 +229,9 @@ function Find() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>Find passwords</RegisterGround>
+        <RegisterGround>Find Id</RegisterGround>
           <RegisterWhite>
             <Sublayout>
-              <Autobox>
-                  <CommonInfo>
-                    <InfoStyle>ID</InfoStyle>
-                  </CommonInfo>
-                  <CommonInput  value={memId} onChange={(e) => setMemId(e.target.value)} />
-              </Autobox>
-
               <Autobox>
                   <CommonInfo>
                     <>Name</>
@@ -257,7 +249,7 @@ function Find() {
               <>
                 <CheckBtn onClick={handleFind}>Check</CheckBtn>
               </>  
-              {memPwd && <div>비밀번호: {setMemPwd()}</div>}
+              {setMemId && <div>{memId}</div>}
               {error && <div>{error}</div>} 
             </Sublayout>
           </RegisterWhite>
@@ -266,4 +258,4 @@ function Find() {
   );
 }
 
-export default Find;
+export default FindId;

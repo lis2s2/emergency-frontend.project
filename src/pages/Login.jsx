@@ -42,7 +42,6 @@ const Sublayout = styled.form`
   padding: 0 20px;
   gap: 24px;
   margin: 0 auto;
-  /* padding-left: 20px; */
 
   position: absolute;
   width: 606px;
@@ -92,7 +91,6 @@ const Autobox = styled.div`
 
   color: #111111;
 
-  /* width: 606px; */
   height: 82px;
 
   flex: none;
@@ -104,16 +102,11 @@ const Autobox = styled.div`
 const CommonInfo = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
   align-items: center;
   padding: 0px;
 
   width: 559px;
   height: 29px;
-
-  /* margin: 0 auto;
-  width: 22px;
-  height: 29px; */
 
   flex: none;
   order: 0;
@@ -191,7 +184,6 @@ const LoginBtn = styled.button`
     background: #5fb393;
     color: black;
     transition: 0.7s;
-    /* border: none; */
   }
 `;
 
@@ -399,8 +391,8 @@ function Login() {
               <LoginBtn type="submit">Login</LoginBtn>
               <KakaoBtn type="button" onClick={kakaoLoginHandler} />
               <NaverBtn type="button" onClick={naverLoginHandler} />
-              <Textbtn onClick={() => navigate("/find")}>
-                Forgot password?
+              <Textbtn onClick={() => navigate("/find/Id")}>
+                Forgot ID?
                 {/* <span>Search for passwords</span> */}
               </Textbtn>
               <Textbtn onClick={() => navigate("/register")}>

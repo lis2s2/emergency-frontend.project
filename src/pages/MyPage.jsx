@@ -3,7 +3,7 @@ import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import profileImg from "../images/profile.png";
 import logoImg from "../images/logo.png";
-import memberSlice, { selectMember } from "../features/member/memberSlice";
+import { selectMember } from "../features/member/memberSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -42,8 +42,6 @@ const Sublayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  /* padding-top: 200px; */
-  /* padding-right: 200px; */
   gap: 24px;
 
   position: absolute;
@@ -54,31 +52,6 @@ const Sublayout = styled.div`
   order: 0;
   flex-grow: 0;
   z-index: 0;
-`;
-
-const RegisterGround = styled.div`
-  /* padding-bottom: 550px; */
-  /* padding-right: 150px; */
-  /* margin-bottom: 20px; */
-  /* margin: 0 auto; */
-
-  /* width: 187px; */
-  height: 64px;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 900;
-  font-size: 36px;
-  line-height: 52px;
-  text-align: center;
-
-  color: #ffffff;
-
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 `;
 
 const  RegisterWhite = styled.div`
@@ -92,9 +65,6 @@ const  RegisterWhite = styled.div`
 
   width: 850px;
   height: 644px;
-  /* left: 152px;
-  top: 139px; */
-
 
   background: #FFFFFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -116,7 +86,6 @@ const NameCard = styled.div`
   position: absolute;
   width: 550px;
   height: 88px;
-  /* left: 125px; */
   top: 61px;
 
   background: rgba(148, 210, 187, 0.29);
@@ -154,10 +123,8 @@ const CardId = styled.div`
   position: absolute;
   width: 200px;
   height: 64px;
-  /* left: 180px; */
   top: 13px;
   margin-left: 110px;
-  /* margin: 2px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -179,10 +146,8 @@ const CardGrade = styled.div`
   position: absolute;
   width: 34px;
   height: 29px;
-  /* right: 120px; */
   top: 29px;
   margin-left: 410px;
-  /* margin: 2px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -202,10 +167,8 @@ const CardPoint = styled.div`
   position: absolute;
   width: 63px;
   height: 29px;
-  /* left: 501px; */
   top: 30px;
   margin-left: 320px;
-  /* margin: 2px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
@@ -225,7 +188,7 @@ const EditIcons = styled.button`
   position: absolute;
   width: 45px;
   height: 45px;
-  left: 590px;
+  left: 560px;
   top: 174px;
 
   border-style: none;
@@ -244,7 +207,7 @@ const CartIcons = styled.button`
   position: absolute;
   width: 45px;
   height: 45px;
-  left: 660px;
+  left: 620px;
   top: 174px;
 
   border-style: none;
@@ -302,10 +265,6 @@ const FavLogo = styled.div`
 `;
 
 const FavTitle = styled.div`
-  width: 70px;
-  height: 26px;
-  margin-left: 10px;
-
   font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 700;
@@ -331,14 +290,12 @@ const FavList = styled.div`
   left: 269px;
   top: 8px;
   padding-left: 20px;
-  /* margin-left: 20px; */
 
   font-family: 'Noto Sans KR';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-  /* or 162% */
   display: flex;
   align-items: center;
   text-align: left;
@@ -362,7 +319,7 @@ const NoticeBtn = styled.button`
   position: absolute;
   width: 200px;
   height: 70px;
-  left: 206px;
+  left: 210px;
   top: 483px;
 
   background: #5FB393;
@@ -386,7 +343,7 @@ const ServiceBtn = styled.button`
   position: absolute;
   width: 200px;
   height: 70px;
-  left: 427px;
+  left: 440px;
   top: 483px;
 
   background: #5FB393;
@@ -419,7 +376,6 @@ const Withdrawal = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* padding: 12px 24px; */
   gap: 20px;
   isolation: isolate;
 
@@ -449,7 +405,6 @@ const RestText = styled.text`
   display: flex;
   align-items: center;
   text-align: center;
-  /* justify-content: end; */
   margin: 0 auto;
 
   color: #FFFFFF;
@@ -464,7 +419,7 @@ function MyPage() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>My Page</RegisterGround>
+        {/* <RegisterGround>My Page</RegisterGround> */}
           <RegisterWhite>
             <Sublayout>
               <NameCard>
@@ -475,7 +430,7 @@ function MyPage() {
               </NameCard>
 
               <div>
-                <EditIcons><TbMoodEdit /></EditIcons>
+                <EditIcons onClick={() => navigate('/mypage/modify')}><TbMoodEdit /></EditIcons>
               {/* </div>
               <div> */}
                 <CartIcons onClick={() => navigate('/cart')}><PiShoppingCartSimpleBold /></CartIcons>
