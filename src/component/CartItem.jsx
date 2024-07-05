@@ -91,6 +91,7 @@ function CartItem(props) {
 
   
   const formatter = new Intl.NumberFormat('ko-KR');
+  const memId = JSON.parse(localStorage.getItem("member")).memId;
 
 
   const handleDeleteCartItem = async () => {
@@ -99,7 +100,8 @@ function CartItem(props) {
       setCartList(cartList.filter((item) => item.cartNo !== cartitem.no));
       console.log("cartNo: " + cartitem.no);
   
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
+
       setCartList(response.data);
     } catch (error) {
       console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
@@ -111,7 +113,7 @@ function CartItem(props) {
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartitem.no}/updateCount?prodCount=${newCount}`);
       onUpdateCount(cartitem.no, newCount);
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
       setCartList(response.data);
     } catch (error) {
       console.error('Error updating cart item count:', error);
