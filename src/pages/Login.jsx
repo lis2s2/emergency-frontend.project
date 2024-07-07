@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { loginSuccess } from "../features/member/memberSlice";
 import kakaoBtn from "../images/kakao_login_large_wide.png";
@@ -52,7 +52,6 @@ const Sublayout = styled.form`
   flex-grow: 0;
   z-index: 0;
 `;
-
 
 const RegisterWhite = styled.div`
   display: flex;
@@ -275,6 +274,7 @@ const CLIENT_SECRET_N = 'vEffUzBSSt';
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [formData, setFormData] = useState({
     memId: "",
@@ -333,28 +333,65 @@ function Login() {
     window.location.href = naverlink;
   };
 
-  // useEffect(() => { 
-  //   const token = new URL(naverlink).searchParams.get("code");
-  //     const tokenParams = {
-  //     client_id: REST_API_KEY_N,
-  //     client_secret: CLIENT_SECRET_N,
-  //     code: token,
-  //     grant_type : 'authorization_code',
-  //     state: CLIENT_SECRET_N,
+  // useEffect(() => {
+  //   const searchParams = new URLSearchParams(location.search);
+  //   const code = searchParams.get("code");
+  //   const state = searchParams.get("state");
+
+  //   if (code) {
+  //     const fetchToken = async () => {
+  //       try {
+  //         const response = await axios.post(`https://nid.naver.com/oauth2.0/token?`, {
+  //           code,
+  //           state,
+  //         });
+  //         const { token, member } = response.data;
+
+  //         dispatch(loginSuccess(member));
+  //         localStorage.setItem("token", token);
+  //         localStorage.setItem("member", JSON.stringify(member));
+
+  //         navigate("/");
+  //         console.log(token, member);
+  //         alert("^^");
+  //       } catch (error) {
+  //         console.log(error);
+  //         alert("네이버 로그인에 실패하였습니다.");
+  //       }
+  //     };
+
+  //     fetchToken();
   //   }
-    // axios.post( `https://nid.naver.com/oauth2.0/token?code=${token}&state=${CLIENT_SECRET_N}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
+  // }, [location.search, dispatch, navigate]);
+
+  useEffect(() => { 
+    const token = new URL(naverlink).searchParams.get("code");
+    //   const tokenParams = {
+    //   client_id: REST_API_KEY_N,
+    //   client_secret: CLIENT_SECRET_N,
+    //   code: token,
+    //   grant_type : 'authorization_code',
+    //   state: CLIENT_SECRET_N,
+    // }
+    axios.post( `https://nid.naver.com/oauth2.0/token?code=${token}&state=${CLIENT_SECRET_N}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
     // axios.post('https://nid.naver.com/oauth2.0/token?' + tokenParams)
-    // .then(response => {
-    //   // this.token.access_token = response.data.result.access_token;
-    //   // this.token.refresh_token = response.data.result.refresh_token;
-    //   alert('성공');
-    //   console.log(response, token);
-    // })
-    // .catch(error => {
-    //   alert('실패');
-    //   console.log(error);
-    // })
-  // }, []);
+    .then(response => {
+      // this.token.access_token = response.data.result.access_token;
+      // this.token.refresh_token = response.data.result.refresh_token;
+      const { token, member } = response.data;
+      dispatch(loginSuccess(member));
+      localStorage.setItem("token", token);
+      localStorage.setItem("member", JSON.stringify(member));
+
+      navigate("/");
+      console.log(token, member);
+      alert("^^");
+    })
+    .catch(error => {
+      alert('실패');
+      console.log(error);
+    })
+  }, []);
 
   return (
     <LoginContainer>
