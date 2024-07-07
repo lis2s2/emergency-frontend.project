@@ -215,6 +215,9 @@ const CommonBtn = styled.button`
 `;
 
 function Register() {
+  const [stateid, setStateid] = useState(false);
+  const [stateemail, setStateemail] = useState(false);
+
   const [formData, setFormData] = useState({
     memId: "",
     memPwd: "",
@@ -225,8 +228,6 @@ function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    // console.log(e.target);
-
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -239,8 +240,10 @@ function Register() {
       const response = await axios.get(`http://localhost:8080/register/checkid?name=${formData.memId}`);
       console.log(response);
       if (!response.data) {
+        setStateid(false);
         alert("이미 존재하는 아이디입니다.");
       } else {
+        setStateid(true);
         alert("사용 가능한 아이디입니다.");
       }
     } catch (error) {
@@ -253,8 +256,10 @@ function Register() {
       const response = await axios.get(`http://localhost:8080/register/checkemail?name=${formData.memEmail}`);
       console.log(response);
       if (!response.data) {
+        setStateemail(false);
         alert("이미 존재하는 이메일입니다.");
       } else {
+        setStateemail(true);
         alert("사용 가능한 이메일입니다.");
       }
     } catch (error) {
@@ -298,8 +303,13 @@ function Register() {
     axios
       .post("http://localhost:8080/register", formData)
       .then((response) => {
-        alert("회원가입을 성공하였습니다.");
-        navigate("/login");
+        if (stateid === true && stateemail === true) {
+          console.log(stateid);
+          alert("회원가입을 성공하였습니다.");
+          navigate("/login");
+        } else if (stateid === false || stateemail === false) {
+          alert("다시 시도해주세요.");
+        }
       })
       .catch((error) => {
         console.error("회원가입 실패!", error);
@@ -329,14 +339,14 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
-                <CheckBtn type="button">중복체크</CheckBtn>
+                <CheckBtn type="button" onClick={handleIdCheck}>중복체크</CheckBtn>
               </CommonInfo>
               <CommonInput
                 type="text"
                 name="memId"
                 value={formData.memId}
                 onChange={handleChange}
-                onBlur={handleIdCheck}
+                
               />
             </Autobox>
 
@@ -368,7 +378,7 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Email</InfoStyle>
-                <CheckBtn type="button">중복체크</CheckBtn>
+                <CheckBtn type="button" onClick={handleEmailCheck}>중복체크</CheckBtn>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -376,7 +386,7 @@ function Register() {
                 name="memEmail"
                 value={formData.memEmail}
                 onChange={handleChange}
-                onBlur={handleEmailCheck}
+                
               />
             </Autobox>
 
