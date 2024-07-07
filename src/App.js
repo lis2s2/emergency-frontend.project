@@ -62,13 +62,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Main />} />
-          <Route path="login" element={<Login />} />
+          <Route path="login/*" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="find/id" element={<FindId />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="mypage/modify" element={<Modify />} />
-          <Route path="/login/oauth2/code/kakao" element={<OAuth2RedirectHandler />} />
-          <Route path="/login/oauth2/code/naver" element={<OAuth2RedirectHandler />} />
+          {/* <Route path="/login/oauth2/code/kakao" element={<OAuth2RedirectHandler />} /> */}
+          {/* <Route path="/login/oauth2/code/naver" element={<OAuth2RedirectHandler />} /> */}
         </Route>
       </Routes>
     </>

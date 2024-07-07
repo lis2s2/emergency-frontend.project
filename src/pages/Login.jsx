@@ -365,7 +365,10 @@ function Login() {
   // }, [location.search, dispatch, navigate]);
 
   useEffect(() => { 
-    const token = new URL(naverlink).searchParams.get("code");
+    const searchParams = new URLSearchParams(location.search);
+    const code = searchParams.get("code");
+    const state = searchParams.get("state");
+    console.log(code);
     //   const tokenParams = {
     //   client_id: REST_API_KEY_N,
     //   client_secret: CLIENT_SECRET_N,
@@ -373,17 +376,18 @@ function Login() {
     //   grant_type : 'authorization_code',
     //   state: CLIENT_SECRET_N,
     // }
-    axios.post( `https://nid.naver.com/oauth2.0/token?code=${token}&state=${CLIENT_SECRET_N}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
+    axios.post( `https://nid.naver.com/oauth2.0/token?code=${code}&state=${CLIENT_SECRET_N}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
     // axios.post('https://nid.naver.com/oauth2.0/token?' + tokenParams)
     .then(response => {
       // this.token.access_token = response.data.result.access_token;
       // this.token.refresh_token = response.data.result.refresh_token;
       const { token, member } = response.data;
+      console.log(token);
       dispatch(loginSuccess(member));
       localStorage.setItem("token", token);
       localStorage.setItem("member", JSON.stringify(member));
 
-      navigate("/");
+      // navigate("/");
       console.log(token, member);
       alert("^^");
     })
