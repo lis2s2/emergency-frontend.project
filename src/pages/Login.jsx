@@ -268,8 +268,8 @@ const REST_API_KEY_K = '6725e27a1c1047905dfd6bad61521355';
 const REDIRECT_URI_K = 'http://localhost:3000/login/oauth2/code/kakao';
 
 const REST_API_KEY_N = 'QiZW7Xq40T2iOCfUC6EH';
-// const REDIRECT_URI_N = 'http://localhost:3000/login/oauth2/code/naver';
-const REDIRECT_URI_N = 'https://feature-member--emergencyt.netlify.app/login/oauth2/code/naver';
+const REDIRECT_URI_N = 'http://localhost:3000/login/oauth2/code/naver';
+// const REDIRECT_URI_N = 'https://feature-member--emergencyt.netlify.app/login/oauth2/code/naver';
 const CLIENT_SECRET_N = 'vEffUzBSSt';
 
 function Login() {
