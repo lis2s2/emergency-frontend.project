@@ -58,7 +58,7 @@ function CartListIcon() {
       console.log(error);
     }
     
-  }, []);
+  }, [cartCount]);
 
 
 

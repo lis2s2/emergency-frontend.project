@@ -3,6 +3,7 @@ import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
 import { useEffect, useState } from "react";
 import CartItem from "../component/CartItem";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const CartWarpper = styled.div`
@@ -166,19 +167,46 @@ const ToPaymentBtn = styled.button`
 function Cart() {
   const [isChecked, setIsChecked] = useState(false);
   const [cartList, setCartList] = useState([]);
+  // 안되면 삭제 
+  const [selectedItems, setSelectedItems] = useState([]);  
+  const navigate = useNavigate();
+
   
-  const [selectedItems, setSelectedItems] = useState([]);
+  const memId = JSON.parse(localStorage.getItem("member")).memId;
+  const token = localStorage.getItem("token");
   
 
-  const handleCheck = () => {
-    setIsChecked(!isChecked);
+//  const handleCheck = () => {
+//    setIsChecked(!isChecked);
+//  }
+
+// 얘랑 밑에 안되면 삭제
+const handleCheck = () => {
+  setIsChecked(!isChecked);
+  if (!isChecked) {
+    setSelectedItems(cartList.map(item => item.no));
+  } else {
+    setSelectedItems([]);
   }
+};
+
+const handleItemCheck = (cartNo) => {
+  if (selectedItems.includes(cartNo)) {
+    setSelectedItems(selectedItems.filter(no => no !== cartNo));
+  } else {
+    setSelectedItems([...selectedItems, cartNo]);
+  }
+};
+
 
   useEffect(() => {
     const fetchCartList = async () => {
       try {
-        const memId = JSON.parse(localStorage.getItem("member")).memId;
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`,{
+          headers: {
+            Authorization: token,
+          }
+        });
         setCartList(response.data);
       } catch (error) {
         console.error(error);
@@ -196,7 +224,29 @@ function Cart() {
     setCartList(updatedCartList);
   };
 
+  const deleteAllCart = async () => {
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL}/carts/deleteAll?memberMemId=${memId}`, {
+        headers: {
+          Authorization: token,
+        }
+      });
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`, {
+        headers: {
+          Authorization: token,
+        }
+      });
+      setCartList(response.data);
+    } catch (error) {
+      console.error('장바구니 전체 삭제 실패:', error);
+    }
+  };
 
+  // 이것도 안되면 삭제
+  const totalProductAmount = cartList.reduce((total, item) => total + item.prodPrice * item.prodCount, 0);
+  const totalPaymentAmount = cartList.reduce((total, item) => {
+    return selectedItems.includes(item.no) ? total + item.prodPrice * item.prodCount : total;
+  }, 0);
 
   return (
     <CartWarpper>
@@ -214,7 +264,7 @@ function Cart() {
             </div>
             <div className="cartlist_btn_group_right">
               <div className="btn_group cursor-pointer">선택 삭제</div>
-              <div className="btn_group cursor-pointer">전체 삭제</div>
+              <div className="btn_group cursor-pointer" onClick={deleteAllCart}>전체 삭제</div>
             </div>
           </div>
 
@@ -223,10 +273,13 @@ function Cart() {
               <CartItem 
                 key={cartitem.no} 
                 cartitem={cartitem} 
-                isChecked={isChecked}
+                // isChecked={isChecked}
+                isChecked={selectedItems.includes(cartitem.no)}
                 onUpdateCount={onUpdateCount}
                 cartList={cartList}
                 setCartList={setCartList}
+                // onCheck={handleCheck}
+                onCheck={() => handleItemCheck(cartitem.no)}
               />
             );
           })}
@@ -237,15 +290,18 @@ function Cart() {
             <div className="cartList_payment_info">결제 정보</div>
             <div className="total_product_amount">
               <p>총 상품 금액</p>
-              <p>20,000원</p>
+              {/* <p>20,000원</p> */}
+              <p>{totalProductAmount.toLocaleString()}원</p>
             </div>
             
             <div className="total_payment_amount">
               <p className="total_payment_amount_left">총 결제 금액</p>
-              <p className="total_payment_amount_right">20,000원</p>
+              {/* <p className="total_payment_amount_right">20,000원</p> */}
+              <p className="total_payment_amount_right">{totalPaymentAmount.toLocaleString()}원</p>
             </div>
           </div>
-            <ToShopBtn>쇼핑하기</ToShopBtn>
+            {/* 이것도 모달창 만들어서 보내주기... 확인버튼 눌렀을때.. */}
+            <ToShopBtn onClick={() => navigate('/shop')}>쇼핑하기</ToShopBtn>
             <ToPaymentBtn>주문하기</ToPaymentBtn>
           </div>
       </div>

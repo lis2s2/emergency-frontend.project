@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CartListIcon from "../component/CartListIcon";
 
@@ -179,6 +179,7 @@ function ItemDetail() {
   const [count, setCount] = useState(1);
   const [item, setItem] = useState([]);
   const { productId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {
@@ -209,15 +210,14 @@ function ItemDetail() {
         prodCount: count
       }, {
         headers: {
-          // 'Content-Type': 'application/json',
           Authorization: token,
         },
       });
+      // window.location.reload()
       return result.data;
       // 장바구니 확인 모달 띄우기
     } catch (error) {
       console.error(error);
-      console.log(memId);
     }
 
   };

@@ -3,6 +3,7 @@ import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
 import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CartItemWrapper = styled.div`
 
@@ -82,13 +83,12 @@ const CloseBtn = styled(IoCloseOutline)`
 `;
 
 function CartItem(props) {
-  const { isChecked, cartitem, onUpdateCount, setCartList, cartList} = props;
+  const { isChecked, cartitem, onUpdateCount, setCartList, cartList , onCheck} = props;
+  // const { isSelected, cartitem, onUpdateCount, setCartList, cartList} = props;
 
   const [count, setCount] = useState(cartitem.prodCount);
 
 
-
-  
   const formatter = new Intl.NumberFormat('ko-KR');
   const memId = JSON.parse(localStorage.getItem("member")).memId;
 
@@ -100,6 +100,7 @@ function CartItem(props) {
       console.log("cartNo: " + cartitem.no);
   
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
+
 
       setCartList(response.data);
     } catch (error) {
@@ -115,7 +116,7 @@ function CartItem(props) {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
       setCartList(response.data);
     } catch (error) {
-      console.error('Error updating cart item count:', error);
+      console.error('장바구니 갯수를 업데이트 하는 중 오류:', error);
     }
   };
 
@@ -131,9 +132,11 @@ function CartItem(props) {
     updateCartCount(count + 1);
   };
 
+
+
   return (
     <CartItemWrapper>
-      {isChecked ? <StyledCheckbox/> : <StyledOutlinCheckbox/>}
+      {isChecked ? <StyledCheckbox onClick={onCheck} /> : <StyledOutlinCheckbox onClick={onCheck}/>}
         <CartItemImg src={cartitem.prodImgpath}/> 
         <CartItemTitle>{cartitem.prodTitle}</CartItemTitle>
       <div className="btn_wrapper">
