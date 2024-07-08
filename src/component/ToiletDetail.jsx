@@ -161,10 +161,15 @@ const StlyedHr = styled.hr`
 `;
 
 function ToiletDetail() {
-  const closestToiletLocations = useOutletContext();
+  const { closestToiletLocations, location } = useOutletContext();
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
   const navigate = useNavigate();
+
+  const handleFindRoute = (lat, lng, name) => {
+    const url = `https://map.kakao.com/link/from/내위치,${location.center.lat},${location.center.lng}/to/${name},${lat},${lng}`;
+    window.open(url, '_blank');
+  }
 
   const selectedToilet = closestToiletLocations.filter((location) => {
     return location.POI_ID === toiletNo;
@@ -183,7 +188,7 @@ function ToiletDetail() {
       if (X_WGS84 === undefined) {
         return;
       }
-      const address = await fetchAddressFromCoords(X_WGS84, Y_WGS84);
+      const address = await fetchAddressFromCoords(Y_WGS84, X_WGS84);
       setAddress(address);
       setIsLoading(true);
     };
@@ -308,7 +313,7 @@ function ToiletDetail() {
         </MemIdScoreInputContainer>
       </ToiletInfoCommentContainer>
       <ButtonContainer>
-        <SearchButton>
+        <SearchButton onClick={() => handleFindRoute(Y_WGS84, X_WGS84, FNAME)}>
           <StyledTbRoadSign />
           길찾기
         </SearchButton>

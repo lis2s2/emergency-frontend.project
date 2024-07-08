@@ -3,7 +3,9 @@ import ToiletMap from "../component/ToiletMap";
 import { useEffect, useState } from "react";
 
 import { fetchToiletLocations } from "../api/toiletAPI";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
+import ToiletDetailMap from "../component/ToiletDetailMap";
+import { fetchStarbucksList } from "../api/kakaoMapAPI";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -36,10 +38,27 @@ function Main() {
     errMsg: null,
     isLoading: true,
   });
+  const { toiletNo } = useParams();
 
   const [closestToiletLocations, setClosestToiletLocations] = useState([]);
   const [toiletLocations, setToiletLocations] = useState([]);
-  // const { toiletId } = useParams();
+  const [starbucksList, setStarbucksList] = useState([]);
+  const [addCafeList, setAddCafeList] = useState(false);
+
+  const toggleCafeList = () => {
+    setAddCafeList(!addCafeList); 
+  };
+
+  useEffect(() => {
+    if (!addCafeList) {
+      const filteredList = closestToiletLocations.filter(
+        (value) => value.place_url === undefined);
+      setToiletLocations(filteredList); 
+    } else {
+      const combinedList = [...closestToiletLocations, ...starbucksList];
+      setToiletLocations(combinedList); 
+    };
+  }, [addCafeList]);
 
   useEffect(() => {
     // if (navigator.geolocation) {
@@ -98,36 +117,62 @@ function Main() {
       .filter((value) => value.distance < 500);
 
     setClosestToiletLocations(sortedToiletLocations);
-  }, [toiletLocations, location]);
+  }, [toiletLocations]);
+
+  useEffect(() => {
+    try {
+      const getStarbucksList = async () => {
+        const result = await fetchStarbucksList(
+          location.center.lat,
+          location.center.lng
+        );
+        setStarbucksList(result);
+      };
+      getStarbucksList();
+    } catch (error) {}
+  }, []);
 
   const getDistanceInMeters = (lat1, lng1, lat2, lng2) => {
     const R = 6371000;
     const toRadians = (degree) => degree * (Math.PI / 180);
-
     const dLat = toRadians(lat2 - lat1);
     const dLng = toRadians(lng2 - lng1);
-
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(toRadians(lat1)) *
         Math.cos(toRadians(lat2)) *
         Math.sin(dLng / 2) *
         Math.sin(dLng / 2);
-
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
     const distance = R * c;
-
     return Math.round(distance);
   };
 
   return (
     <MainContainer>
       <TolietListSection>
-        <Outlet context={closestToiletLocations} />
+        <Outlet
+          context={{
+            closestToiletLocations: closestToiletLocations,
+            location: location,
+            toggleCafeList: toggleCafeList,
+            addCafeList: addCafeList
+          }}
+        />
       </TolietListSection>
       <MapSection>
-        <ToiletMap closestToiletLocations={closestToiletLocations} location={location} />
+        {toiletNo ? (
+          <ToiletDetailMap
+            toilet={closestToiletLocations?.find(
+              (toilet) => toilet.POI_ID === toiletNo
+            )}
+          />
+        ) : (
+          <ToiletMap
+            closestToiletLocations={closestToiletLocations}
+            location={location}
+          />
+        )}
       </MapSection>
     </MainContainer>
   );

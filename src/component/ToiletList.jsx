@@ -22,10 +22,16 @@ const ToggleButton = styled.button`
   background-color: white;
   color: #3e4958;
   font-weight: 600;
-  &:hover {
-    background-color: #3e4958;
-    color: white;
-  }
+`;
+
+const ToggleButtonToggled = styled.button`
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 16px;
+  border: 1px solid #3e4958;
+  background-color: #3e4958;
+  color: white;
+  font-weight: 600;
 `;
 
 const StyledMdTune = styled(MdTune)`
@@ -41,17 +47,32 @@ const ListContainer = styled.div`
   margin-top: 16px;
   overflow-y: auto;
   max-height: 728px;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #ccc;
+  }
 `;
 
 function ToiletList() {
-  const closestToiletLocations = useOutletContext();
-  console.log(closestToiletLocations);
+  const { closestToiletLocations, location, toggleCafeList, addCafeList } =
+    useOutletContext();
 
   return (
     <ButtonListContainer>
       <ButtonContainer>
         <ToggleButton>주유소</ToggleButton>
-        <ToggleButton>대형 까페</ToggleButton>
+        {addCafeList ? (
+          <ToggleButtonToggled onClick={() => toggleCafeList()}>
+            대형 까페
+          </ToggleButtonToggled>
+        ) : (
+          <ToggleButton onClick={() => toggleCafeList()}>
+            대형 까페
+          </ToggleButton>
+        )}
         <ToggleButton>사용자 등록 화장실</ToggleButton>
         <StyledMdTune />
       </ButtonContainer>
@@ -61,6 +82,7 @@ function ToiletList() {
             <ToiletListItem
               key={toiletLocation.POI_ID}
               toiletLocation={toiletLocation}
+              location={location}
             />
           );
         })}

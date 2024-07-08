@@ -13,7 +13,6 @@ import ToiletList from "./component/ToiletList";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import ItemDetail from "./pages/ItemDetail";
-import ShopItem from "./component/ShopItem";
 
 const GlobalStyle = createGlobalStyle`
   body {

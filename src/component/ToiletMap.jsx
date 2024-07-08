@@ -1,6 +1,7 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import styled from "styled-components";
 import logoImg from "../images/logo.png";
+import cafeImg from "../images/cafe_icon.png"
 import { useState } from "react";
 import { TbRoadSign } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -77,10 +78,15 @@ function ToiletMap(props) {
 
   const toggleMarker = (toiletNo) => {
     setOpenMarkerInfo((prev) => ({
-      ...prev,
-      [toiletNo]: !prev[toiletNo],
+      ...Object.fromEntries(Object.entries(prev).map(([key, value]) => [key, false])),
+      [toiletNo]: !prev[toiletNo]
     }));
   };
+
+  const handleFindRoute = (lat, lng, name) => {
+    const url = `https://map.kakao.com/link/from/내위치,${location.center.lat},${location.center.lng}/to/${name},${lat},${lng}`;
+    window.open(url, '_blank');
+  }
 
   return (
     <CustomMap
@@ -96,7 +102,7 @@ function ToiletMap(props) {
             position={{ lat: value.Y_WGS84, lng: value.X_WGS84 }}
             title={value.FNAME}
             image={{
-              src: logoImg,
+              src: value.place_url === undefined ? logoImg : cafeImg,
               size: {
                 width: 32,
                 height: 32,
@@ -108,7 +114,7 @@ function ToiletMap(props) {
               <ToiletInfoWrapper onClick={() => toggleMarker(value.POI_ID)}>
                 <StyledTitle>{value.FNAME}</StyledTitle>
                 <ItemButtonContainer>
-                  <SearchButton>
+                  <SearchButton onClick={() => handleFindRoute(value.Y_WGS84, value.X_WGS84, value.FNAME)}>
                     <StyledTbRoadSign />
                     길찾기
                   </SearchButton>

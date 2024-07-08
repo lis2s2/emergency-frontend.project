@@ -103,15 +103,20 @@ const StyledContent = styled.p`
 
 function ToiletListItem(props) {
   const {
-    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }
+    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }, location
   } = props;
   const [address, setAddress] = useState("");
   const [toiletScore, setToiletScore] = useState(3.0);
   const navigate = useNavigate();
 
+  const handleFindRoute = (lat, lng, name) => {
+    const url = `https://map.kakao.com/link/from/내위치,${location.center.lat},${location.center.lng}/to/${name},${lat},${lng}`;
+    window.open(url, '_blank');
+  }
+
   useEffect(() => {
     const getAddress = async () => {
-      const address = await fetchAddressFromCoords(X_WGS84, Y_WGS84);
+      const address = await fetchAddressFromCoords(Y_WGS84, X_WGS84);
       setAddress(address);
     };
     getAddress();
@@ -139,7 +144,7 @@ function ToiletListItem(props) {
         <StyledContent>{address}</StyledContent>
       </ItemInfoContainer>
       <ItemButtonContainer>
-        <SearchButton>
+        <SearchButton onClick={() => handleFindRoute(Y_WGS84, X_WGS84, FNAME)}>
           <StyledTbRoadSign />
           길찾기
         </SearchButton>
