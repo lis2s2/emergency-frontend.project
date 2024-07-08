@@ -14,6 +14,7 @@ import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import ItemDetail from "./pages/ItemDetail";
 import ShopItem from "./component/ShopItem";
+import Order from "./pages/Order";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -62,6 +63,7 @@ function App() {
           <Route path="shop" element={<Shop />} />
           <Route path="shop/detail/:productId" element={<ItemDetail />} />
           <Route path="cart" element={<Cart/>} />
+          <Route path="order" element={<Order/>} />
           <Route path="/*" element={<Main/>} />
         </Route>
       </Routes>

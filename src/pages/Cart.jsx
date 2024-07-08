@@ -167,7 +167,6 @@ const ToPaymentBtn = styled.button`
 function Cart() {
   const [isChecked, setIsChecked] = useState(false);
   const [cartList, setCartList] = useState([]);
-  // 안되면 삭제 
   const [selectedItems, setSelectedItems] = useState([]);  
   const navigate = useNavigate();
 
@@ -176,11 +175,7 @@ function Cart() {
   const token = localStorage.getItem("token");
   
 
-//  const handleCheck = () => {
-//    setIsChecked(!isChecked);
-//  }
 
-// 얘랑 밑에 안되면 삭제
 const handleCheck = () => {
   setIsChecked(!isChecked);
   if (!isChecked) {
@@ -242,7 +237,7 @@ const handleItemCheck = (cartNo) => {
     }
   };
 
-  // 이것도 안되면 삭제
+
   const totalProductAmount = cartList.reduce((total, item) => total + item.prodPrice * item.prodCount, 0);
   const totalPaymentAmount = cartList.reduce((total, item) => {
     return selectedItems.includes(item.no) ? total + item.prodPrice * item.prodCount : total;
@@ -290,19 +285,17 @@ const handleItemCheck = (cartNo) => {
             <div className="cartList_payment_info">결제 정보</div>
             <div className="total_product_amount">
               <p>총 상품 금액</p>
-              {/* <p>20,000원</p> */}
               <p>{totalProductAmount.toLocaleString()}원</p>
             </div>
             
             <div className="total_payment_amount">
               <p className="total_payment_amount_left">총 결제 금액</p>
-              {/* <p className="total_payment_amount_right">20,000원</p> */}
               <p className="total_payment_amount_right">{totalPaymentAmount.toLocaleString()}원</p>
             </div>
           </div>
             {/* 이것도 모달창 만들어서 보내주기... 확인버튼 눌렀을때.. */}
             <ToShopBtn onClick={() => navigate('/shop')}>쇼핑하기</ToShopBtn>
-            <ToPaymentBtn>주문하기</ToPaymentBtn>
+            <ToPaymentBtn onClick={() => navigate('/order')}>주문하기</ToPaymentBtn>
           </div>
       </div>
     </CartWarpper>
