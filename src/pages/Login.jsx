@@ -270,7 +270,7 @@ const REDIRECT_URI_K = 'http://localhost:3000/login/oauth2/code/kakao';
 const REST_API_KEY_N = 'QiZW7Xq40T2iOCfUC6EH';
 const REDIRECT_URI_N = 'http://localhost:3000/login/oauth2/code/naver';
 // const REDIRECT_URI_N = 'https://feature-member--emergencyt.netlify.app/login/oauth2/code/naver';
-const CLIENT_SECRET_N = 'vEffUzBSSt';
+const CLIENT_SECRET_N = 'nImi9vDd6q';
 
 function Login() {
   const dispatch = useDispatch();
@@ -370,6 +370,7 @@ function Login() {
     const code = searchParams.get("code");
     const state = searchParams.get("state");
     console.log(code);
+    console.log(state);
     //   const tokenParams = {
     //   client_id: REST_API_KEY_N,
     //   client_secret: CLIENT_SECRET_N,
@@ -377,15 +378,13 @@ function Login() {
     //   grant_type : 'authorization_code',
     //   state: CLIENT_SECRET_N,
     // }
-    axios.post( `https://nid.naver.com/oauth2.0/token?code=${code}&state=${CLIENT_SECRET_N}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
+    axios.post( `https://nid.naver.com/oauth2.0/token?code=${code}&state=${state}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
     // axios.post('https://nid.naver.com/oauth2.0/token?' + tokenParams)
     .then(response => {
-      // this.token.access_token = response.data.result.access_token;
-      // this.token.refresh_token = response.data.result.refresh_token;
       const { token, member } = response.data;
       console.log(token);
       dispatch(loginSuccess(member));
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", JSON.stringify(token));
       localStorage.setItem("member", JSON.stringify(member));
 
       // navigate("/");
@@ -393,7 +392,7 @@ function Login() {
       alert("^^");
     })
     .catch(error => {
-      alert('실패');
+      alert('네이버 API 실패');
       console.log(error);
     })
   }, []);

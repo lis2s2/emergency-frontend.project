@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { useState } from "react";
+import { MdCancel } from "react-icons/md";
+import axios from "axios";
 
 const RegisterContainer = styled.div`
   /* width: 100%; */
@@ -187,12 +189,31 @@ const EditIcons = styled.button`
   position: absolute;
   width: 45px;
   height: 45px;
-  left: 620px;
+  left: 565px;
   top: 174px;
 
   border-style: none;
   background-color: white;
   font-size: 35px;
+  vertical-align: middle;
+  line-height: 20px;
+
+  flex: none;
+  order: 3;
+  flex-grow: 0;
+  z-index: 3;
+`;
+
+const CancelIcons = styled.button`
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  left: 620px;
+  top: 174px;
+
+  border-style: none;
+  background-color: white;
+  font-size: 40px;
   vertical-align: middle;
   line-height: 20px;
 
@@ -208,7 +229,7 @@ const Favorites = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 27px;
+  padding-top: 70px;
   gap: 15px;
   isolation: isolate;
 
@@ -264,19 +285,19 @@ const CommonInput = styled.input`
   align-self: stretch;
 `;
 
-function Modify(props) {
-    const {memId} = props;
-  // const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const member = useSelector(selectMember);
-  const [editValue, setEditValue] = useState('');
-  const [edit, setEdit] = useState(null);
+function Modify() {
+  //   const {memId} = props;
+  // // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const member = useSelector(selectMember);
+  // const [editValue, setEditValue] = useState('');
+  // const [edit, setEdit] = useState(null);
 
-  const handleEditChange = (e) => {
-    setEditValue(e.target.value);
-    console.log(e.target.value);
-    // setEditValue(memId);
-  };
+  // const handleEditChange = (e) => {
+  //   setEditValue(e.target.value);
+  //   console.log(e.target.value);
+  //   // setEditValue(memId);
+  // };
   
 //   const handleEditSave = (id) => {
 //     setTodo(todo.map((t) => (t.id === id ? { ...t, contents: editValue } : t)));
@@ -299,6 +320,52 @@ function Modify(props) {
 //     // 다시 빈값으로 만들어줌
 //     setInputValue('');
 //   };
+// const { memId } = props;
+const navigate = useNavigate();
+const member = useSelector(selectMember);
+const [id, setId] = useState(member.memId);
+const [email, setEmail] = useState(member?.memEmail || "");
+const [password, setPassword] = useState("");
+
+const handleEmailChange = (e) => {
+  setEmail(e.target.value);
+};
+
+const handlePasswordChange = (e) => {
+  setPassword(e.target.value);
+};
+
+const handleEdit = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const data = { memId: id };
+
+    if (email) data.memEmail = email;
+    if (password) data.memPwd = password;
+
+      const response = await axios.put('http://localhost:8080/mypage/modify', data,  {
+        headers : {
+          'Content-Type': `application/json`,
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      if (response.status === 200) {
+          // setEmail(JSON.stringify(response.email));
+
+          alert("수정되었습니다!");
+          navigate('/mypage');
+      } else {
+          alert("수정 실패: " + response.data.message);
+      }
+  } catch (error) {
+      console.error('Error occurred while modifying user:', error);
+      alert("서버 에러로 수정 실패.");
+  }
+}
+
+const handleCancel = () => {
+  navigate('/mypage');
+}
 
   return (
     <RegisterContainer>
@@ -313,17 +380,26 @@ function Modify(props) {
               <CardGrade>{member?.memGrade}</CardGrade>
             </NameCard>
 
-            <>
+            <div>
               <EditIcons onClick={() => navigate("/mypage")}>
-                <FaCheckCircle />
+                <FaCheckCircle onClick={handleEdit} />
               </EditIcons>
-            </>
+              <CancelIcons onClick={() => navigate("/mypage")}>
+                <MdCancel onClick={handleCancel} />
+              </CancelIcons>
+            </div>
 
-            <Favorites onEditChange={handleEditChange}>
+            <Favorites>
               <FavTitle>이메일 변경</FavTitle>
-              <CommonInput></CommonInput>
+              <CommonInput  type="email" value={email} onChange={handleEmailChange}></CommonInput>
               <FavTitle>비밀번호 변경</FavTitle>
-              <CommonInput type="password" ></CommonInput>
+              <CommonInput type="password" value={password} onChange={handlePasswordChange}></CommonInput>
+              {/* <h2>새 비밀번호</h2>
+        <input
+          type="password"
+          value={newPassword}
+          onChange={handleNewPasswordChange}
+        /> */}
             </Favorites>
           </Sublayout>
         </RegisterWhite>
