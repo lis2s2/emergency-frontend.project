@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchToiletLocations } from "../api/toiletAPI";
 import { Outlet, useParams } from "react-router-dom";
 import ToiletDetailMap from "../component/ToiletDetailMap";
-import { fetchStarbucksList } from "../api/kakaoMapAPI";
+import { fetchCafeList, fetchGasStationList } from "../api/kakaoMapAPI";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -32,8 +32,8 @@ const MapSection = styled.div`
 function Main() {
   const [location, setLocation] = useState({
     center: {
-      lat: 37.497175,
-      lng: 127.027926,
+      lat: 37.504598,
+      lng: 127.02506,
     },
     errMsg: null,
     isLoading: true,
@@ -42,23 +42,68 @@ function Main() {
 
   const [closestToiletLocations, setClosestToiletLocations] = useState([]);
   const [toiletLocations, setToiletLocations] = useState([]);
-  const [starbucksList, setStarbucksList] = useState([]);
+  const [cafeList, setCafeList] = useState([]);
+  const [gasList, setgasList] = useState([]);
+  const [addGasList, setAddGasList] = useState(false);
   const [addCafeList, setAddCafeList] = useState(false);
 
   const toggleCafeList = () => {
-    setAddCafeList(!addCafeList); 
+    setAddCafeList(!addCafeList);
+  };
+
+  const toggleGasList = () => {
+    setAddGasList(!addGasList);
   };
 
   useEffect(() => {
+    try {
+      const getCafeList = async () => {
+        const result = await fetchCafeList(
+          location.center.lat,
+          location.center.lng
+        );
+        setCafeList(result);
+      };
+      getCafeList();
+      
+      const getGasList = async () => {
+        const result = await fetchGasStationList(
+          location.center.lat,
+          location.center.lng
+        );
+        setgasList(result);
+        console.log(result);
+      };
+      getGasList();
+    } catch (error) {}
+  }, [ location ]);
+  
+  useEffect(() => {
     if (!addCafeList) {
       const filteredList = closestToiletLocations.filter(
-        (value) => value.place_url === undefined);
-      setToiletLocations(filteredList); 
+        (value) => value.place_url === undefined
+      );
+      setToiletLocations(filteredList);
     } else {
-      const combinedList = [...closestToiletLocations, ...starbucksList];
-      setToiletLocations(combinedList); 
-    };
-  }, [addCafeList]);
+      const combinedList = [...closestToiletLocations, ...cafeList];
+      setToiletLocations(combinedList);
+    }
+    
+  }, [addCafeList, cafeList]);
+
+  useEffect(() => {
+    if (!addGasList) {
+      const filteredList = closestToiletLocations.filter(
+        (value) => value.place_url === undefined
+      );
+      setToiletLocations(filteredList);
+    } else {
+      const combinedList = [...closestToiletLocations, ...gasList];
+      setToiletLocations(combinedList);
+      console.log(combinedList);
+    }
+    
+  }, [addGasList, gasList]);
 
   useEffect(() => {
     // if (navigator.geolocation) {
@@ -117,20 +162,7 @@ function Main() {
       .filter((value) => value.distance < 500);
 
     setClosestToiletLocations(sortedToiletLocations);
-  }, [toiletLocations]);
-
-  useEffect(() => {
-    try {
-      const getStarbucksList = async () => {
-        const result = await fetchStarbucksList(
-          location.center.lat,
-          location.center.lng
-        );
-        setStarbucksList(result);
-      };
-      getStarbucksList();
-    } catch (error) {}
-  }, []);
+  }, [toiletLocations, location]);
 
   const getDistanceInMeters = (lat1, lng1, lat2, lng2) => {
     const R = 6371000;
@@ -147,6 +179,7 @@ function Main() {
     const distance = R * c;
     return Math.round(distance);
   };
+  console.log(closestToiletLocations);
 
   return (
     <MainContainer>
@@ -156,7 +189,9 @@ function Main() {
             closestToiletLocations: closestToiletLocations,
             location: location,
             toggleCafeList: toggleCafeList,
-            addCafeList: addCafeList
+            addCafeList: addCafeList,
+            toggleGasList: toggleGasList,
+            addGasList: addGasList
           }}
         />
       </TolietListSection>
@@ -166,6 +201,7 @@ function Main() {
             toilet={closestToiletLocations?.find(
               (toilet) => toilet.POI_ID === toiletNo
             )}
+            location={location}
           />
         ) : (
           <ToiletMap

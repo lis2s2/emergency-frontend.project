@@ -2,7 +2,10 @@ import styled from "styled-components";
 import { TbRoadSign } from "react-icons/tb";
 import { PiStarFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
-import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
+import {
+  fetchAddressFromCoords,
+  fetchWCongnamulCoord,
+} from "../api/kakaoMapAPI";
 import { useNavigate } from "react-router-dom";
 import { getAvgScoreByToiletNo } from "../api/toiletReviewAPI";
 
@@ -48,7 +51,7 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
+  background-color: #4988bf;
   color: #ffffff;
   font-weight: 600;
   height: 36px;
@@ -64,7 +67,7 @@ const DetailButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
+  background-color: #4988bf;
   color: #ffffff;
   font-weight: 600;
   height: 36px;
@@ -91,6 +94,10 @@ const StyledTitle = styled.p`
   color: #000000;
   text-align: start;
   vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
 `;
 
 const StyledContent = styled.p`
@@ -101,18 +108,26 @@ const StyledContent = styled.p`
   vertical-align: middle;
 `;
 
+
 function ToiletListItem(props) {
   const {
-    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }, location
+    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID },
+    location,
   } = props;
   const [address, setAddress] = useState("");
   const [toiletScore, setToiletScore] = useState(3.0);
   const navigate = useNavigate();
 
-  const handleFindRoute = (lat, lng, name) => {
-    const url = `https://map.kakao.com/link/from/내위치,${location.center.lat},${location.center.lng}/to/${name},${lat},${lng}`;
-    window.open(url, '_blank');
-  }
+  const handleFindRoute = async (lat, lng, name) => {
+    try {
+      const startResult = await fetchWCongnamulCoord(location.center.lat, location.center.lng);
+      const destResult = await fetchWCongnamulCoord(lat, lng);
+      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const getAddress = async () => {

@@ -3,7 +3,7 @@ import { Roadview } from "react-kakao-maps-sdk";
 import { PiStarFill, PiStarLight } from "react-icons/pi";
 import { TbRoadSign } from "react-icons/tb";
 import { useEffect, useState } from "react";
-import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
+import { fetchAddressFromCoords, fetchCVSCoord, fetchWCongnamulCoord } from "../api/kakaoMapAPI";
 import ToiletComment from "./ToiletComment";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -97,7 +97,7 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
+  background-color: #4988bf;
   color: #ffffff;
   font-weight: 600;
   height: 40px;
@@ -113,7 +113,7 @@ const GoToListButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
+  background-color: #4988bf;
   color: #ffffff;
   font-weight: 600;
   height: 40px;
@@ -166,11 +166,6 @@ function ToiletDetail() {
   const member = useSelector(selectMember);
   const navigate = useNavigate();
 
-  const handleFindRoute = (lat, lng, name) => {
-    const url = `https://map.kakao.com/link/from/내위치,${location.center.lat},${location.center.lng}/to/${name},${lat},${lng}`;
-    window.open(url, '_blank');
-  }
-
   const selectedToilet = closestToiletLocations.filter((location) => {
     return location.POI_ID === toiletNo;
   });
@@ -212,6 +207,16 @@ function ToiletDetail() {
   const sortedCommentList = commentList
     ?.sort((a, b) => new Date(b.regDate) - new Date(a.regDate));
 
+    const handleFindRoute = async (lat, lng, name) => {
+      try {
+        const startResult = await fetchWCongnamulCoord(location.center.lat, location.center.lng);
+        const destResult = await fetchWCongnamulCoord(lat, lng);
+        const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
+        window.open(url, "_blank");
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
   const handleReviewButton = async () => {
     if (comment) {
@@ -229,6 +234,25 @@ function ToiletDetail() {
     }
     
   };
+
+  const handleFindRouteWithCVS = async (lat, lng, name) => {
+    try {
+      const startResult = await fetchWCongnamulCoord(location.center.lat, location.center.lng);
+      const CVSCoord = await fetchCVSCoord(lat, lng);
+      console.log(CVSCoord);
+      const CVSResult = await fetchWCongnamulCoord(CVSCoord[0].y, CVSCoord[0].x);
+      console.log(CVSResult);
+
+      const destResult = await fetchWCongnamulCoord(lat, lng);
+
+      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${CVSResult[0].x}%2C${CVSResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${CVSCoord[0].place_name}&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
 
   if (!isLoading) {
     return;
@@ -317,7 +341,7 @@ function ToiletDetail() {
           <StyledTbRoadSign />
           길찾기
         </SearchButton>
-        <SearchButton>
+        <SearchButton onClick={() => handleFindRouteWithCVS(Y_WGS84, X_WGS84, FNAME)}>
           <StyledTbRoadSign />
           편의점 경유 길찾기
         </SearchButton>

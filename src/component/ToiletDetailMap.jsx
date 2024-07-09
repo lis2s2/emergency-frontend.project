@@ -1,7 +1,6 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import styled from "styled-components";
-import { TbRoadSign } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
+import { fetchCVSCoord, fetchWCongnamulCoord } from "../api/kakaoMapAPI";
 
 const CustomMap = styled(Map)`
   width: 100%;
@@ -15,6 +14,7 @@ const ToiletInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 236px;
 `;
 
 const StyledTitle = styled.p`
@@ -25,23 +25,24 @@ const StyledTitle = styled.p`
   vertical-align: middle;
   border: none;
   width: 100%;
-  white-space: nowrap
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SearchButton = styled.button`
   padding: 0 12px;
-  font-size: 16px;
-  border-radius: 18px;
+  font-size: 14px;
   border: none;
-  background-color: #050505;
+  background-color: #0d0d0d;
   color: #ffffff;
   font-weight: 600;
-  height: 36px;
-  width: 100px;
+  height: 32px;
   border-radius: 8px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  white-space: nowrap;
+  justify-content: center;
 `;
 
 const ItemButtonContainer = styled.div`
@@ -49,34 +50,46 @@ const ItemButtonContainer = styled.div`
   gap: 12px;
   justify-content: center;
 `;
-const DetailButton = styled.button`
-  padding: 0 12px;
-  font-size: 16px;
-  border-radius: 18px;
-  border: none;
-  background-color: #050505;
-  color: #ffffff;
-  font-weight: 600;
-  height: 36px;
-  width: 100px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const StyledTbRoadSign = styled(TbRoadSign)`
-  height: 22px;
-  width: 22px;
-`;
 
 function ToiletDetailMap(props) {
-  const { toilet } = props;
+  const { toilet, location } = props;
 
-  const navigate = useNavigate();
-  // const handleFindRoute = (lat, lng, name) => {
-  //   const url = `https://map.kakao.com/link/from/내위치,${location.center.lat},${location.center.lng}/to/${name},${lat},${lng}`;
-  //   window.open(url, '_blank');
-  // }
+  const handleFindRoute = async (lat, lng, name) => {
+    try {
+      const startResult = await fetchWCongnamulCoord(
+        location.center.lat,
+        location.center.lng
+      );
+      const destResult = await fetchWCongnamulCoord(lat, lng);
+      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleFindRouteWithCVS = async (lat, lng, name) => {
+    try {
+      const startResult = await fetchWCongnamulCoord(
+        location.center.lat,
+        location.center.lng
+      );
+      const CVSCoord = await fetchCVSCoord(lat, lng);
+      console.log(CVSCoord);
+      const CVSResult = await fetchWCongnamulCoord(
+        CVSCoord[0].y,
+        CVSCoord[0].x
+      );
+      console.log(CVSResult);
+
+      const destResult = await fetchWCongnamulCoord(lat, lng);
+
+      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${CVSResult[0].x}%2C${CVSResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${CVSCoord[0].place_name}&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (!toilet) {
     return <div>Loading...</div>; // 로딩 중 표시할 내용
@@ -99,19 +112,26 @@ function ToiletDetailMap(props) {
         title="현위치"
       >
         <ToiletInfoWrapper>
-          <StyledTitle>{toilet.FNAME}</StyledTitle>
+          <StyledTitle>{toilet.FNAME}({toilet.ANAME})</StyledTitle>
           <ItemButtonContainer>
-            <SearchButton>
-              <StyledTbRoadSign />
+            <SearchButton
+              onClick={() =>
+                handleFindRoute(toilet.Y_WGS84, toilet.X_WGS84, toilet.FNAME)
+              }
+            >
               길찾기
             </SearchButton>
-            <DetailButton
+            <SearchButton
               onClick={() => {
-                navigate(`/detail/${toilet.POI_ID}`);
+                handleFindRouteWithCVS(
+                  toilet.Y_WGS84,
+                  toilet.X_WGS84,
+                  toilet.FNAME
+                );
               }}
             >
-              상세 정보
-            </DetailButton>
+              편의점 경유 길찾기
+            </SearchButton>
           </ItemButtonContainer>
         </ToiletInfoWrapper>
       </MapMarker>

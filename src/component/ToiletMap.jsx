@@ -1,10 +1,12 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import styled from "styled-components";
 import logoImg from "../images/logo.png";
-import cafeImg from "../images/cafe_icon.png"
+import cafeImg from "../images/cafe_icon.png";
+import gasImg from "../images/gas_icon.png";
 import { useState } from "react";
 import { TbRoadSign } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { fetchWCongnamulCoord } from "../api/kakaoMapAPI";
 
 const CustomMap = styled(Map)`
   width: 100%;
@@ -28,6 +30,7 @@ const StyledTitle = styled.p`
   vertical-align: middle;
   border: none;
   width: 100%;
+  white-space: nowrap;
 `;
 
 const SearchButton = styled.button`
@@ -35,7 +38,7 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
+  background-color: #0d0d0d;
   color: #ffffff;
   font-weight: 600;
   height: 36px;
@@ -56,7 +59,7 @@ const DetailButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
+  background-color: #0d0d0d;
   color: #ffffff;
   font-weight: 600;
   height: 36px;
@@ -78,21 +81,32 @@ function ToiletMap(props) {
 
   const toggleMarker = (toiletNo) => {
     setOpenMarkerInfo((prev) => ({
-      ...Object.fromEntries(Object.entries(prev).map(([key, value]) => [key, false])),
-      [toiletNo]: !prev[toiletNo]
+      ...Object.fromEntries(
+        Object.entries(prev).map(([key, value]) => [key, false])
+      ),
+      [toiletNo]: !prev[toiletNo],
     }));
   };
 
-  const handleFindRoute = (lat, lng, name) => {
-    const url = `https://map.kakao.com/link/from/내위치,${location.center.lat},${location.center.lng}/to/${name},${lat},${lng}`;
-    window.open(url, '_blank');
-  }
+  const handleFindRoute = async (lat, lng, name) => {
+    try {
+      const startResult = await fetchWCongnamulCoord(
+        location.center.lat,
+        location.center.lng
+      );
+      const destResult = await fetchWCongnamulCoord(lat, lng);
+      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <CustomMap
       center={location.center}
       style={{ width: "100%", height: "100%" }}
-      level={1}
+      level={2}
     >
       <MapMarker position={location.center} title="현위치" />
       {closestToiletLocations.map((value) => {
@@ -102,7 +116,9 @@ function ToiletMap(props) {
             position={{ lat: value.Y_WGS84, lng: value.X_WGS84 }}
             title={value.FNAME}
             image={{
-              src: value.place_url === undefined ? logoImg : cafeImg,
+              src: value.category_group_code === "CE7" ? cafeImg 
+              : value.category_group_code === "OL7" ? gasImg
+              : logoImg,
               size: {
                 width: 32,
                 height: 32,
@@ -114,7 +130,11 @@ function ToiletMap(props) {
               <ToiletInfoWrapper onClick={() => toggleMarker(value.POI_ID)}>
                 <StyledTitle>{value.FNAME}</StyledTitle>
                 <ItemButtonContainer>
-                  <SearchButton onClick={() => handleFindRoute(value.Y_WGS84, value.X_WGS84, value.FNAME)}>
+                  <SearchButton
+                    onClick={() =>
+                      handleFindRoute(value.Y_WGS84, value.X_WGS84, value.FNAME)
+                    }
+                  >
                     <StyledTbRoadSign />
                     길찾기
                   </SearchButton>

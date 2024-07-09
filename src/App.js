@@ -13,6 +13,7 @@ import ToiletList from "./component/ToiletList";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import ItemDetail from "./pages/ItemDetail";
+import ToiletRegister from "./pages/ToiletRegister";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -31,16 +32,6 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
   }
 
-  .cursor-pointer {
-    cursor: pointer;
-  }
-
-  /* 넘치는 텍스트에 줄임표(...) 만들기 */
-  .text-ellipsis {
-    white-space: nowrap; // 줄바꿈 안함
-    overflow: hidden; // 넘친 부분 숨기기
-    text-overflow: ellipsis; // 넘친 부분을 어떻게 보일지 지정(ellipsis = 줄임표)
-  }
 `;
 
 function App() {
@@ -54,6 +45,7 @@ function App() {
             <Route index element={<ToiletList />} />
             <Route path="detail/:toiletNo" element={<ToiletDetail />} />
           </Route>
+          <Route path="toilet_register" element={<ToiletRegister />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
