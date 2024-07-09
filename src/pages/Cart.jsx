@@ -24,6 +24,7 @@ const CartWarpper = styled.div`
       padding: 8px 20px;
       background: #FFFFFF;
       border: 1px solid #928F8F;
+      border-radius: 16px;
     }
 
     .cartlist_warpper_right {
@@ -32,6 +33,8 @@ const CartWarpper = styled.div`
       background: #FFFFFF;
       border: 1px solid #928F8F;
       padding: 20px;
+      border-radius: 16px 16px 0 0;
+      
 
       .cartList_payment_info {
         border-bottom: 2px solid black;
@@ -147,7 +150,7 @@ const ToShopBtn = styled.button`
   padding: 20px 0;
   background-color: #fff;
   color: #928F8F;
-  
+  border-radius: 0 0 0 16px;
 `;
 
 const ToPaymentBtn = styled.button`
@@ -157,7 +160,7 @@ const ToPaymentBtn = styled.button`
   padding: 20px 0;
   background-color: #000;
   color: #fff;
-  
+  border-radius: 0 0 16px 0;
 `;
 
 

@@ -64,7 +64,7 @@ const StyledInput = styled.input`
     outline: 1px solid #5FB393;
   }
   &::placeholder {
-    color: #5FB393;
+    color: #96b1a6;
   }
 `;
 
@@ -80,7 +80,7 @@ const StyledPostInput = styled.input`
     outline: 1px solid #5FB393;
   }
   &::placeholder {
-    color: #5FB393;
+    color: #96b1a6;
   }
 `;
 
@@ -131,6 +131,7 @@ const InfoInput = styled.input`
   border: 1px solid #5FB393;
   border-radius: 8px;
   padding: 5px;
+  text-align: ri;
   &:focus {
     outline: 1px solid #5FB393;
   }
