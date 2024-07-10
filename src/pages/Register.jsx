@@ -270,15 +270,15 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 아이디와 비밀번호에 대한 검증 로직 추가
-    const idPattern = /^[a-z0-9]{6,15}$/;
+    // 아이디와 비밀번호 패턴에 대한 검증 로직
+    // const idPattern = /^[a-z0-9]{6,15}$/;
     const pwdPattern = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{6,15}$/;
     const emailPattern = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
-    if (!idPattern.test(formData.memId)) {
-      alert("아이디는 소문자와 숫자를 포함한 6~15자리로 입력해주세요.");
-      return;
-    }
+    // if (!idPattern.test(formData.memId)) {
+    //   alert("아이디는 소문자와 숫자를 포함한 6~15자리로 입력해주세요.");
+    //   return;
+    // }
 
     if (!pwdPattern.test(formData.memPwd)) {
       alert("비밀번호는 소문자와 숫자를 포함한 6~15자리로 입력해주세요.");

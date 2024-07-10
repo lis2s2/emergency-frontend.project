@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { loginSuccess } from "../features/member/memberSlice";
+import { loginSuccess, selectMember } from "../features/member/memberSlice";
 import kakaoBtn from "../images/kakao_login_large_wide.png";
 import naverBtn from "../images/btnW_완성형.png";
 
@@ -274,8 +274,12 @@ const CLIENT_SECRET_N = 'nImi9vDd6q';
 
 function Login() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const member = useSelector(selectMember);
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);  
+  const code = searchParams.get("code");
+  const state = searchParams.get("state");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     memId: "",

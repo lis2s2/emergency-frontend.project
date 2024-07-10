@@ -77,111 +77,57 @@ const  RegisterWhite = styled.div`
 
 const NameCard = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 12px 12px 12px 20px;
-  gap: 12px;
-  isolation: isolate;
-
   position: absolute;
+  align-items: center;
+  padding: 12px 40px;
+  gap: 12px;
   width: 550px;
-  height: 88px;
-  top: 61px;
-
   background: rgba(148, 210, 187, 0.29);
   border: 2px solid #5FB393;
   border-radius: 8px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
-
-  box-sizing: border-box;
+  top: 61px;
 `;
 
 const CardImg = styled.div`
-  position: absolute;
+  /* margin: 0 40px; */
   width: 60px;
   height: 60px;
-  left: 38px;
-  top: 13px;
-  vertical-align: middle;
-
-  background: url(${profileImg});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  background: url(${profileImg}) no-repeat center/cover;
 `;
 
-const CardId = styled.div`
-  position: absolute;
-  width: 200px;
-  height: 64px;
-  top: 13px;
-  margin-left: 110px;
+const CardInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+`;
 
+const CardName = styled.div`
+  display: flex;
+  flex: 3;
   font-family: 'Noto Sans KR';
-  font-style: normal;
   font-weight: 500;
   font-size: 19px;
-  line-height: 26px;
-  display: flex;
-  align-items: center;
-
   color: #3D405B;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
-`;
-
-const CardGrade = styled.div`
-  position: absolute;
-  width: 34px;
-  height: 29px;
-  top: 29px;
-  margin-left: 410px;
-
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: 900;
-  font-size: 20px;
-  line-height: 29px;
-
-  color: #F4BE00;
-
-  flex: none;
-  order: 2;
-  flex-grow: 0;
-  z-index: 2;
+  justify-content: center;
+  align-items: center;
 `;
 
 const CardPoint = styled.div`
-  position: absolute;
-  width: 63px;
-  height: 29px;
-  top: 30px;
-  margin-left: 320px;
-
+  display: flex;
+  flex: 2;
   font-family: 'Noto Sans KR';
-  font-style: normal;
   font-weight: 900;
   font-size: 20px;
-  line-height: 29px;
-
   color: #000000;
+  justify-content: flex-end;
+  /* margin-right: 40px; */
+`;
 
-  flex: none;
-  order: 3;
-  flex-grow: 0;
-  z-index: 3;
+const CardActions = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
 `;
 
 const EditIcons = styled.button`
@@ -415,6 +361,9 @@ function MyPage() {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
   const member = useSelector(selectMember);
+  // const storedMember = localStorage.getItem('member') || {};
+  const storedMember = JSON.parse(localStorage.getItem('member')) || {};
+  const { name: localName, memPoint } = storedMember;
   
   return (
     <RegisterContainer>
@@ -424,17 +373,16 @@ function MyPage() {
             <Sublayout>
               <NameCard>
                 <CardImg />
-                <CardId>{member?.memId}</CardId>
-                <CardPoint>{member?.memPoint}P</CardPoint>
-                <CardGrade>{member?.memGrade}</CardGrade>
+                <CardName>{member?.memName || localName}</CardName>
+                <CardPoint>{member?.memPoint || memPoint} P</CardPoint>
               </NameCard>
 
-              <div>
+              <CardActions>
                 <EditIcons onClick={() => navigate('/mypage/modify')}><TbMoodEdit /></EditIcons>
               {/* </div>
               <div> */}
                 <CartIcons onClick={() => navigate('/cart')}><PiShoppingCartSimpleBold /></CartIcons>
-              </div>
+              </CardActions>
 
               <Favorites>
                 <FavLogo />

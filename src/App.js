@@ -9,9 +9,10 @@ import Register from "./pages/Register";
 import MyPage from "./pages/MyPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import OAuth2RedirectHandler from "./component/OAuth2RedirectHandle";
 import FindId from "./pages/FindId";
 import Modify from "./pages/Modify";
+import OAuth2NavertHandle from "./component/OAuth2NavertHandle";
+import OAuth2KakaoHandle from "./component/OAuth2KakaoHandle";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -67,7 +68,8 @@ function App() {
           <Route path="find/id" element={<FindId />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="mypage/modify/*" element={<Modify />} />
-          <Route path="login/oauth2/code/naver" element={<OAuth2RedirectHandler />} />
+          <Route path="login/oauth2/code/naver/*" element={<OAuth2NavertHandle />} />
+          <Route path="login/oauth2/code/kakao/*" element={<OAuth2KakaoHandle />} />
         </Route>
       </Routes>
     </>
