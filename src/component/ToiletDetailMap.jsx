@@ -14,7 +14,7 @@ const ToiletInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 236px;
+  /* width: 236px; */
 `;
 
 const StyledTitle = styled.p`
@@ -30,66 +30,8 @@ const StyledTitle = styled.p`
   text-overflow: ellipsis;
 `;
 
-const SearchButton = styled.button`
-  padding: 0 12px;
-  font-size: 14px;
-  border: none;
-  background-color: #0d0d0d;
-  color: #ffffff;
-  font-weight: 600;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  justify-content: center;
-`;
-
-const ItemButtonContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-`;
-
 function ToiletDetailMap(props) {
-  const { toilet, location } = props;
-
-  const handleFindRoute = async (lat, lng, name) => {
-    try {
-      const startResult = await fetchWCongnamulCoord(
-        location.center.lat,
-        location.center.lng
-      );
-      const destResult = await fetchWCongnamulCoord(lat, lng);
-      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleFindRouteWithCVS = async (lat, lng, name) => {
-    try {
-      const startResult = await fetchWCongnamulCoord(
-        location.center.lat,
-        location.center.lng
-      );
-      const CVSCoord = await fetchCVSCoord(lat, lng);
-      console.log(CVSCoord);
-      const CVSResult = await fetchWCongnamulCoord(
-        CVSCoord[0].y,
-        CVSCoord[0].x
-      );
-      console.log(CVSResult);
-
-      const destResult = await fetchWCongnamulCoord(lat, lng);
-
-      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${CVSResult[0].x}%2C${CVSResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${CVSCoord[0].place_name}&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { toilet } = props;
 
   if (!toilet) {
     return <div>Loading...</div>; // 로딩 중 표시할 내용
@@ -113,7 +55,7 @@ function ToiletDetailMap(props) {
       >
         <ToiletInfoWrapper>
           <StyledTitle>{toilet.FNAME}({toilet.ANAME})</StyledTitle>
-          <ItemButtonContainer>
+          {/* <ItemButtonContainer>
             <SearchButton
               onClick={() =>
                 handleFindRoute(toilet.Y_WGS84, toilet.X_WGS84, toilet.FNAME)
@@ -132,7 +74,7 @@ function ToiletDetailMap(props) {
             >
               편의점 경유 길찾기
             </SearchButton>
-          </ItemButtonContainer>
+          </ItemButtonContainer> */}
         </ToiletInfoWrapper>
       </MapMarker>
     </CustomMap>

@@ -64,8 +64,10 @@ function ToiletList() {
     addCafeList,
     toggleGasList,
     addGasList,
+    toggleUserToiletList,
+    addUserToiletList
   } = useOutletContext();
-
+  console.log(closestToiletLocations);
   return (
     <ButtonListContainer>
       <ButtonContainer>
@@ -85,8 +87,17 @@ function ToiletList() {
             대형 까페
           </ToggleButton>
         )}
+        {addUserToiletList ? (
+          <ToggleButtonToggled onClick={() => toggleUserToiletList()}>
+            사용자 등록 화장실
+          </ToggleButtonToggled>
+        ) : (
+          <ToggleButton onClick={() => toggleUserToiletList()}>
+            사용자 등록 화장실
+          </ToggleButton>
+        )}
 
-        <ToggleButton>사용자 등록 화장실</ToggleButton>
+        
         <StyledMdTune />
       </ButtonContainer>
       <ListContainer>

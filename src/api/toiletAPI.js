@@ -1,4 +1,5 @@
 // import axios from "axios";
+import axios from "axios";
 import jsonData from "./toileAPI.json";
 
 export const fetchToiletLocations = async () => {
@@ -35,3 +36,19 @@ export const fetchToiletLocations = async () => {
   }
 };
 
+export const fetchUserToiletList = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const result = await axios.get(
+      `${process.env.REACT_APP_API_URL}/toilet/list`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return result.data;
+  } catch (err) {
+    console.error(err);
+  }
+};

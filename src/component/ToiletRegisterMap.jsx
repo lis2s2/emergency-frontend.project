@@ -1,6 +1,7 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import styled from "styled-components";
 import { useState } from "react";
+import logoImg from "../images/logo.png";
 
 const CustomMap = styled(Map)`
   width: 100%;
@@ -21,14 +22,26 @@ function ToiletRegisterMap(props) {
   console.log(clickLocation);
   return (
     <CustomMap
-    center={location.center}
-    style={{ width: "100%", height: "100%" }}
-    level={1}
-    onClick={handleMapClick}
+      center={location.center}
+      style={{ width: "100%", height: "100%" }}
+      level={0}
+      onClick={handleMapClick}
+      zoomable={false}
+      draggable={false}
     >
-      <MapMarker position={clickLocation} />
+      <MapMarker position={location.center} />
+      <MapMarker
+        position={clickLocation}
+        image={{
+          src: logoImg,
+          size: {
+            width: 32,
+            height: 32,
+          },
+        }}
+      />
     </CustomMap>
   );
-};
+}
 
 export default ToiletRegisterMap;

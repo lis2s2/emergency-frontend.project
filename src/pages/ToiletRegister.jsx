@@ -57,6 +57,7 @@ function ToiletRegister() {
       <RegisterInfoSection>
         <ToiletRegisterInfo 
           address={address}
+          clickedLocation={clickedLocation}
         />
       </RegisterInfoSection>
       <MapSection>

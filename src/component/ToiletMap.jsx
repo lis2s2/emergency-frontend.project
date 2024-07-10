@@ -38,7 +38,7 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #0d0d0d;
+  background-color: #4988bf;
   color: #ffffff;
   font-weight: 600;
   height: 36px;
@@ -59,7 +59,7 @@ const DetailButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #0d0d0d;
+  background-color: #4988bf;
   color: #ffffff;
   font-weight: 600;
   height: 36px;
