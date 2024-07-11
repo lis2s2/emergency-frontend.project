@@ -1,6 +1,9 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import styled from "styled-components";
-import { fetchCVSCoord, fetchWCongnamulCoord } from "../api/kakaoMapAPI";
+import paperImg from "../images/paper.png";
+import saparatedImg from "../images/separated.png";
+import disabledImg from "../images/disabled.png";
+import diaperImg from "../images/diaper.png";
 
 const CustomMap = styled(Map)`
   width: 100%;
@@ -14,7 +17,6 @@ const ToiletInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  /* width: 236px; */
 `;
 
 const StyledTitle = styled.p`
@@ -30,13 +32,24 @@ const StyledTitle = styled.p`
   text-overflow: ellipsis;
 `;
 
+const IconContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+`;
+
+const StyledImg = styled.img`
+  width: 28px;
+  height: 28px;
+`;
+
 function ToiletDetailMap(props) {
   const { toilet } = props;
 
   if (!toilet) {
     return <div>Loading...</div>; // 로딩 중 표시할 내용
   }
-
+  console.log(toilet.disabled);
   return (
     <CustomMap
       center={{
@@ -54,27 +67,15 @@ function ToiletDetailMap(props) {
         title="현위치"
       >
         <ToiletInfoWrapper>
-          <StyledTitle>{toilet.FNAME}({toilet.ANAME})</StyledTitle>
-          {/* <ItemButtonContainer>
-            <SearchButton
-              onClick={() =>
-                handleFindRoute(toilet.Y_WGS84, toilet.X_WGS84, toilet.FNAME)
-              }
-            >
-              길찾기
-            </SearchButton>
-            <SearchButton
-              onClick={() => {
-                handleFindRouteWithCVS(
-                  toilet.Y_WGS84,
-                  toilet.X_WGS84,
-                  toilet.FNAME
-                );
-              }}
-            >
-              편의점 경유 길찾기
-            </SearchButton>
-          </ItemButtonContainer> */}
+          <StyledTitle>
+            {toilet.FNAME}({toilet.ANAME})
+          </StyledTitle>
+          <IconContainer>
+            {toilet.disabled === true && <StyledImg src={disabledImg} />}
+            {toilet.diaper === true && <StyledImg src={diaperImg} />}
+            {toilet.separated === true && <StyledImg src={saparatedImg} />}
+            {toilet.paper === true && <StyledImg src={paperImg} />}
+          </IconContainer>
         </ToiletInfoWrapper>
       </MapMarker>
     </CustomMap>

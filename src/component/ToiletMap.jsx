@@ -3,6 +3,11 @@ import styled from "styled-components";
 import logoImg from "../images/logo.png";
 import cafeImg from "../images/cafe_icon.png";
 import gasImg from "../images/gas_icon.png";
+import paperImg from "../images/paper.png";
+import saparatedImg from "../images/separated.png";
+import disabledImg from "../images/disabled.png";
+import diaperImg from "../images/diaper.png";
+
 import { useState } from "react";
 import { TbRoadSign } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +19,7 @@ const CustomMap = styled(Map)`
   border-radius: 16px;
 `;
 
-const ToiletInfoWrapper = styled.div`
+const ToiletInfoContainer = styled.div`
   cursor: pointer;
   padding: 12px;
   display: flex;
@@ -23,14 +28,25 @@ const ToiletInfoWrapper = styled.div`
 `;
 
 const StyledTitle = styled.p`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  color: #000000;
-  text-align: center;
+  color: #0067c7;
+  text-align: start;
   vertical-align: middle;
   border: none;
   width: 100%;
   white-space: nowrap;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: start;
+`;
+
+const StyledImg = styled.img`
+  width: 28px;
+  height: 28px;
 `;
 
 const SearchButton = styled.button`
@@ -38,10 +54,10 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
+  background-color: #0067c7;
   color: #ffffff;
   font-weight: 600;
-  height: 36px;
+  height: 38px;
   width: 100px;
   border-radius: 8px;
   display: flex;
@@ -49,7 +65,7 @@ const SearchButton = styled.button`
   align-items: center;
 `;
 
-const ItemButtonContainer = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
   gap: 12px;
   justify-content: center;
@@ -59,10 +75,11 @@ const DetailButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
-  color: #ffffff;
+  background-color: #ffffff;
+  border: 2px solid #0067c7;
+  color: #0067c7;
   font-weight: 600;
-  height: 36px;
+  height: 38px;
   width: 100px;
   border-radius: 8px;
   display: flex;
@@ -127,9 +144,15 @@ function ToiletMap(props) {
             onClick={() => toggleMarker(value.POI_ID)}
           >
             {openMarkerInfo[value.POI_ID] && (
-              <ToiletInfoWrapper onClick={() => toggleMarker(value.POI_ID)}>
+              <ToiletInfoContainer onClick={() => toggleMarker(value.POI_ID)}>
                 <StyledTitle>{value.FNAME}</StyledTitle>
-                <ItemButtonContainer>
+                <IconContainer>
+                  {value.disabled === true && <StyledImg src={disabledImg} />}
+                  {value.diaper === true && <StyledImg src={diaperImg} />}
+                  {value.separated === true && <StyledImg src={saparatedImg} />}
+                  {value.paper === true && <StyledImg src={paperImg} />}
+                </IconContainer>
+                <ButtonContainer>
                   <SearchButton
                     onClick={() =>
                       handleFindRoute(value.Y_WGS84, value.X_WGS84, value.FNAME)
@@ -145,8 +168,8 @@ function ToiletMap(props) {
                   >
                     상세 정보
                   </DetailButton>
-                </ItemButtonContainer>
-              </ToiletInfoWrapper>
+                </ButtonContainer>
+              </ToiletInfoContainer>
             )}
           </MapMarker>
         );

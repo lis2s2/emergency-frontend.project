@@ -77,7 +77,7 @@ const GoToListButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
+  background-color: #0067c7;
   color: #ffffff;
   font-weight: 600;
   height: 40px;
@@ -93,7 +93,7 @@ const ToiletRegisterButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
+  background-color: #0067c7;
   color: #ffffff;
   font-weight: 600;
   height: 40px;
@@ -115,6 +115,7 @@ function ToiletRegisterInfo(props) {
   const [paperChecked, setPaperChecked] = useState(false);
 
   const navigate = useNavigate();
+
 
   const handleSeparatedChange = (e) => {
     setSeparatedChecked(e.target.checked);
@@ -182,8 +183,8 @@ function ToiletRegisterInfo(props) {
             className="form-control"
             id="toilet_location"
             placeholder="지도를 클릭해서 주소를 입력하세요."
-            
-            value={address && address}
+            readOnly
+            value={address}
           />
         </InputContainer>
         <InputContainer className="mb-3">

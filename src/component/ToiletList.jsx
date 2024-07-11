@@ -11,12 +11,12 @@ const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
 `;
 
 const ToggleButton = styled.button`
   padding: 10px 20px;
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 14px;
   border: 1px solid #605d83;
   background-color: white;
@@ -26,7 +26,7 @@ const ToggleButton = styled.button`
 
 const ToggleButtonToggled = styled.button`
   padding: 10px 20px;
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 14px;
   border: 1px solid #605d83;
   background-color: #605d83;
@@ -67,7 +67,8 @@ function ToiletList() {
     toggleUserToiletList,
     addUserToiletList
   } = useOutletContext();
-  console.log(closestToiletLocations);
+
+
   return (
     <ButtonListContainer>
       <ButtonContainer>

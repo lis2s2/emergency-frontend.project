@@ -11,7 +11,7 @@ import { getAvgScoreByToiletNo } from "../api/toiletReviewAPI";
 
 const ItemContainer = styled.div`
   padding: 10px;
-  height: 108px;
+  min-height: 108px;
   width: 100%;
   background-color: #ffffff;
   border-radius: 16px;
@@ -30,7 +30,7 @@ const ItemInfoContainer = styled.div`
 const ItemButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
 `;
 
@@ -51,10 +51,10 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
+  background-color: #0067c7;
   color: #ffffff;
   font-weight: 600;
-  height: 36px;
+  height: 38px;
   width: 100px;
   border-radius: 8px;
   display: flex;
@@ -67,10 +67,11 @@ const DetailButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #0067c7;
+  border: 2px solid #0067c7;
   font-weight: 600;
-  height: 36px;
+  height: 38px;
   width: 100px;
   border-radius: 8px;
   display: flex;
@@ -111,7 +112,7 @@ const StyledContent = styled.p`
 
 function ToiletListItem(props) {
   const {
-    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID },
+    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID, detail },
     location,
   } = props;
   const [address, setAddress] = useState("");
@@ -147,7 +148,7 @@ function ToiletListItem(props) {
     <ItemContainer>
       <ItemInfoContainer>
         <StyledTitle>
-          {FNAME} ({ANAME})
+          {FNAME} {ANAME && `(${ANAME})`}{detail && `(${detail})`}
         </StyledTitle>
         <ItemScoreDistanceContainer>
           <ItemScoreContainer>

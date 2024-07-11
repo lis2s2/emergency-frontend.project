@@ -116,7 +116,7 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
+  background-color: #0067c7;
   color: #ffffff;
   font-weight: 600;
   height: 40px;
@@ -132,7 +132,7 @@ const GoToListButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
+  background-color: #0067c7;
   color: #ffffff;
   font-weight: 600;
   height: 40px;
@@ -185,8 +185,9 @@ const ToiletRegisterButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #4988bf;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #0067c7;
+  border: solid 2px #0067c7;
   font-weight: 600;
   height: 40px;
   border-radius: 8px;
@@ -204,7 +205,7 @@ const StyledFormCheck = styled(Form.Check)`
 `;
 
 function ToiletDetail() {
-  const { closestToiletLocations, location } = useOutletContext();
+  const { closestToiletLocations, location, toggleListUpdated } = useOutletContext();
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
   const navigate = useNavigate();
@@ -212,7 +213,6 @@ function ToiletDetail() {
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [inputScore, setInputScore] = useState(3);
-  const [isLoading, setIsLoading] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const [toiletScore, setToiletScore] = useState(3.0);
   const [regModalShow, setRegModalShow] = useState(false);
@@ -221,7 +221,7 @@ function ToiletDetail() {
   const [diaperChecked, setDiaperChecked] = useState(false);
   const [paperChecked, setPaperChecked] = useState(false);
 
-  const selectedToilet = closestToiletLocations.filter((location) => {
+  const selectedToilet = closestToiletLocations?.filter((location) => {
     return location.POI_ID === toiletNo;
   });
   const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = selectedToilet[0] || {};
@@ -233,17 +233,16 @@ function ToiletDetail() {
       }
       const address = await fetchAddressFromCoords(Y_WGS84, X_WGS84);
       setAddress(address);
-      setIsLoading(true);
     };
     getAddress();
   }, [X_WGS84, Y_WGS84]);
 
   useEffect(() => {
-    const getReviewList = async () => {
+    const getCommentList = async () => {
       const result = await fetchReviewListByToiletNo(toiletNo);
       setCommentList(result);
     };
-    getReviewList();
+    getCommentList();
 
     const getAvgScore = async () => {
       const result = await getAvgScoreByToiletNo(toiletNo);
@@ -280,6 +279,11 @@ function ToiletDetail() {
           setCommentList(result);
         };
         getReviewList();
+        const getAvgScore = async () => {
+          const result = await getAvgScoreByToiletNo(toiletNo);
+          setToiletScore(result);
+        };
+        getAvgScore();
       }
     } else {
       window.alert("내용을 입력하세요");
@@ -350,7 +354,8 @@ function ToiletDetail() {
       setDisabledChecked(false);
       setDiaperChecked(false);
       setPaperChecked(false);
-      navigate(`/detail/${toiletNo}`);
+      toggleListUpdated();
+      navigate(`/`);
     } else {
       handleClose();
       alert("화장실 정보 등록 중 오류가 발생하였습니다.");
@@ -362,7 +367,7 @@ function ToiletDetail() {
     }
   };
 
-  if (!isLoading) {
+  if (!address || !closestToiletLocations) {
     return;
   }
 
@@ -518,6 +523,7 @@ function ToiletDetail() {
               display: "flex",
               gap: "8px",
               alignItems: "center",
+              background: "#0067c7"
             }}
             onClick={handleToileRegistor}
           >

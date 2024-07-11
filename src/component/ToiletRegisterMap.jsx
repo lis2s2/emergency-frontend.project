@@ -19,7 +19,6 @@ function ToiletRegisterMap(props) {
     setClickLocation({ lat, lng });
     setClickedLocation({ lat, lng });
   };
-  console.log(clickLocation);
   return (
     <CustomMap
       center={location.center}

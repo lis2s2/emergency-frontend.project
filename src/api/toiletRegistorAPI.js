@@ -15,13 +15,13 @@ export const registerToilet = async (
   const token = localStorage.getItem("token");
   const writer = JSON.parse(localStorage.getItem("member")).memId;
   const sendData = {
-    POI_ID: uuid(),
+    toiletNo: uuid(),
     memRegister: true,
     writer: writer,
-    Y_WGS84: lat,
-    X_WGS84: lng,
+    lat: lat,
+    lng: lng,
     toiletAddress: address,
-    FNAME: title,
+    toiletName: title,
     detail: detail,
     disabled: disabled,
     diaper: diaper,
@@ -56,13 +56,13 @@ export const registerToiletInfo = async (
   const token = localStorage.getItem("token");
   const writer = JSON.parse(localStorage.getItem("member")).memId;
   const sendData = {
-    POI_ID: toiletNo,
+    toiletNo: toiletNo,
     memRegister: false,
     writer: writer,
-    Y_WGS84: lat,
-    X_WGS84: lng,
+    lat: lat,
+    lng: lng,
     toiletAddress: address,
-    FNAME: title,
+    toiletName: title,
     disabled: disabled,
     diaper: diaper,
     separated: separated,

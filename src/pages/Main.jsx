@@ -41,17 +41,14 @@ function Main() {
   const { toiletNo } = useParams();
 
   const [closestToiletLocations, setClosestToiletLocations] = useState([]);
-  const [toiletLocations, setToiletLocations] = useState([]);
-  const [cafeList, setCafeList] = useState([]);
-  const [gasList, setgasList] = useState([]);
-  const [userToiletList, setUserToiletList] = useState([]);
+  const [cafeList, setCafeList] = useState();
+  const [gasList, setgasList] = useState();
+  const [userToiletList, setUserToiletList] = useState();
   const [addGasList, setAddGasList] = useState(false);
   const [addCafeList, setAddCafeList] = useState(false);
   const [addUserToiletList, setAddUserToiletList] = useState(false);
+  const [listUpdated, setListUpdated] = useState(false);
 
-  console.log(addGasList);
-  console.log(addCafeList);
-  console.log(addUserToiletList);
   const toggleCafeList = () => {
     setAddCafeList(!addCafeList);
   };
@@ -64,156 +61,145 @@ function Main() {
     setAddUserToiletList(!addUserToiletList);
   };
 
-  useEffect(() => {
-    // if (navigator.geolocation) {
-    //   // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-    //   navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       setLocation((prev) => ({
-    //         ...prev,
-    //         center: {
-    //           lat: position.coords.latitude, // 위도
-    //           lng: position.coords.longitude, // 경도
-    //         },
-    //         isLoading: false,
-    //       }));
-    //     },
-    //     (err) => {
-    //       setLocation((prev) => ({
-    //         ...prev,
-    //         errMsg: err.message,
-    //         isLoading: false,
-    //       }));
-    //     }
-    //   );
-    // } else {
-    //   // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-    //   setLocation((prev) => ({
-    //     ...prev,
-    //     errMsg: "위치를 찾을 수 없습니다.",
-    //     isLoading: false,
-    //   }));
-    // }
-
-    const getFetchedToiletList = async () => {
-      try {
-        const result = await fetchToiletLocations();
-        setToiletLocations(result);
-      } catch (error) {
-        console.error("Error fetching toilet locations:", error);
-      }
-    };
-    getFetchedToiletList();
-  }, []);
+  const toggleListUpdated = () => {
+    setListUpdated(!listUpdated);
+  }
 
   useEffect(() => {
     const getFetchedToiletList = async () => {
       try {
         const result = await fetchToiletLocations();
-        setToiletLocations(result);
+        const sortedToiletLocations = result
+          .map((toiletlocation) => ({
+            ...toiletlocation,
+            distance: getDistanceInMeters(
+              location.center.lat,
+              location.center.lng,
+              toiletlocation.Y_WGS84,
+              toiletlocation.X_WGS84
+            ),
+          }))
+          .sort((a, b) => a.distance - b.distance)
+          .filter((value) => value.distance < 500);
+        setClosestToiletLocations(sortedToiletLocations);
+        const getCafeList = async () => {
+          const result = await fetchCafeList(
+            location.center.lat,
+            location.center.lng
+          );
+          setCafeList(result);
+        };
+        getCafeList();
+
+        const getGasList = async () => {
+          const result = await fetchGasStationList(
+            location.center.lat,
+            location.center.lng
+          );
+          setgasList(result);
+        };
+        getGasList();
+
+        toggleListUpdated();
       } catch (error) {
         console.error("Error fetching toilet locations:", error);
       }
     };
     getFetchedToiletList();
-    const sortedToiletLocations = toiletLocations
-      .map((toiletlocation) => ({
-        ...toiletlocation,
-        distance: getDistanceInMeters(
-          location.center.lat,
-          location.center.lng,
-          toiletlocation.Y_WGS84,
-          toiletlocation.X_WGS84
-        ),
-      }))
-      .sort((a, b) => a.distance - b.distance)
-      .filter((value) => value.distance < 500);
-
-    setClosestToiletLocations(sortedToiletLocations);
-    console.log(sortedToiletLocations);
-  }, [toiletLocations, location]);
-
-  useEffect(() => {
-    try {
-      const getCafeList = async () => {
-        const result = await fetchCafeList(
-          location.center.lat,
-          location.center.lng
-        );
-        setCafeList(result);
-      };
-      getCafeList();
-
-      const getGasList = async () => {
-        const result = await fetchGasStationList(
-          location.center.lat,
-          location.center.lng
-        );
-        setgasList(result);
-      };
-      getGasList();
-
-      const getUserToiletList = async () => {
-        const result = await fetchUserToiletList();
-        setUserToiletList(result.filter((toilet) => toilet.memRegister = true));
-      };
-      getUserToiletList();
-    } catch (error) {
-      console.error(error);
-    }
   }, [location]);
 
   useEffect(() => {
-    if (!addCafeList) {
-      const filteredList = closestToiletLocations.filter(
-        (value) => value.category_group_code !== "CE7"
-      );
-      setClosestToiletLocations(filteredList);
-    } else {
-      const combinedList = [...closestToiletLocations, ...cafeList];
-      setClosestToiletLocations(combinedList);
-      console.log(cafeList);
+    if (closestToiletLocations.length !== 0) {
+      const getUserToiletList = async () => {
+        const result = await fetchUserToiletList();
+        const renamedKeyList = result.map((toilet) => {
+          return {
+            POI_ID: toilet.toiletNo,
+            X_WGS84: toilet.lng,
+            Y_WGS84: toilet.lat,
+            FNAME: toilet.toiletName,
+            toiletAddress: toilet.toiletAddress,
+            detail: toilet.detail,
+            diaper: toilet.diaper,
+            disabled: toilet.disabled,
+            memRegister: toilet.memRegister,
+            paper: toilet.paper,
+            separated: toilet.separated,
+            toiletStatus: toilet.toiletStatus,
+          };
+        });
+        const userRegToiletList = renamedKeyList.filter(
+          (toilet) => toilet.memRegister === true
+        );
+        setUserToiletList(userRegToiletList);
+        const userAdditionalInfoList = renamedKeyList.filter(
+          (toilet) => toilet.memRegister === false
+        );
+        const mergedData = closestToiletLocations.map((origItem) => {
+          const addItem = userAdditionalInfoList.find(
+            (addItem) => addItem.POI_ID === origItem.POI_ID
+          );
+          return addItem ? { ...origItem, ...addItem } : origItem;
+        });
+        setClosestToiletLocations(mergedData);
+      };
+      getUserToiletList();
     }
-  }, [addCafeList]);
+  }, [listUpdated]);
 
   useEffect(() => {
-    if (!addGasList) {
-      const filteredList = closestToiletLocations.filter(
-        (value) => value.category_group_code !== "OL7"
-      );
-      setClosestToiletLocations(filteredList);
-    } else {
-      const combinedList = [...closestToiletLocations, ...gasList];
-      setClosestToiletLocations(combinedList);
+    if (closestToiletLocations.length !== 0) {
+      if (!addCafeList) {
+        const filteredList = closestToiletLocations.filter(
+          (value) => value.category_group_code !== "CE7"
+        );
+        setClosestToiletLocations(filteredList);
+      } else {
+        const combinedList = [...closestToiletLocations, ...cafeList];
+        setClosestToiletLocations(combinedList.sort((a, b) => a.distance - b.distance));
+      }
     }
-  }, [addGasList]);
+  }, [addCafeList, listUpdated]);
 
   useEffect(() => {
-    if (!addUserToiletList) {
-      const filteredList = closestToiletLocations.filter(
-        (value) => value.memRegister !== true
-      );
-      setClosestToiletLocations(filteredList);
-    } else {
-      const additionalDataMap = userToiletList.reduce((acc, item) => {
-        acc[item.toiletNo] = item;
-        return acc;
-      }, {});
-      console.log(additionalDataMap);
-      const mergedList = closestToiletLocations.map((item) => {
-        if (additionalDataMap[item.POI_ID]) {
-          const { toiletNo, ...additionalFields } = additionalDataMap[item.POI_ID];
-          return { ...item, ...additionalFields };
-        }
-        return item;
-      });
-      console.log(mergedList);
-      setClosestToiletLocations(mergedList);
+    if (closestToiletLocations.length !== 0) {
+      if (!addGasList) {
+        const filteredList = closestToiletLocations.filter(
+          (value) => value.category_group_code !== "OL7"
+        );
+        setClosestToiletLocations(filteredList);
+      } else {
+        const combinedList = [...closestToiletLocations, ...gasList];
+        setClosestToiletLocations(combinedList.sort((a, b) => a.distance - b.distance));
+      }
     }
-  }, [addUserToiletList, userToiletList]);
+  }, [addGasList, listUpdated]);
 
-
-
+  useEffect(() => {
+    if (closestToiletLocations.length !== 0) {
+      if (!addUserToiletList) {
+        const filteredList = closestToiletLocations.filter(
+          (value) => value.memRegister !== true
+        );
+        setClosestToiletLocations(filteredList);
+      } else {
+        const combinedList = [...closestToiletLocations, ...userToiletList];
+        const sortedToiletLocations = combinedList
+          .map((toiletlocation) => ({
+            ...toiletlocation,
+            distance: getDistanceInMeters(
+              location.center.lat,
+              location.center.lng,
+              toiletlocation.Y_WGS84,
+              toiletlocation.X_WGS84
+            ),
+          }))
+          .sort((a, b) => a.distance - b.distance)
+          .filter((value) => value.distance < 500);
+        setClosestToiletLocations(sortedToiletLocations);
+      }
+    }
+  }, [addUserToiletList, listUpdated]);
 
   const getDistanceInMeters = (lat1, lng1, lat2, lng2) => {
     const R = 6371000;
@@ -231,6 +217,7 @@ function Main() {
     return Math.round(distance);
   };
 
+
   return (
     <MainContainer>
       <TolietListSection>
@@ -244,6 +231,7 @@ function Main() {
             addGasList: addGasList,
             toggleUserToiletList: toggleUserToiletList,
             addUserToiletList: addUserToiletList,
+            toggleListUpdated: toggleListUpdated
           }}
         />
       </TolietListSection>
