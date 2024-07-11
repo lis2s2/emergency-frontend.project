@@ -288,7 +288,7 @@ const CommonInput = styled.input`
 function Modify() {
 const navigate = useNavigate();
 const member = useSelector(selectMember);
-const [id, setId] = useState(member.memId);
+const [id, setId] = useState(member?.memId);
 const [email, setEmail] = useState(member?.memEmail || "");
 const [password, setPassword] = useState("");
 

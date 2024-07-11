@@ -22,7 +22,7 @@ function OAuth2KakaoHandle() {
 
   useEffect(() => { 
     const fetchToken = async () => {
-      console.log(code);
+      // console.log(code);
     
       const TOKEN_URL = `http://localhost:8080/api/proxy/kakao-token`;
       
@@ -39,18 +39,38 @@ function OAuth2KakaoHandle() {
         const { access_token } =  tokenResponse.data;
         const authorization = `Bearer ${access_token}`;
       
-        const userResponse = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
+        const userResponse = await axios.get(`https://kapi.kakao.com/v2/user/me`, {
+        // const userResponse = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
         // const userResponse = await axios.get(`http://localhost:8080/api/proxy/kakao-user`, {
           headers: { Authorization: authorization },
         });
   
+        const userInfo = userResponse.data;
+        const userInfoDetails = userResponse.data.kakao_account;
+        const memberData = {
+          memId: userInfo.id,
+          memPwd: 'default_password', // 기본 비밀번호 설정
+          memName: userInfoDetails.profile.nickname,
+          memEmail: userInfoDetails.email,
+          provider: 'kakao',
+          providerId: userInfo.id,
+          memGrade: 'FAMILY',
+          memRole: 'ROLE_USER',
+          memPoint: 0
+        };
+
+        dispatch(loginSuccess(memberData));
+        localStorage.setItem("member", JSON.stringify(userInfoDetails));
+        localStorage.setItem("token", access_token);
+
+        // dispatch(loginSuccess(member));   
         console.log("사용자 정보: ", userResponse.data);
 
-        dispatch(loginSuccess(member));   
-        localStorage.setItem("member", JSON.stringify(userResponse.data));
+        // localStorage.setItem("member", JSON.stringify(userResponse.data));
 
-        navigate('/mypage');
+        navigate('/');
 
+        await axios.post("http://localhost:8080/register", memberData);
         
       } catch (error) {
           console.error("Error fetching the token: ", error);

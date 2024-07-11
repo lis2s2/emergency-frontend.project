@@ -43,13 +43,32 @@ function OAuth2NavertHandle() {
         const userResponse = await axios.get(`http://localhost:8080/api/proxy/naver-user`, {
           headers: { Authorization: authorization },
         });
+
+        const userInfo = userResponse.data.response;
+        const memberData = {
+          memId: userInfo.id,
+          memPwd: 'default_password', // 기본 비밀번호 설정
+          memName: userInfo.name,
+          memEmail: userInfo.email,
+          provider: 'naver',
+          providerId: userInfo.id,
+          memGrade: 'FAMILY',
+          memRole: 'ROLE_USER',
+          memPoint: 0
+        };
   
-        dispatch(loginSuccess(member));   
-        console.log("사용자 정보: ", userResponse.data);
+        dispatch(loginSuccess(memberData));
+        localStorage.setItem("member", JSON.stringify(userInfo));
+        localStorage.setItem("token", access_token);
+        // dispatch(loginSuccess(member));   
+        // console.log("사용자 정보: ", userResponse.data);
 
-        localStorage.setItem("member", JSON.stringify(userResponse.data.response));
+        // localStorage.setItem("member", JSON.stringify(userResponse.data.response));
 
-        navigate('/mypage');
+        navigate('/');
+
+        // DB에 저장
+        await axios.post("http://localhost:8080/register", memberData);
 
       } catch (error) {
           console.error("Error fetching the token: ", error);

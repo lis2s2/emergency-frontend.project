@@ -363,7 +363,9 @@ function MyPage() {
   const member = useSelector(selectMember);
   // const storedMember = localStorage.getItem('member') || {};
   const storedMember = JSON.parse(localStorage.getItem('member')) || {};
-  const { name: localName, memPoint } = storedMember;
+  const { name} = storedMember.profile;
+  // const { name, nickname } = storedMember.profile;
+  
   
   return (
     <RegisterContainer>
@@ -372,8 +374,8 @@ function MyPage() {
             <Sublayout>
               <NameCard>
                 <CardImg />
-                <CardName>{member?.memName || localName}</CardName>
-                <CardPoint>{member?.memPoint || memPoint} P</CardPoint>
+                <CardName>{name}</CardName>
+                <CardPoint>{member?.memPoint} P</CardPoint>
               </NameCard>
 
               <CardActions>

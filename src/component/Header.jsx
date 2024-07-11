@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess, selectMember } from "../features/member/memberSlice";
 import axios from "axios";
+import { useState } from "react";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -64,12 +65,13 @@ const MyPageBtn = styled(Button)`
 `;
 
 function Header() {
-  // const storedMember =localStorage.getItem('member') || {};
-  const storedMember = localStorage.getItem('member');
-  // const { id } = storedMember;
+  const storedMember = localStorage.getItem('member') || {};
+  // const storedMember = localStorage.getItem('member');
+  const { name } = storedMember;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const member = useSelector(selectMember);
+  // const [headerstate, setHeaderstate] = useState(member);
 
   const handleMyPageClick = () => {
     navigate('/mypage');
@@ -115,7 +117,7 @@ function Header() {
               {member
               ? (
                   <>
-                    <Nav.Link href="#" className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memName || null} 님</Nav.Link>
+                    <Nav.Link href="#" className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memName || name} 님</Nav.Link>
                     <LoginBtn className="ms-3" variant="outline-succes" onClick={handleLogout}>로그아웃</LoginBtn>
                     <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>  
                   </>
