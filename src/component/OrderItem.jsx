@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const OrderItemWarpper = styled.div`
@@ -8,10 +9,9 @@ const OrderItemWarpper = styled.div`
   width: 100%;
 `;
 
-const StyledImg = styled.div`
+const StyledImg = styled.img`
   width: 120px;
   height: 120px;
-  background-color: #dcdcdc;
   margin-right: 10px;
 `;
 
@@ -28,13 +28,24 @@ const ItemsPrice = styled.p`
   text-align: left;
   font-size: 20px;
 `;
-function OrderItem() {
+function OrderItem(props) {
+  const {itemId} = props;
+  const item = useSelector((state) =>
+    state.cart.items.find((item) => item.no === itemId)
+  );
+
+  const formatter = new Intl.NumberFormat('ko-KR');
+
+  if (!item) {
+    return null;
+  }
+
   return (
     <OrderItemWarpper>
-      <StyledImg/>
+      <StyledImg src={item.prodImgpath}/>
       <div>
-        <ItemsTitle>이름이 뭐더라 암튼 엄청 길었던 아이템 이름</ItemsTitle>
-        <ItemsPrice>5,000원</ItemsPrice>
+        <ItemsTitle>{item.prodTitle}</ItemsTitle>
+        <ItemsPrice>{formatter.format(item.prodPrice)}원 X {item.prodCount}개 = {formatter.format((item.prodPrice) * (item.prodCount))}원</ItemsPrice>
       </div>
     </OrderItemWarpper>
   );

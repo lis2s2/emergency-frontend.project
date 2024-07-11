@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 import styled from "styled-components";
@@ -132,7 +133,7 @@ const InfoInput = styled.input`
   border: 1px solid #5FB393;
   border-radius: 8px;
   padding: 5px;
-  text-align: ri;
+  text-align: right;
   &:focus {
     outline: 1px solid #5FB393;
   }
@@ -152,22 +153,46 @@ function Order() {
   const open = useDaumPostcodePopup(postcodeScriptUrl);
   const [getFullAddress, setGetFullAddress] = useState('');
   const [postCode, setPostCode] = useState('');
-  const [orderItems, setOrderItems] = useState({});
   const member = JSON.parse(localStorage.getItem("member"));
+
+  const selectedItems = useSelector(state => state.cart.selectedItems);
+  const cartList = useSelector(state => state.cart.items);
+  const orderItems = cartList.filter(item => selectedItems.includes(item.no));
+  const memId = JSON.parse(localStorage.getItem("member")).memId;
+  const token = localStorage.getItem("token");
 
   const formatter = new Intl.NumberFormat('ko-KR');
 
-
   const [newOrder, setNewOrder] = useState({
     customerName: '',
-    totalAmount: 0,
+    customerId: memId,
+    totalAmount: orderItems.reduce((total, item) => total + item.prodPrice * item.prodCount, 0),
     usedPoint: 0,
     address: getFullAddress,
     phoneNum: '',
     detailedAddress: '',
     postalCode: postCode,
-    orderItems: [orderItems]
+    orderItems: orderItems.map(item => ({
+      productNo: item.prodNo,
+      count: item.prodCount,
+      productPrice: item.prodPrice,
+      totalPrice: item.prodPrice * item.prodCount,
+    })),
   });
+
+  useEffect(() => {
+    setNewOrder(prevState => ({
+      ...prevState,
+      totalAmount: orderItems.reduce((total, item) => total + item.prodPrice * item.prodCount, 0),
+      orderItems: orderItems.map(item => ({
+        productNo: item.prodNo,
+        count: item.prodCount,
+        productPrice: item.prodPrice,
+        totalPrice: item.prodPrice * item.prodCount,
+      }))
+    }));
+  }, []);
+
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -185,18 +210,46 @@ function Order() {
     }
     setGetFullAddress(fullAddress)
     setPostCode(zonecode)
+    setNewOrder(prevState => ({
+      ...prevState,
+      address: fullAddress,
+      postalCode: zonecode
+    }));
   };
 
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };
 
-  // 주문 생성 함수
-  const createOrder = async () => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewOrder(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/orders', newOrder); // API 주소에 맞게 수정
+      const orderData = {
+        ...newOrder,
+        orderItems: newOrder.orderItems.filter(item => item.productNo > 0)
+      };
+
+      const response = await axios.post('http://localhost:8080/orders', orderData, {
+        headers: {
+          Authorization: token,
+        }
+      });
       console.log('주문이 추가되었습니다:', response.data);
-      // 생성된 주문 번호 저장 등의 추가 로직 가능
+       // 주문이 성공적으로 추가된 후 장바구니 항목의 is_deleted 업데이트
+      await axios.put('http://localhost:8080/carts/deleteSelected', selectedItems, {
+        headers: {
+          Authorization: token,
+        }
+      });
+      console.log('장바구니 항목이 업데이트되었습니다.');
+      
     } catch (error) {
       console.error('주문을 추가하는 중 에러발생!:', error);
     }
@@ -210,36 +263,63 @@ function Order() {
           <DeliveryAddress>
             <InputGroup>
               <Label>수령인</Label>
-              <StyledInput type="text" placeholder="홍길동" />
+              <StyledInput 
+                type="text" 
+                placeholder="홍길동" 
+                name="customerName"
+                value={newOrder.customerName}
+                onChange={handleChange}
+              />
             </InputGroup>
             <InputGroup>
               <Label>연락처</Label>
-              <StyledInput type="text" placeholder="숫자만 입력" />
+              <StyledInput 
+                type="text" 
+                placeholder="숫자만 입력" 
+                name="phoneNum"
+                value={newOrder.phoneNum}
+                onChange={handleChange}
+              />
             </InputGroup>
             <InputGroup>
               <Label>배송지</Label>
-              <StyledPostInput type="text" placeholder="우편번호" value={postCode} readOnly />
+              <StyledPostInput 
+                type="text" 
+                placeholder="우편번호" 
+                value={postCode} 
+                readOnly 
+              />
               <FindAddress type='button' onClick={handleClick}>우편번호 검색</FindAddress>
             </InputGroup>
             <InputGroup>
               <Label>주소</Label>
-              <StyledInput type="text" placeholder="주소" value={getFullAddress} readOnly />
+              <StyledInput 
+                type="text" 
+                placeholder="주소" 
+                value={getFullAddress} 
+                readOnly 
+              />
             </InputGroup>
             <InputGroup>
               <Label>상세주소</Label>
-              <StyledInput type="text" placeholder="상세주소" />
+              <StyledInput 
+                type="text" 
+                placeholder="상세주소" 
+                name="detailedAddress"
+                value={newOrder.detailedAddress}
+                onChange={handleChange}
+              />
             </InputGroup>
           </DeliveryAddress>
 
           <Title>주문상품</Title>
           <OrderedProduct>
-            {/* 맵돌리기 */}
-            <OrderItem/>
-            <OrderItem/>
-            <OrderItem/>
+            {selectedItems.map(itemId => (
+              // <OrderItem key={item.no} item={item} />
+              <OrderItem key={itemId} itemId={itemId} />
+            ))}
           </OrderedProduct>
         </div>
-
 
         <div>
           <Title>결제 상세</Title>
@@ -254,13 +334,19 @@ function Order() {
             <InfoRow>
               <InfoLabel>사용 포인트:</InfoLabel>
               <InfoValue>
-                <InfoInput type="text" />p
+                <InfoInput 
+                  type="text" 
+                  name="usedPoint"
+                  value={newOrder.usedPoint}
+                  onChange={handleChange}
+                />p
               </InfoValue>
             </InfoRow>
             <InfoRow>
               <InfoLabel>최종 결제 금액:</InfoLabel>
-              <InfoValue>5,000원</InfoValue>
+              <InfoValue>{formatter.format(newOrder.totalAmount - newOrder.usedPoint)}원</InfoValue>
             </InfoRow>
+            <button onClick={handleSubmit}>{formatter.format(newOrder.totalAmount - newOrder.usedPoint)}원 결제하기</button>
           </PaymentInfo>
         </div>
       </Container>
