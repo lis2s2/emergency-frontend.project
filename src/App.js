@@ -3,12 +3,9 @@ import { createGlobalStyle } from "styled-components";
 import { Reset } from "styled-reset";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
-
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MyPage from "./pages/MyPage";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import FindId from "./pages/FindId";
 import Modify from "./pages/Modify";
 import OAuth2NavertHandle from "./component/OAuth2NavertHandle";
@@ -44,17 +41,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  // const [greeting, setGreeting] = useState('');
-
-  // useEffect(() => {
-  //   axios.get('http://localhost:8080/login/oauth2/code/kakao')
-  //     .then(response => {
-  //       setGreeting (response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('There was an error fetching the greeting!', error);
-  //     });
-  // }, []);
 
   return (
     <>

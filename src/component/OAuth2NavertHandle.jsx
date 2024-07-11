@@ -44,12 +44,12 @@ function OAuth2NavertHandle() {
           headers: { Authorization: authorization },
         });
   
+        dispatch(loginSuccess(member));   
         console.log("사용자 정보: ", userResponse.data);
 
-        dispatch(loginSuccess(member));   
         localStorage.setItem("member", JSON.stringify(userResponse.data.response));
 
-        navigate('/');
+        navigate('/mypage');
 
       } catch (error) {
           console.error("Error fetching the token: ", error);

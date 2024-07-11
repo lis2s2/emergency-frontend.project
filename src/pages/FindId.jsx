@@ -76,7 +76,7 @@ const RegisterWhite = styled.div`
   gap: 24px;
 
   width: 606px;
-  height: 568px;
+  height: 450px;
 
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

@@ -28,7 +28,7 @@ function OAuth2KakaoHandle() {
       
       try {
         const tokenResponse = await axios.post(TOKEN_URL, null, {
-          params: { code},
+          params: { code },
         });
         
         console.log("최종 응답: ", tokenResponse.data);
@@ -39,17 +39,19 @@ function OAuth2KakaoHandle() {
         const { access_token } =  tokenResponse.data;
         const authorization = `Bearer ${access_token}`;
       
-        const userResponse = await axios.get(`http://localhost:8080/api/proxy/kakao-user`, {
+        const userResponse = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
+        // const userResponse = await axios.get(`http://localhost:8080/api/proxy/kakao-user`, {
           headers: { Authorization: authorization },
         });
   
         console.log("사용자 정보: ", userResponse.data);
 
         dispatch(loginSuccess(member));   
-        localStorage.setItem("member", JSON.stringify(userResponse.data.response));
+        localStorage.setItem("member", JSON.stringify(userResponse.data));
 
-        navigate('/');
+        navigate('/mypage');
 
+        
       } catch (error) {
           console.error("Error fetching the token: ", error);
       }

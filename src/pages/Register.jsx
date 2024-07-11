@@ -317,20 +317,6 @@ function Register() {
       });
   };
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:8080/register', {
-  //     headers: {
-  //       Authorization: `Bearer ${yourAuthToken}` // yourAuthToken은 실제 사용할 토큰입니다
-  //     }
-  //   })
-  //     .then(response => {
-  //       setGreeting(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('There was an error fetching the greeting!', error);
-  //     });
-  // }, []);
-
   return (
     <RegisterContainer>
       <Autolayout>

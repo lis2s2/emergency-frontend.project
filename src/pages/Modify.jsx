@@ -286,41 +286,6 @@ const CommonInput = styled.input`
 `;
 
 function Modify() {
-  //   const {memId} = props;
-  // // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const member = useSelector(selectMember);
-  // const [editValue, setEditValue] = useState('');
-  // const [edit, setEdit] = useState(null);
-
-  // const handleEditChange = (e) => {
-  //   setEditValue(e.target.value);
-  //   console.log(e.target.value);
-  //   // setEditValue(memId);
-  // };
-  
-//   const handleEditSave = (id) => {
-//     setTodo(todo.map((t) => (t.id === id ? { ...t, contents: editValue } : t)));
-//     setEdit(null);
-//     setEditValue('');
-//   };
-  
-//   const handleChange = (e) => {
-//     const value = e.target.value;
-//     if (value.length <= 50) {
-//       setInputValue(value);
-//     }
-//   };
-  
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // addTodo 함수에 값이 inputValue 
-//     addTodo(inputValue);
-    
-//     // 다시 빈값으로 만들어줌
-//     setInputValue('');
-//   };
-// const { memId } = props;
 const navigate = useNavigate();
 const member = useSelector(selectMember);
 const [id, setId] = useState(member.memId);
@@ -370,7 +335,6 @@ const handleCancel = () => {
   return (
     <RegisterContainer>
       <Autolayout>
-        {/* <RegisterGround>My Page</RegisterGround> */}
         <RegisterWhite>
           <Sublayout>
             <NameCard>

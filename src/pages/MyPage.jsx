@@ -368,7 +368,6 @@ function MyPage() {
   return (
     <RegisterContainer>
       <Autolayout>
-        {/* <RegisterGround>My Page</RegisterGround> */}
           <RegisterWhite>
             <Sublayout>
               <NameCard>
