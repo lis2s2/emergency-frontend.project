@@ -170,7 +170,7 @@ const ToPaymentBtn = styled.button`
 function Cart() {
   const [isChecked, setIsChecked] = useState(false);
   const [cartList, setCartList] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);  
+  const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
 
   

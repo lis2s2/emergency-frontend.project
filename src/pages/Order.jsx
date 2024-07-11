@@ -3,6 +3,7 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 import styled from "styled-components";
 import OrderItem from "../component/OrderItem";
+import axios from "axios";
 
 const OrderWrapper = styled.div`
   min-width: 1440px;
@@ -151,6 +152,22 @@ function Order() {
   const open = useDaumPostcodePopup(postcodeScriptUrl);
   const [getFullAddress, setGetFullAddress] = useState('');
   const [postCode, setPostCode] = useState('');
+  const [orderItems, setOrderItems] = useState({});
+  const member = JSON.parse(localStorage.getItem("member"));
+
+  const formatter = new Intl.NumberFormat('ko-KR');
+
+
+  const [newOrder, setNewOrder] = useState({
+    customerName: '',
+    totalAmount: 0,
+    usedPoint: 0,
+    address: getFullAddress,
+    phoneNum: '',
+    detailedAddress: '',
+    postalCode: postCode,
+    orderItems: [orderItems]
+  });
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -172,6 +189,17 @@ function Order() {
 
   const handleClick = () => {
     open({ onComplete: handleComplete });
+  };
+
+  // 주문 생성 함수
+  const createOrder = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/orders', newOrder); // API 주소에 맞게 수정
+      console.log('주문이 추가되었습니다:', response.data);
+      // 생성된 주문 번호 저장 등의 추가 로직 가능
+    } catch (error) {
+      console.error('주문을 추가하는 중 에러발생!:', error);
+    }
   };
 
   return (
@@ -216,19 +244,12 @@ function Order() {
         <div>
           <Title>결제 상세</Title>
           <PaymentInfo>
-            {/* <p>포인트</p>
-            <p>보유 포인트 : 500p</p>
-            <span>사용 포인트:</span>
-            <input type="text" />p
-
-            
-            <p>최종 결제 금액: 5,000원</p> */}
             <InfoRow>
               <InfoLabel>포인트</InfoLabel>
             </InfoRow>
             <InfoRow>
               <InfoLabel>보유 포인트:</InfoLabel>
-              <InfoValue>500p</InfoValue>
+              <InfoValue>{formatter.format(member.memPoint)}p</InfoValue>
             </InfoRow>
             <InfoRow>
               <InfoLabel>사용 포인트:</InfoLabel>
