@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { loginSuccess, selectMember } from "../features/member/memberSlice";
+import { loginSuccess } from "../features/member/memberSlice";
 import kakaoBtn from "../images/kakao_login_large_wide.png";
 import naverBtn from "../images/btnW_완성형.png";
 
@@ -81,17 +81,13 @@ const Autobox = styled.div`
   align-items: center;
   padding: 0px;
   gap: 8px;
-
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-
   color: #111111;
-
   height: 82px;
-
   flex: none;
   order: 1;
   align-self: stretch;
@@ -103,10 +99,8 @@ const CommonInfo = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 0px;
-
   width: 559px;
   height: 29px;
-
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -118,10 +112,8 @@ const InfoStyle = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 0px;
-
   width: 400px;
   height: 29px;
-
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -134,16 +126,12 @@ const CommonInput = styled.input`
   justify-content: center;
   align-items: center;
   padding: 8px;
-
   font-size: 16px;
-
   width: 100%;
   height: 45px;
-
   background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
-
   flex: none;
   order: 1;
   align-self: stretch;
@@ -152,33 +140,26 @@ const CommonInput = styled.input`
 
 const LoginBtn = styled.button`
   box-sizing: border-box;
-
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 8px;
-
   width: 558px;
   height: 45px;
-
   background: #5fb393;
   border: none;
   border-radius: 8px;
-
   flex: none;
   order: 5;
   align-self: stretch;
   flex-grow: 0;
-
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-
   color: #ffffff;
-
   &:hover {
     background: #5fb393;
     color: black;
@@ -188,29 +169,23 @@ const LoginBtn = styled.button`
 
 const KakaoBtn = styled.button`
   box-sizing: border-box;
-
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 8px;
-
   width: 558px;
   height: 45px;
-
   border: none;
   border-radius: 8px;
-
   flex: none;
   order: 5;
   align-self: stretch;
   flex-grow: 0;
-
   background: url(${kakaoBtn});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-
   color: #ffffff;
 `;
 
@@ -274,12 +249,13 @@ const CLIENT_SECRET_N = 'nImi9vDd6q';
 
 function Login() {
   const dispatch = useDispatch();
-  const member = useSelector(selectMember);
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);  
-  const code = searchParams.get("code");
-  const state = searchParams.get("state");
+  // const location = useLocation();
   const navigate = useNavigate();
+  
+  // const searchParams = new URLSearchParams(location.search);  
+  // const code = searchParams.get("code");
+  // const state = searchParams.get("state");
+  // const member = useSelector(selectMember);
 
   const [formData, setFormData] = useState({
     memId: "",
@@ -305,8 +281,7 @@ function Login() {
 
     try {
       const result = await axios.get(
-        `http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`
-        // `'http://localhost:8080/login', formData`
+        `${process.env.REACT_APP_API_URL}/login?id=${formData.memId}&pw=${formData.memPwd}`
       );
       console.log(result);
 

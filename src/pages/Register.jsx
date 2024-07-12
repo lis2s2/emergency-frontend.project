@@ -301,7 +301,7 @@ function Register() {
     }
 
     axios
-      .post("http://localhost:8080/register", formData)
+      .post(`${process.env.REACT_APP_API_URL}/register`, formData)
       .then((response) => {
         if (stateid === true && stateemail === true) {
           console.log(stateid);

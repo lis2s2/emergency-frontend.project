@@ -96,13 +96,6 @@ const CardImg = styled.div`
   background: url(${profileImg}) no-repeat center/cover;
 `;
 
-const CardInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex-grow: 1;
-`;
-
 const CardName = styled.div`
   display: flex;
   flex: 3;
@@ -361,11 +354,6 @@ function MyPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const member = useSelector(selectMember);
-  // const storedMember = localStorage.getItem('member') || {};
-  const storedMember = localStorage.getItem('member') || {};
-  // const { nickname } = storedMember.profile;
-  const { name } = storedMember;
-  // const { name, nickname } = storedMember.profile;
 
   const handleDeleteMember = async () => {
     try {
@@ -401,8 +389,6 @@ function MyPage() {
 
               <CardActions>
                 <EditIcons onClick={() => navigate('/mypage/modify')}><TbMoodEdit /></EditIcons>
-              {/* </div>
-              <div> */}
                 <CartIcons onClick={() => navigate('/cart')}><PiShoppingCartSimpleBold /></CartIcons>
               </CardActions>
 

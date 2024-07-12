@@ -20,8 +20,6 @@ const Autolayout = styled.div`
 
   width: 819px;
   height: 830px;
-  //left: 310px;
-  //top: 0px;
 
   flex: none;
   order: 0;

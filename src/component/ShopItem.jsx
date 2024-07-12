@@ -11,7 +11,7 @@ const ItemWrapper = styled.div`
 
 const ItemTitle = styled.h4`
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   color: #4D4D4D;
   text-align: left;
   margin-bottom: 20px;
@@ -27,16 +27,15 @@ const ItemPrice = styled.p`
 
 function ShopItem(props) {
   const { item } = props;
-
   const navigate = useNavigate();
 
   const formatter = new Intl.NumberFormat('ko-KR');
 
   return (
     <ItemWrapper className="cursor-pointer">
-      <img src={item.imagePath} alt={item.title} width="100%" height="80%" onClick={() => navigate(`/detail/${item.id}`)}/>
-      <ItemTitle>{item.title}</ItemTitle>
-      <ItemPrice>{formatter.format( item.price)}원</ItemPrice>
+      <img src={item?.imgpath} alt={item?.title} width="100%" height="75%" onClick={() => navigate(`detail/${item?.no}`)}/>
+      <ItemTitle>{item?.title}</ItemTitle>
+      <ItemPrice>{formatter.format( item?.price)}원</ItemPrice>
     </ItemWrapper>
   );
 };

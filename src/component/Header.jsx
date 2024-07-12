@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess, selectMember } from "../features/member/memberSlice";
 import axios from "axios";
-import { useState } from "react";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -65,9 +64,6 @@ const MyPageBtn = styled(Button)`
 `;
 
 function Header() {
-  const storedMember = localStorage.getItem('member') || {};
-  // const storedMember = localStorage.getItem('member');
-  const { name } = storedMember;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const member = useSelector(selectMember);
@@ -83,7 +79,7 @@ function Header() {
 
   const handleLogout = async () => {
     const token = localStorage.getItem('token');
-    const result = await axios.get(`http://localhost:8080/logout`, {
+    const result = await axios.get(`${process.env.REACT_APP_API_URL}/logout`, {
       headers: {
         Authorization: token
       }
@@ -103,8 +99,8 @@ function Header() {
       <HeaderInner>
         <CustomedNavbar bg="white" data-bs-theme="light">
           <Container>
-            <Navbar.Brand href="#">
-              <img src={logoImg} alt="logoImg" width="60px" onClick={() => navigate('/')}/>
+            <Navbar.Brand href="/">
+              <img src={logoImg} alt="logoImg" width="60px" />
             </Navbar.Brand>
             <Nav className="ml-auto" style={{ alignItems: 'center' }}>
               <Nav.Link href="#" className="align-self-center">나지금급해</Nav.Link>
@@ -114,10 +110,11 @@ function Header() {
                 <NavDropdown.Item className="mb-2 py-2 align-self-center">긴급 요청 게시판</NavDropdown.Item>
                 <NavDropdown.Item className="py-2 align-self-center">뉴스 게시판</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#pricing" className="ms-3 align-self-center">포인트샵</Nav.Link>
+              <Nav.Link href="#pricing" className="ms-3 align-self-center" onClick={() => navigate('/shop')}>포인트샵</Nav.Link>
               {member
               ? (
                   <>
+                    <Nav.Link className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memId}님</Nav.Link>
                     <Nav.Link href="#" className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memName} 님</Nav.Link>
                     <LoginBtn className="ms-3" variant="outline-succes" onClick={handleLogout}>로그아웃</LoginBtn>
                     <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>  
