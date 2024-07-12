@@ -105,6 +105,7 @@ const CommonInfo = styled.div`
   order: 0;
   flex-grow: 0;
   z-index: 0;
+  justify-content: space-between;
 `;
 
 const InfoStyle = styled.div`
@@ -237,6 +238,25 @@ const Textbtn = styled.button`
   order: 3;
   align-self: stretch;
   flex-grow: 0;
+`;
+
+const CheckStyle = styled.button`
+  padding: 2px 8px;
+  border-style: none;
+  border-radius: 16px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 20px;
+
+  color: #007aff;
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
 `;
 
 const REST_API_KEY_K = '6725e27a1c1047905dfd6bad61521355';
@@ -383,6 +403,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
+                <CheckStyle onClick={() => navigate("/find/id")}>Forgot Id?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -395,7 +416,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Password</InfoStyle>
-                {/* <CheckStyle>Forgot password?</CheckStyle> */}
+                <CheckStyle onClick={() => navigate("/find/pwd")}>Forgot password?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="password"
@@ -410,13 +431,14 @@ function Login() {
               <LoginBtn type="submit">Login</LoginBtn>
               <KakaoBtn type="button" onClick={kakaoLoginHandler} />
               <NaverBtn type="button" onClick={naverLoginHandler} />
-              <Textbtn onClick={() => navigate("/find/Id")}>
+              {/* <Textbtn onClick={() => navigate("/find/Id")}>
                 Forgot ID?
-                {/* <span>Search for passwords</span> */}
               </Textbtn>
+              <Textbtn onClick={() => navigate("/find/pwd")}>
+                Forgot Password?
+              </Textbtn> */}
               <Textbtn onClick={() => navigate("/register")}>
                 Don’t have account?
-                {/* <span color="red">Create new account</span> */}
               </Textbtn>
             </>
           </Sublayout>
