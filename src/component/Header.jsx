@@ -1,10 +1,9 @@
-import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
-
 import logoImg from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logoutSuccess, selectMember } from "../features/member/memberSlice";
+import { useDispatch } from "react-redux";
+import { logoutSuccess } from "../features/member/memberSlice";
 import axios from "axios";
 
 const HeaderContainer = styled.div`
@@ -63,11 +62,19 @@ const MyPageBtn = styled(Button)`
   width: 120px;
 `;
 
+const StyledContent = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  color: #888888;
+  text-align: start;
+  vertical-align: middle;
+`;
+
+
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const member = useSelector(selectMember);
-  // const [headerstate, setHeaderstate] = useState(member);
+  const member = JSON.parse(localStorage.getItem("member"));
 
   const handleMyPageClick = () => {
     navigate("/mypage");
@@ -79,19 +86,24 @@ function Header() {
 
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
-    const result = await axios.get(`${process.env.REACT_APP_API_URL}/logout`, {
-      headers: {
-        Authorization: token,
-      },
-    });
-    console.log(result);
-
+    try {
+      const result = await axios.get(`${process.env.REACT_APP_API_URL}/logout`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (result.status === 200) {
+        alert('정상적으로 로그아웃 되었습니다.');
+      }
+    } catch (error) {
+      alert('인터넷 접속 상태를 확인하세요.')
+    }
     dispatch(logoutSuccess());
     localStorage.removeItem("member");
     localStorage.removeItem("token");
     navigate("/");
   };
-
+  console.log(member);
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -101,32 +113,13 @@ function Header() {
               <img src={logoImg} alt="logoImg" width="60px" />
             </Navbar.Brand>
             <Nav className="ml-auto" style={{ alignItems: "center" }}>
-              <Nav.Link href="#" className="align-self-center">
-                나지금급해
-              </Nav.Link>
               <Nav.Link
                 href="/toilet_register"
                 className="ms-3 align-self-center"
               >
                 화장실 등록
               </Nav.Link>
-              <NavDropdown
-                className="ms-3 align-self-center"
-                title="게시판"
-                id="navbarScrollingDropdown"
-              >
-                <NavDropdown.Item className="mb-2 py-2 align-self-center">
-                  자유 게시판
-                </NavDropdown.Item>
-                <NavDropdown.Item className="mb-2 py-2 align-self-center">
-                  긴급 요청 게시판
-                </NavDropdown.Item>
-                <NavDropdown.Item className="py-2 align-self-center">
-                  뉴스 게시판
-                </NavDropdown.Item>
-              </NavDropdown>
               <Nav.Link
-                href="#pricing"
                 className="ms-3 align-self-center"
                 onClick={() => navigate("/shop")}
               >
@@ -136,20 +129,16 @@ function Header() {
                 <>
                   <Nav.Link
                     className="ms-4"
-                    style={{ textDecoration: "underline" }}
                     variant="success"
                     onClick={handleMyPageClick}
+                    style={{
+                      display: "flex",
+                      gap: "4px",
+                      alignContent: "flex-end"
+                    }}
                   >
-                    {member.memId}님
-                  </Nav.Link>
-                  <Nav.Link
-                    href="#"
-                    className="ms-4"
-                    style={{ textDecoration: "underline" }}
-                    variant="success"
-                    onClick={handleMyPageClick}
-                  >
-                    {member.memName} 님
+                    {member.memName}님
+                    <StyledContent>({Number(member.memPoint).toLocaleString('ko-KR')}점)</StyledContent>
                   </Nav.Link>
                   <LoginBtn
                     className="ms-3"

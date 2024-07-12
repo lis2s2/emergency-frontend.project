@@ -39,7 +39,7 @@ function Main() {
     isLoading: true,
   });
   const { toiletNo } = useParams();
-  const memGrade = JSON.parse(localStorage.getItem("member")).memGrade;
+  const memGrade = JSON.parse(localStorage.getItem("member"))?.memGrade || "";
 
   const [closestToiletLocations, setClosestToiletLocations] = useState([]);
   const [cafeList, setCafeList] = useState();
@@ -92,13 +92,12 @@ function Main() {
         const userAdditionalInfoList = renamedKeyList.filter(
           (toilet) => toilet.memRegister === false
         );
-        const mergedData = sortedToiletLocations.map((origItem) => {
+        let toiletUserInfoMergedData = sortedToiletLocations.map((origItem) => {
           const addItem = userAdditionalInfoList.find(
             (addItem) => addItem.POI_ID === origItem.POI_ID
           );
           return addItem ? { ...origItem, ...addItem } : origItem;
         });
-        setClosestToiletLocations(mergedData);
 
         const CafeResult = await fetchCafeList(
           location.center.lat,
@@ -125,21 +124,46 @@ function Main() {
         setgasList(gasMergedData);
 
         if (addCafeList) {
-          handleCafeList(addCafeList, mergedData, cafeMergedData);
+          toiletUserInfoMergedData = handleCafeList(addCafeList, toiletUserInfoMergedData, cafeMergedData);
         }
-
         if (addGasList) {
-          handleGasList(addGasList, mergedData, gasMergedData);
+          toiletUserInfoMergedData = handleGasList(addGasList, toiletUserInfoMergedData, gasMergedData);
         }
         if (addUserToiletList) {
-          handelUserToiletList(addUserToiletList, mergedData, userRegToiletList);
+          toiletUserInfoMergedData = handelUserToiletList(
+            addUserToiletList,
+            toiletUserInfoMergedData,
+            userRegToiletList
+          );
+        }
+        setClosestToiletLocations(toiletUserInfoMergedData);
+        if (toiletNo) {
+          const allCombinedList = [
+            ...toiletUserInfoMergedData,
+            ...cafeMergedData,
+            ...gasMergedData,
+            ...userRegToiletList
+          ];
+          setClosestToiletLocations(
+            allCombinedList
+              .map((toiletlocation) => ({
+                ...toiletlocation,
+                distance: getDistanceInMeters(
+                  location.center.lat,
+                  location.center.lng,
+                  toiletlocation.Y_WGS84,
+                  toiletlocation.X_WGS84
+                ),
+              }))
+              .sort((a, b) => a.distance - b.distance)
+          );
         }
       } catch (error) {
         console.error("Error fetching toilet locations:", error);
       }
     };
     getFetchedToiletList();
-  }, [location, listUpdated]);
+  }, [location, listUpdated, toiletNo]);
 
   const toggleCafeList = () => {
     setAddCafeList(!addCafeList);
@@ -152,14 +176,14 @@ function Main() {
       setClosestToiletLocations(
         combinedList.sort((a, b) => a.distance - b.distance)
       );
+      return combinedList.sort((a, b) => a.distance - b.distance);
     } else {
       const filteredList = base.filter(
         (item) => item.category_group_code !== "CE7"
       );
       setClosestToiletLocations(filteredList);
     }
-  }
-
+  };
   const toggleGasList = () => {
     setAddGasList(!addGasList);
     handleGasList(!addGasList, closestToiletLocations, gasList);
@@ -171,17 +195,18 @@ function Main() {
       setClosestToiletLocations(
         combinedList.sort((a, b) => a.distance - b.distance)
       );
+      return combinedList.sort((a, b) => a.distance - b.distance);
     } else {
       const filteredList = closestToiletLocations.filter(
         (item) => item.category_group_code !== "OL7"
       );
       setClosestToiletLocations(filteredList);
     }
-  }
+  };
 
   const toggleUserToiletList = () => {
-    if (memGrade !== 'VIP') {
-      alert('VIP 회원만 조회 가능합니다.')
+    if (memGrade !== "VIP") {
+      alert("VIP 회원만 조회 가능합니다.");
       return;
     }
     setAddUserToiletList(!addUserToiletList);
@@ -204,13 +229,12 @@ function Main() {
         .sort((a, b) => a.distance - b.distance)
         .filter((value) => value.distance < 500);
       setClosestToiletLocations(sortedToiletLocations);
+      return sortedToiletLocations;
     } else {
-      const filteredList = base.filter(
-        (item) => item.memRegister !== true
-      );
+      const filteredList = base.filter((item) => item.memRegister !== true);
       setClosestToiletLocations(filteredList);
     }
-  }
+  };
 
   const toggleListUpdated = () => {
     setListUpdated(!listUpdated);
@@ -231,7 +255,6 @@ function Main() {
     const distance = R * c;
     return Math.round(distance);
   };
-
   return (
     <MainContainer>
       <TolietListSection>
@@ -252,7 +275,7 @@ function Main() {
       <MapSection>
         {toiletNo ? (
           <ToiletDetailMap
-            toilet={closestToiletLocations?.find(
+            toilet={closestToiletLocations.find(
               (toilet) => toilet.POI_ID === toiletNo
             )}
           />

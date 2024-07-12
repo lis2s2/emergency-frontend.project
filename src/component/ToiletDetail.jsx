@@ -209,7 +209,6 @@ function ToiletDetail() {
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
   const navigate = useNavigate();
-
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [inputScore, setInputScore] = useState(3);

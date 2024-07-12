@@ -1,30 +1,19 @@
 import axios from "axios";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { loginSuccess, selectMember } from "../features/member/memberSlice";
-
-const REST_API_KEY_K = '6725e27a1c1047905dfd6bad61521355';
-const REDIRECT_URI_K = 'http://localhost:3000/login/oauth2/code/kakao';
-
-const REST_API_KEY_N = 'QiZW7Xq40T2iOCfUC6EH';
-const REDIRECT_URI_N = 'http://localhost:3000/login/oauth2/code/naver';
-const CLIENT_SECRET_N = 'nImi9vDd6q';
+import { loginSuccess} from "../features/member/memberSlice";
 
 function OAuth2KakaoHandle() {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const member = useSelector(selectMember);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);  
   const code = searchParams.get("code");
 
   useEffect(() => { 
     const fetchToken = async () => {
-      // console.log(code);
-    
-      const TOKEN_URL = `http://localhost:8080/api/proxy/kakao-token`;
+      const TOKEN_URL = `${process.env.REACT_APP_API_URL}/api/proxy/kakao-token`;
       
       try {
         const tokenResponse = await axios.post(TOKEN_URL, null, {
@@ -40,8 +29,6 @@ function OAuth2KakaoHandle() {
         const authorization = `Bearer ${access_token}`;
       
         const userResponse = await axios.get(`https://kapi.kakao.com/v2/user/me`, {
-        // const userResponse = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
-        // const userResponse = await axios.get(`http://localhost:8080/api/proxy/kakao-user`, {
           headers: { Authorization: authorization },
         });
         

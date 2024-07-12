@@ -45,7 +45,7 @@ const StyledImg = styled.img`
 
 function ToiletDetailMap(props) {
   const { toilet } = props;
-
+  
   if (!toilet) {
     return <div>Loading...</div>; // 로딩 중 표시할 내용
   }
