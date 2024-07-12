@@ -15,6 +15,7 @@ import FindId from "./pages/FindId";
 import Modify from "./pages/Modify";
 import OAuth2NavertHandle from "./component/OAuth2NavertHandle";
 import OAuth2KakaoHandle from "./component/OAuth2KakaoHandle";
+import ToiletRegister from "./pages/ToiletRegister";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,10 +33,6 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
   }
 
-  .cursor-pointer {
-    cursor: pointer;
-  }
-
 `;
 
 function App() {
@@ -49,6 +46,7 @@ function App() {
             <Route index element={<ToiletList />} />
             <Route path="detail/:toiletNo" element={<ToiletDetail />} />
           </Route>
+          <Route path="toilet_register" element={<ToiletRegister />} />
           <Route path="login" element={<Login />} />
           <Route index element={<Main />} />
           <Route path="login/*" element={<Login />} />

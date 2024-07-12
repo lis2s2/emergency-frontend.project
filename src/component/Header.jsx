@@ -25,11 +25,11 @@ const CustomedNavbar = styled(Navbar)`
 `;
 
 const LoginBtn = styled(Button)`
-  box-sizing: border-box; 
+  box-sizing: border-box;
 
   background-color: #ffffff;
-  color: #5FB393;
-  border: solid 2px #5FB393;
+  color: #5fb393;
+  border: solid 2px #5fb393;
   font-weight: 600;
   border-radius: 24px;
   height: 48px;
@@ -44,7 +44,7 @@ const LoginBtn = styled(Button)`
 `;
 
 const RegBtn = styled(Button)`
-  background-color: #5FB393;
+  background-color: #5fb393;
   border: none;
   font-weight: 600;
   border-radius: 24px;
@@ -54,7 +54,7 @@ const RegBtn = styled(Button)`
 `;
 
 const MyPageBtn = styled(Button)`
-  background-color: #5FB393;
+  background-color: #5fb393;
   border: none;
   font-weight: 600;
   border-radius: 24px;
@@ -70,28 +70,26 @@ function Header() {
   // const [headerstate, setHeaderstate] = useState(member);
 
   const handleMyPageClick = () => {
-    navigate('/mypage');
-  }
+    navigate("/mypage");
+  };
 
   const handleRegisterClick = () => {
-    navigate('/register');
-  }
+    navigate("/register");
+  };
 
   const handleLogout = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const result = await axios.get(`${process.env.REACT_APP_API_URL}/logout`, {
       headers: {
-        Authorization: token
-      }
+        Authorization: token,
+      },
     });
     console.log(result);
 
-    // 전역 상태 초기화
     dispatch(logoutSuccess());
-    // 로컬 스토리지 초기화
-    localStorage.removeItem('member');
-    localStorage.removeItem('token');
-    navigate('/');
+    localStorage.removeItem("member");
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -102,32 +100,92 @@ function Header() {
             <Navbar.Brand href="/">
               <img src={logoImg} alt="logoImg" width="60px" />
             </Navbar.Brand>
-            <Nav className="ml-auto" style={{ alignItems: 'center' }}>
-              <Nav.Link href="#" className="align-self-center">나지금급해</Nav.Link>
-              <Nav.Link className="ms-3 align-self-center" >화장실 등록</Nav.Link>
-              <NavDropdown className="ms-3 align-self-center" title="게시판" id="navbarScrollingDropdown">
-                <NavDropdown.Item className="mb-2 py-2 align-self-center">자유 게시판</NavDropdown.Item>
-                <NavDropdown.Item className="mb-2 py-2 align-self-center">긴급 요청 게시판</NavDropdown.Item>
-                <NavDropdown.Item className="py-2 align-self-center">뉴스 게시판</NavDropdown.Item>
+            <Nav className="ml-auto" style={{ alignItems: "center" }}>
+              <Nav.Link href="#" className="align-self-center">
+                나지금급해
+              </Nav.Link>
+              <Nav.Link
+                href="/toilet_register"
+                className="ms-3 align-self-center"
+              >
+                화장실 등록
+              </Nav.Link>
+              <NavDropdown
+                className="ms-3 align-self-center"
+                title="게시판"
+                id="navbarScrollingDropdown"
+              >
+                <NavDropdown.Item className="mb-2 py-2 align-self-center">
+                  자유 게시판
+                </NavDropdown.Item>
+                <NavDropdown.Item className="mb-2 py-2 align-self-center">
+                  긴급 요청 게시판
+                </NavDropdown.Item>
+                <NavDropdown.Item className="py-2 align-self-center">
+                  뉴스 게시판
+                </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#pricing" className="ms-3 align-self-center" onClick={() => navigate('/shop')}>포인트샵</Nav.Link>
-              {member
-              ? (
-                  <>
-                    <Nav.Link className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memId}님</Nav.Link>
-                    <Nav.Link href="#" className="ms-4" style={{ textDecoration: 'underline' }} variant="success" onClick={handleMyPageClick}>{member.memName} 님</Nav.Link>
-                    <LoginBtn className="ms-3" variant="outline-succes" onClick={handleLogout}>로그아웃</LoginBtn>
-                    <MyPageBtn className="ms-3" variant="success" onClick={handleMyPageClick}>마이페이지</MyPageBtn>  
-                  </>
-              )
-              : (
+              <Nav.Link
+                href="#pricing"
+                className="ms-3 align-self-center"
+                onClick={() => navigate("/shop")}
+              >
+                포인트샵
+              </Nav.Link>
+              {member ? (
                 <>
-                  <LoginBtn className="ms-4" variant="outline-success" onClick={() => {navigate('/login')}}>로그인</LoginBtn>
-                  <RegBtn className="ms-3" variant="success" onClick={handleRegisterClick}>회원가입</RegBtn>  
+                  <Nav.Link
+                    className="ms-4"
+                    style={{ textDecoration: "underline" }}
+                    variant="success"
+                    onClick={handleMyPageClick}
+                  >
+                    {member.memId}님
+                  </Nav.Link>
+                  <Nav.Link
+                    href="#"
+                    className="ms-4"
+                    style={{ textDecoration: "underline" }}
+                    variant="success"
+                    onClick={handleMyPageClick}
+                  >
+                    {member.memName} 님
+                  </Nav.Link>
+                  <LoginBtn
+                    className="ms-3"
+                    variant="outline-succes"
+                    onClick={handleLogout}
+                  >
+                    로그아웃
+                  </LoginBtn>
+                  <MyPageBtn
+                    className="ms-3"
+                    variant="success"
+                    onClick={handleMyPageClick}
+                  >
+                    마이페이지
+                  </MyPageBtn>
                 </>
-              ) 
-            }
-            
+              ) : (
+                <>
+                  <LoginBtn
+                    className="ms-4"
+                    variant="outline-success"
+                    onClick={() => {
+                      navigate("/login");
+                    }}
+                  >
+                    로그인
+                  </LoginBtn>
+                  <RegBtn
+                    className="ms-3"
+                    variant="success"
+                    onClick={handleRegisterClick}
+                  >
+                    회원가입
+                  </RegBtn>
+                </>
+              )}
             </Nav>
           </Container>
         </CustomedNavbar>
