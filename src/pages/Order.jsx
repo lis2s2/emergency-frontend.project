@@ -5,6 +5,8 @@ import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 import styled from "styled-components";
 import OrderItem from "../component/OrderItem";
 import axios from "axios";
+import IMP from 'react-iamport';
+import { Navigate, useNavigate } from "react-router-dom";
 
 const OrderWrapper = styled.div`
   min-width: 1440px;
@@ -149,16 +151,52 @@ const OrderedProduct = styled.div`
   align-items: center;
 `;
 
+const PayBtn = styled.div`
+  /* width: 240px; */
+  margin-top: 40px;
+  /* margin: auto 0; */
+  height: 60px;
+  background: #5FB393;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: #fff;
+  transition: 0.2s background ease-in;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background: #157347;
+
+    .total {
+      color: #7be6bd;
+    }
+  }
+
+  .total {
+    color: #003d17;
+    font-weight: 700;
+    transition: 0.2s color ease-in
+
+    
+  }
+`;
+
 function Order() {
   const open = useDaumPostcodePopup(postcodeScriptUrl);
   const [getFullAddress, setGetFullAddress] = useState('');
   const [postCode, setPostCode] = useState('');
   const member = JSON.parse(localStorage.getItem("member"));
+  const navigate = useNavigate();
 
   const selectedItems = useSelector(state => state.cart.selectedItems);
   const cartList = useSelector(state => state.cart.items);
   const orderItems = cartList.filter(item => selectedItems.includes(item.no));
-  const memId = JSON.parse(localStorage.getItem("member")).memId;
+  const memId =member.memId;
   const token = localStorage.getItem("token");
 
   const formatter = new Intl.NumberFormat('ko-KR');
@@ -192,7 +230,6 @@ function Order() {
       }))
     }));
   }, []);
-
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -229,31 +266,64 @@ function Order() {
     }));
   };
 
-  const handleSubmit = async () => {
+const handleSubmit = () => {
+  if (!newOrder.customerName || !newOrder.phoneNum || !newOrder.detailedAddress || !getFullAddress) {
+    alert("모든 필드를 입력해주세요.");
+    return;
+  }
+
+  if (!window.IMP) return;
+  const { IMP } = window;
+  IMP.init("imp46283852"); // 가맹점 식별코드
+
+  const data = {
+    pg: "kakaopay",
+    pay_method: "card",
+    merchant_uid: `mid_${new Date().getTime()}`,
+    amount: (newOrder.totalAmount - newOrder.usedPoint),
+    name: "아임포트 결제 데이터 분석",
+    buyer_name: newOrder.customerName,
+    buyer_tel: newOrder.phoneNum,
+    buyer_email: member.memEmail,
+    buyer_addr: getFullAddress,
+    buyer_postcode: postCode,
+  };
+
+  IMP.request_pay(data, paymentCallback);
+};
+
+const paymentCallback = async (response) => {
+  const { success, error_msg } = response;
+  if (success) {
     try {
       const orderData = {
         ...newOrder,
         orderItems: newOrder.orderItems.filter(item => item.productNo > 0)
       };
 
-      const response = await axios.post('http://localhost:8080/orders', orderData, {
+      await axios.post('http://localhost:8080/orders', orderData, {
         headers: {
           Authorization: token,
         }
       });
-      console.log('주문이 추가되었습니다:', response.data);
-       // 주문이 성공적으로 추가된 후 장바구니 항목의 is_deleted 업데이트
       await axios.put('http://localhost:8080/carts/deleteSelected', selectedItems, {
         headers: {
           Authorization: token,
         }
       });
-      console.log('장바구니 항목이 업데이트되었습니다.');
-      
+      alert('결제가 완료되었습니다.');
+      member.memPoint -= newOrder.usedPoint;
+      localStorage.setItem("member", JSON.stringify(member));
+      navigate('/shop');
     } catch (error) {
       console.error('주문을 추가하는 중 에러발생!:', error);
+      alert('주문 처리 중 오류가 발생했습니다.');
     }
-  };
+  } else {
+    alert(`결제 실패: ${error_msg}`);
+  }
+};
+
 
   return (
     <OrderWrapper>
@@ -315,7 +385,6 @@ function Order() {
           <Title>주문상품</Title>
           <OrderedProduct>
             {selectedItems.map(itemId => (
-              // <OrderItem key={item.no} item={item} />
               <OrderItem key={itemId} itemId={itemId} />
             ))}
           </OrderedProduct>
@@ -328,11 +397,11 @@ function Order() {
               <InfoLabel>포인트</InfoLabel>
             </InfoRow>
             <InfoRow>
-              <InfoLabel>보유 포인트:</InfoLabel>
+              <InfoLabel>보유 포인트</InfoLabel>
               <InfoValue>{formatter.format(member.memPoint)}p</InfoValue>
             </InfoRow>
             <InfoRow>
-              <InfoLabel>사용 포인트:</InfoLabel>
+              <InfoLabel>사용 포인트</InfoLabel>
               <InfoValue>
                 <InfoInput 
                   type="text" 
@@ -343,10 +412,10 @@ function Order() {
               </InfoValue>
             </InfoRow>
             <InfoRow>
-              <InfoLabel>최종 결제 금액:</InfoLabel>
+              <InfoLabel>최종 결제 금액</InfoLabel>
               <InfoValue>{formatter.format(newOrder.totalAmount - newOrder.usedPoint)}원</InfoValue>
             </InfoRow>
-            <button onClick={handleSubmit}>{formatter.format(newOrder.totalAmount - newOrder.usedPoint)}원 결제하기</button>
+            <PayBtn onClick={handleSubmit}><span className="total">{formatter.format(newOrder.totalAmount - newOrder.usedPoint)}</span>원 결제하기</PayBtn>
           </PaymentInfo>
         </div>
       </Container>

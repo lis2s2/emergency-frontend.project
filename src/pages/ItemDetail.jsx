@@ -234,6 +234,7 @@ function ItemDetail() {
     setCount(count + 1);
   }
 
+  
 
   const formatter = new Intl.NumberFormat('ko-KR');
 
