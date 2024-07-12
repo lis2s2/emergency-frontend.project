@@ -15,9 +15,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // index.js에 로그인 유지하기 구현
 (() => {
   // 로그인 정보를 로컬 스토리지에서 가져옴
-  const member = JSON.parse(localStorage.getItem('member'));
+  const member = localStorage.getItem('member');
+  // const member = JSON.parse(localStorage.getItem('member'));
   
   if (!member) return; // 로그인 정보가 없다면 여기서 멈춤
+  
   store.dispatch(loginSuccess(member));
   })(); // 즉시 실행 함수
 
