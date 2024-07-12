@@ -44,41 +44,37 @@ function OAuth2KakaoHandle() {
         // const userResponse = await axios.get(`http://localhost:8080/api/proxy/kakao-user`, {
           headers: { Authorization: authorization },
         });
-  
+        
         const userInfo = userResponse.data;
         const userInfoDetails = userResponse.data.kakao_account;
         const memberData = {
-          memId: userInfo.id,
+          memId: 'k_' + userInfo.id,
           memPwd: 'default_password', // 기본 비밀번호 설정
           memName: userInfoDetails.profile.nickname,
           memEmail: userInfoDetails.email,
           provider: 'kakao',
-          providerId: userInfo.id,
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
           memPoint: 0
         };
+        
+        console.log("사용자 정보: ", userResponse.data);
+
+        await axios.post("http://localhost:8080/register", memberData);
 
         dispatch(loginSuccess(memberData));
         localStorage.setItem("member", JSON.stringify(userInfoDetails));
         localStorage.setItem("token", access_token);
 
-        // dispatch(loginSuccess(member));   
-        console.log("사용자 정보: ", userResponse.data);
-
-        // localStorage.setItem("member", JSON.stringify(userResponse.data));
-
         navigate('/');
 
-        await axios.post("http://localhost:8080/register", memberData);
-        
       } catch (error) {
           console.error("Error fetching the token: ", error);
       }
     };
 
     fetchToken(code);
-  }, []);
+  }, [code, navigate, dispatch]);
 
   return null;
 }

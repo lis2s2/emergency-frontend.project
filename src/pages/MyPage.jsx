@@ -3,9 +3,10 @@ import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import profileImg from "../images/profile.png";
 import logoImg from "../images/logo.png";
-import { selectMember } from "../features/member/memberSlice";
-import { useSelector } from "react-redux";
+import { logoutSuccess, selectMember } from "../features/member/memberSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const RegisterContainer = styled.div`
   /* width: 100%; */
@@ -358,13 +359,34 @@ const RestText = styled.text`
 
 
 function MyPage() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const member = useSelector(selectMember);
   // const storedMember = localStorage.getItem('member') || {};
-  const storedMember = JSON.parse(localStorage.getItem('member')) || {};
-  const { name} = storedMember.profile;
+  const storedMember = localStorage.getItem('member') || {};
+  // const { nickname } = storedMember.profile;
+  const { name } = storedMember;
   // const { name, nickname } = storedMember.profile;
+
+  const handleDeleteMember = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/delete-member/${member.memId}`);
+      if (response.status === 200) {
+        window.confirm('탈퇴 하시겠습니까?');
+        if (true) {
+          dispatch(logoutSuccess());
+          localStorage.removeItem("member");
+          localStorage.removeItem("token");
+          alert("회원탈퇴가 완료되었습니다.");
+          navigate('/');
+        }
+      } else {
+        console.error("회원탈퇴 실패!");
+      }
+    } catch (error) {
+      console.error("회원탈퇴 중 오류 발생:", error);
+    }
+  };
   
   
   return (
@@ -374,7 +396,7 @@ function MyPage() {
             <Sublayout>
               <NameCard>
                 <CardImg />
-                <CardName>{name}</CardName>
+                <CardName>{member?.memName}</CardName>
                 <CardPoint>{member?.memPoint} P</CardPoint>
               </NameCard>
 
@@ -411,7 +433,7 @@ function MyPage() {
               </>
 
               <Withdrawal>
-                <RestText>
+                <RestText onClick={handleDeleteMember}>
                   회원탈퇴
                 </RestText>
               </Withdrawal>

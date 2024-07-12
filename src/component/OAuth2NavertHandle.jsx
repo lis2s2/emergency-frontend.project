@@ -44,32 +44,32 @@ function OAuth2NavertHandle() {
           headers: { Authorization: authorization },
         });
 
+        // if (member.memId === null) {
+        //   // 회원 정보가 없는 경우, 소셜 동의 항목을 다시 요청
+        //   window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${REST_API_KEY_N}&response_type=code&redirect_uri=${REDIRECT_URI_N}&state=${CLIENT_SECRET_N}`;
+        //   return;
+        // }
+
         const userInfo = userResponse.data.response;
         const memberData = {
-          memId: userInfo.id,
+          memId: 'n_' + userInfo.id.slice(3,10),
           memPwd: 'default_password', // 기본 비밀번호 설정
           memName: userInfo.name,
           memEmail: userInfo.email,
           provider: 'naver',
-          providerId: userInfo.id,
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
           memPoint: 0
         };
-  
+
+        // DB에 저장
+          await axios.post("http://localhost:8080/register", memberData);
+
         dispatch(loginSuccess(memberData));
         localStorage.setItem("member", JSON.stringify(userInfo));
         localStorage.setItem("token", access_token);
-        // dispatch(loginSuccess(member));   
-        // console.log("사용자 정보: ", userResponse.data);
-
-        // localStorage.setItem("member", JSON.stringify(userResponse.data.response));
 
         navigate('/');
-
-        // DB에 저장
-        await axios.post("http://localhost:8080/register", memberData);
-
       } catch (error) {
           console.error("Error fetching the token: ", error);
       }
@@ -77,6 +77,7 @@ function OAuth2NavertHandle() {
 
     fetchToken(code, state);
   }, []);
+  // }, [code, state, navigate, dispatch]);
 
   return null;
 }
