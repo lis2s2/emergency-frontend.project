@@ -357,7 +357,6 @@ const RestText = styled.text`
   color: #FFFFFF;
 `;
 
-
 function MyPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -56,7 +56,6 @@ function OAuth2NavertHandle() {
           memPwd: 'default_password', // 기본 비밀번호 설정
           memName: userInfo.name,
           memEmail: userInfo.email,
-          provider: 'naver',
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
           memPoint: 0
