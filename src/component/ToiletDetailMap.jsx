@@ -22,8 +22,8 @@ const ToiletInfoWrapper = styled.div`
 const StyledTitle = styled.p`
   font-size: 18px;
   font-weight: 600;
-  color: #000000;
-  text-align: center;
+  color: #0067c7;
+  text-align: start;
   vertical-align: middle;
   border: none;
   width: 100%;
@@ -49,7 +49,6 @@ function ToiletDetailMap(props) {
   if (!toilet) {
     return <div>Loading...</div>; // 로딩 중 표시할 내용
   }
-  console.log(toilet.disabled);
   return (
     <CustomMap
       center={{

@@ -1,7 +1,7 @@
 import axios from "axios";
-import uuid from "react-uuid";
 
 export const registerToilet = async (
+  toiletNo,
   lat,
   lng,
   address,
@@ -15,7 +15,7 @@ export const registerToilet = async (
   const token = localStorage.getItem("token");
   const writer = JSON.parse(localStorage.getItem("member")).memId;
   const sendData = {
-    toiletNo: uuid(),
+    toiletNo: toiletNo,
     memRegister: true,
     writer: writer,
     lat: lat,

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FaCoins } from "react-icons/fa6";
 import { registerToilet } from "../api/toiletRegistorAPI";
+import uuid from "react-uuid";
 
 const ToiletRegisterInfoContainer = styled.div`
   background-color: #ffffff;
@@ -132,7 +133,9 @@ function ToiletRegisterInfo(props) {
 
   const handleToileRegistor = async () => {
     if (address && toiletTitle) {
+      const toiletNo = uuid();
       const result = await registerToilet(
+        toiletNo,
         clickedLocation.lat,
         clickedLocation.lng,
         address,
@@ -145,7 +148,7 @@ function ToiletRegisterInfo(props) {
       );
       if (result.data === true) {
         alert('감사합니다. 1000포인트가 지급되었습니다.')
-        navigate("/");
+        navigate(`/`);
       } else {
         alert('화장실 등록 중 오류가 발생하였습니다.');
         navigate("/");
