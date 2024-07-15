@@ -5,7 +5,6 @@ import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 import styled from "styled-components";
 import OrderItem from "../component/OrderItem";
 import axios from "axios";
-import IMP from 'react-iamport';
 import { useNavigate } from "react-router-dom";
 
 const OrderWrapper = styled.div`
@@ -152,9 +151,7 @@ const OrderedProduct = styled.div`
 `;
 
 const PayBtn = styled.div`
-  /* width: 240px; */
   margin-top: 40px;
-  /* margin: auto 0; */
   height: 60px;
   background: #5FB393;
   border-radius: 8px;
@@ -258,14 +255,12 @@ function Order() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
-    // 포인트 검증 및 보유 포인트의 최대값으로 설정
     if (name === 'usedPoint') {
       const usedPoint = parseInt(value, 10);
       if (usedPoint > member.memPoint) {
         setNewOrder(prevState => ({
           ...prevState,
-          [name]: member.memPoint.toString() // 보유 포인트로 설정
+          [name]: member.memPoint.toString() 
         }));
         alert("사용 포인트가 보유 포인트보다 많습니다. 보유 포인트로 설정되었습니다.");
         return;

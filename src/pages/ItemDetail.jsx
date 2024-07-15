@@ -228,7 +228,6 @@ function ItemDetail() {
       };
 
       dispatch(addItem(itemToAdd));
-      // Dispatch the new count to update the state
       dispatch({ type: 'cart/incrementTotalCount', payload: count });
 
       return result.data;
@@ -288,11 +287,7 @@ function ItemDetail() {
             </ProductWarpper>
             <div className="btn_container">
               <StyledBtnWhite onClick={addCartItem}>장바구니 담기</StyledBtnWhite>
-              {/* 장바구니로 이동하겠냐는 모달창 띄우기 */}
-
               <StyledBtn onClick={handleDirectPurchase}>바로 구매하기</StyledBtn>
-              {/* 장바구니창? 혹은 구매창 띄우기 */}
-
             </div>
           </div>
 

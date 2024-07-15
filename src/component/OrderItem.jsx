@@ -37,17 +37,7 @@ const CloseBtn = styled(IoCloseOutline)`
   height: 30px;
   cursor: pointer;
 `;
-// function OrderItem(props) {
-//   const {itemId} = props;
-//   const item = useSelector((state) =>
-//     state.cart.items.find((item) => item.no === itemId)
-//   );
 
-//   const formatter = new Intl.NumberFormat('ko-KR');
-
-//   if (!item) {
-//     return null;
-//   }
 function OrderItem(props) {
   const { itemId } = props;
   const item = useSelector((state) =>
