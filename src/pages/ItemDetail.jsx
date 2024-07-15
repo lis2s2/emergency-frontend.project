@@ -230,6 +230,11 @@ function ItemDetail() {
       dispatch(addItem(itemToAdd));
       dispatch({ type: 'cart/incrementTotalCount', payload: count });
 
+      const confirmed = window.confirm("장바구니에 상품을 담았습니다. 장바구니로 이동하시겠습니까?");
+      if (confirmed) {
+        navigate('/cart');
+      }
+
       return result.data;
     } catch (error) {
       console.error(error);
@@ -250,10 +255,13 @@ function ItemDetail() {
 
 
   const handleDirectPurchase = () => {
-    const itemToAdd = { no: item.prodNo, prodTitle: item.title, prodPrice: item.price, prodCount: count, prodImgpath: item.imgpath };
-    dispatch(addItem(itemToAdd));
-    dispatch(selectItem(item.prodNo));
-    navigate('/order');
+    const confirmed = window.confirm("결제창으로 이동하시겠습니까?");
+    if (confirmed) {
+      const itemToAdd = { no: item.prodNo, prodTitle: item.title, prodPrice: item.price, prodCount: count, prodImgpath: item.imgpath };
+      dispatch(addItem(itemToAdd));
+      dispatch(selectItem(item.prodNo));
+      navigate('/order');
+    }
   };
 
   const formatter = new Intl.NumberFormat('ko-KR');

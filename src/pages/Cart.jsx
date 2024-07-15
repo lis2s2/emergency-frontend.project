@@ -67,12 +67,16 @@ const CartWarpper = styled.div`
     align-items: center;
     border-bottom: 2px solid black;
     height: 50px;
+
     .cartlist_btn_group_left {
       display: flex;
+
       .cursor-pointer {
         justify-content: center;
         align-items: center;
         display: flex;
+        cursor: pointer;
+        
         .select_all_btn {
           font-weight: 900;
           font-size: 22px;
@@ -86,6 +90,7 @@ const CartWarpper = styled.div`
         font-size: 22px;
         margin: 15px;
         font-weight: 300;
+        cursor: pointer;
       }
     }
   }
