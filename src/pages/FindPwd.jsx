@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const RegisterContainer = styled.div`
@@ -200,7 +201,7 @@ const CheckBtn = styled.button`
 `;
 
 function FindPwd() {
-
+  const navigator = useNavigate();
   const [memId, setMemId] = useState('');
   const [memName, setMemName] = useState('');
   const [memEmail, setMemEmail] = useState('');
@@ -211,15 +212,14 @@ function FindPwd() {
       alert('아이디, 이름, 이메일을 전부 입력 해주세요.');
       return;
     }
-    console.log("http://localhost:8080/find", { memId, memName, memEmail });
+
+    // console.log("http://localhost:8080/find-password", { memId, memName, memEmail });
     try {
       const response = await axios.post("http://localhost:8080/find/pwd", { memId, memName, memEmail });
-    //   setMemId(response.data.memId);
-      setError(<div>'이메일로 임시 비밀번호를 보냈습니다.'</div>);
-
+      // console.log(response);
+      setError('이메일로 임시 비밀번호를 보냈습니다.');
     } catch (error) {
       console.error('Error fetching password:', error);
-      setMemId('');
       setError('사용자를 찾을 수 없습니다.');
     }
   };

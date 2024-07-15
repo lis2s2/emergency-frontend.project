@@ -44,15 +44,15 @@ function OAuth2NavertHandle() {
           headers: { Authorization: authorization },
         });
 
+        // 리다이렉트 하고 싶다!
         // 회원 존재 여부 확인
-        const checkMemberResponse = await axios.get(`http://localhost:8080/check-member/${userInfo.id}`);
-        const memberExists = checkMemberResponse.data;
-
-        if (!memberExists) {
-          // 회원 정보가 없는 경우, 소셜 동의 화면으로 리다이렉트
-          window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${REST_API_KEY_N}&response_type=code&redirect_uri=${REDIRECT_URI_N}&state=${CLIENT_SECRET_N}`;
-          return;
-        }
+        // const checkMemberResponse = await axios.get(`http://localhost:8080/check-member/${userInfo.id}`);
+        // const memberExists = checkMemberResponse.data;
+        // if (!memberExists) {
+        //   // 회원 정보가 없는 경우, 소셜 동의 화면으로 리다이렉트
+        //   window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${REST_API_KEY_N}&response_type=code&redirect_uri=${REDIRECT_URI_N}&state=${CLIENT_SECRET_N}`;
+        //   return;
+        // }
 
         const userInfo = userResponse.data.response;
         const memberData = {

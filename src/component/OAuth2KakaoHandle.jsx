@@ -34,6 +34,7 @@ function OAuth2KakaoHandle() {
         
         const userInfo = userResponse.data;
         const userInfoDetails = userResponse.data.kakao_account;
+        
         const memberData = {
           memId: 'k_' + userInfo.id,
           memPwd: 'default_password', // 기본 비밀번호 설정
