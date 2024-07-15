@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import CartListIcon from "../component/CartListIcon";
+import { useDispatch } from "react-redux";
+import { addItem, selectItem } from "../features/cart/cartSlice";
 
 
 const DetailWarpper = styled.div`
@@ -15,78 +17,79 @@ const DetailWarpper = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  height: 600px;
-  width: 100%;
+
+height: 600px;
+width: 100%;
+border-bottom: 1px solid black;
+display: flex;
+
+.img_warpper {
+  width: 50%;
+  margin: auto 0;
+}
+
+.content_warpper {
+  width: 50%;
+}
+
+.title_container {
+  width: 500px;
+  height: 200px;
   border-bottom: 1px solid black;
+  margin: 0 auto;
   display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 10px;
+}
 
-  .img_warpper {
-    width: 50%;
-    margin: auto 0;
-  }
-  
-  .content_warpper {
-    width: 50%;
-  }
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #4d4d4d;
+  text-align: left;
+  line-height: 34px;
+}
 
-  .title_container {
-    width: 500px;
-    height: 200px;
-    border-bottom: 1px solid black;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 10px;
-  }
+.price_warpper {
+  display: flex;
+  gap: 10px;
+  margin: 0 auto;
+  width: 500px;
+  height: 96px;
+  align-items: center;
+}
 
-  .title {
-    font-size: 30px;
-    font-weight: 600;
-    color: #4d4d4d;
-    text-align: left;
-    line-height: 34px;
-  }
+.discount_rate {
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 38px;
+  color: #FF0000;
+}
 
-  .price_warpper {
-    display: flex;
-    gap: 10px;
-    margin: 0 auto;
-    width: 500px;
-    height: 96px;
-    align-items: center;
-  }
+.price {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 38px;
+  color: #000000;
+}
 
-  .discount_rate {
-    font-weight: 300;
-    font-size: 32px;
-    line-height: 38px;
-    color: #FF0000;
-  }
+.strike_through {
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 38px;
+  text-decoration-line: line-through;
+  color: #707070;
+}
 
-  .price {
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 38px;
-    color: #000000;
-  }
-
-  .strike_through {
-    font-weight: 300;
-    font-size: 32px;
-    line-height: 38px;
-    text-decoration-line: line-through;
-    color: #707070;
-  }
-
-  .btn_container {
-    width: 512px;
-    height: 100px;
-    margin: 40px auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+.btn_container {
+  width: 512px;
+  height: 100px;
+  margin: 40px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 `;
 
 const ImgEx = styled.img`
@@ -94,6 +97,7 @@ const ImgEx = styled.img`
   height: 500px;
   background-color: #bbb;
 `;
+
 
 const ProductWarpper = styled.div`
   width: 512px;
@@ -137,6 +141,7 @@ const ProductWarpper = styled.div`
   }
 `;
 
+
 const StyledBtnWhite = styled.button`
   border: 2px solid #5FB393;
   width: 240px;
@@ -175,11 +180,14 @@ const StyledBtn = styled.button`
 
 
 
+
 function ItemDetail() {
   const [count, setCount] = useState(1);
   const [item, setItem] = useState([]);
   const { productId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     try {
@@ -202,24 +210,31 @@ function ItemDetail() {
   const token = localStorage.getItem("token");
 
   const addCartItem = async () => {
-    // alert('장바구니');
     try {
-    const result = await axios.post(`${process.env.REACT_APP_API_URL}/carts/add`, {
+      const result = await axios.post(`${process.env.REACT_APP_API_URL}/carts/add`, {
         prodNo: productId,
         memberId: memId,
         prodCount: count
       }, {
-        headers: {
-          Authorization: token,
-        },
+        headers: { Authorization: token },
       });
-      // window.location.reload()
+
+      const itemToAdd = {
+        no: item.prodNo,
+        prodTitle: item.title,
+        prodPrice: item.price,
+        prodCount: count,
+        prodImgpath: item.imgpath
+      };
+
+      dispatch(addItem(itemToAdd));
+      // Dispatch the new count to update the state
+      dispatch({ type: 'cart/incrementTotalCount', payload: count });
+
       return result.data;
-      // 장바구니 확인 모달 띄우기
     } catch (error) {
       console.error(error);
     }
-
   };
 
   const handleDecrement = () => {
@@ -234,7 +249,13 @@ function ItemDetail() {
     setCount(count + 1);
   }
 
-  
+
+  const handleDirectPurchase = () => {
+    const itemToAdd = { no: item.prodNo, prodTitle: item.title, prodPrice: item.price, prodCount: count, prodImgpath: item.imgpath };
+    dispatch(addItem(itemToAdd));
+    dispatch(selectItem(item.prodNo));
+    navigate('/order');
+  };
 
   const formatter = new Intl.NumberFormat('ko-KR');
 
@@ -269,7 +290,7 @@ function ItemDetail() {
               <StyledBtnWhite onClick={addCartItem}>장바구니 담기</StyledBtnWhite>
               {/* 장바구니로 이동하겠냐는 모달창 띄우기 */}
 
-              <StyledBtn>바로 구매하기</StyledBtn>
+              <StyledBtn onClick={handleDirectPurchase}>바로 구매하기</StyledBtn>
               {/* 장바구니창? 혹은 구매창 띄우기 */}
 
             </div>

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import OrderItem from "../component/OrderItem";
 import axios from "axios";
 import IMP from 'react-iamport';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const OrderWrapper = styled.div`
   min-width: 1440px;
@@ -180,9 +180,7 @@ const PayBtn = styled.div`
   .total {
     color: #003d17;
     font-weight: 700;
-    transition: 0.2s color ease-in
-
-    
+    transition: 0.2s color ease-in;
   }
 `;
 
@@ -196,7 +194,7 @@ function Order() {
   const selectedItems = useSelector(state => state.cart.selectedItems);
   const cartList = useSelector(state => state.cart.items);
   const orderItems = cartList.filter(item => selectedItems.includes(item.no));
-  const memId =member.memId;
+  const memId = member.memId;
   const token = localStorage.getItem("token");
 
   const formatter = new Intl.NumberFormat('ko-KR');
@@ -245,8 +243,8 @@ function Order() {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    setGetFullAddress(fullAddress)
-    setPostCode(zonecode)
+    setGetFullAddress(fullAddress);
+    setPostCode(zonecode);
     setNewOrder(prevState => ({
       ...prevState,
       address: fullAddress,
@@ -260,69 +258,84 @@ function Order() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+  
+    // 포인트 검증 및 보유 포인트의 최대값으로 설정
+    if (name === 'usedPoint') {
+      const usedPoint = parseInt(value, 10);
+      if (usedPoint > member.memPoint) {
+        setNewOrder(prevState => ({
+          ...prevState,
+          [name]: member.memPoint.toString() // 보유 포인트로 설정
+        }));
+        alert("사용 포인트가 보유 포인트보다 많습니다. 보유 포인트로 설정되었습니다.");
+        return;
+      }
+    }
+  
     setNewOrder(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
+  
 
-const handleSubmit = () => {
-  if (!newOrder.customerName || !newOrder.phoneNum || !newOrder.detailedAddress || !getFullAddress) {
-    alert("모든 필드를 입력해주세요.");
-    return;
-  }
+  const handleSubmit = () => {
+    if (!newOrder.customerName || !newOrder.phoneNum || !newOrder.detailedAddress || !getFullAddress) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
 
-  if (!window.IMP) return;
-  const { IMP } = window;
-  IMP.init("imp46283852"); // 가맹점 식별코드
+    if (!window.IMP) return;
+    const { IMP } = window;
+    IMP.init("imp46283852"); // 가맹점 식별코드
 
-  const data = {
-    pg: "kakaopay",
-    pay_method: "card",
-    merchant_uid: `mid_${new Date().getTime()}`,
-    amount: (newOrder.totalAmount - newOrder.usedPoint),
-    name: "아임포트 결제 데이터 분석",
-    buyer_name: newOrder.customerName,
-    buyer_tel: newOrder.phoneNum,
-    buyer_email: member.memEmail,
-    buyer_addr: getFullAddress,
-    buyer_postcode: postCode,
+    const data = {
+      pg: "kakaopay",
+      pay_method: "card",
+      merchant_uid: `mid_${new Date().getTime()}`,
+      amount: (newOrder.totalAmount - newOrder.usedPoint),
+      name: "아임포트 결제 데이터 분석",
+      buyer_name: newOrder.customerName,
+      buyer_tel: newOrder.phoneNum,
+      buyer_email: member.memEmail,
+      buyer_addr: getFullAddress,
+      buyer_postcode: postCode,
+    };
+
+    IMP.request_pay(data, paymentCallback);
   };
 
-  IMP.request_pay(data, paymentCallback);
-};
+  const paymentCallback = async (response) => {
+    const { success, error_msg } = response;
+    if (success) {
+      try {
+        const orderData = {
+          ...newOrder,
+          orderItems: newOrder.orderItems.filter(item => item.productNo > 0)
+        };
 
-const paymentCallback = async (response) => {
-  const { success, error_msg } = response;
-  if (success) {
-    try {
-      const orderData = {
-        ...newOrder,
-        orderItems: newOrder.orderItems.filter(item => item.productNo > 0)
-      };
-
-      await axios.post('http://localhost:8080/orders', orderData, {
-        headers: {
-          Authorization: token,
-        }
-      });
-      await axios.put('http://localhost:8080/carts/deleteSelected', selectedItems, {
-        headers: {
-          Authorization: token,
-        }
-      });
-      alert('결제가 완료되었습니다.');
-      member.memPoint -= newOrder.usedPoint;
-      localStorage.setItem("member", JSON.stringify(member));
-      navigate('/shop');
-    } catch (error) {
-      console.error('주문을 추가하는 중 에러발생!:', error);
-      alert('주문 처리 중 오류가 발생했습니다.');
+        await axios.post(`${process.env.REACT_APP_API_URL}/orders`, orderData, {
+          headers: {
+            Authorization: token,
+          }
+        });
+        await axios.put(`${process.env.REACT_APP_API_URL}/carts/deleteSelected`, selectedItems, {
+          headers: {
+            Authorization: token,
+          }
+        });
+        alert('결제가 완료되었습니다.');
+        member.memPoint -= newOrder.usedPoint;
+        localStorage.setItem("member", JSON.stringify(member));
+        navigate('/shop');
+      } catch (error) {
+        console.error('주문을 추가하는 중 에러발생!:', error);
+        alert('주문 처리 중 오류가 발생했습니다.');
+      }
+    } else {
+      alert(`결제 실패: ${error_msg}`);
     }
-  } else {
-    alert(`결제 실패: ${error_msg}`);
-  }
-};
+  };
 
 
   return (
