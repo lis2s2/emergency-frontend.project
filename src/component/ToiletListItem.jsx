@@ -2,13 +2,16 @@ import styled from "styled-components";
 import { TbRoadSign } from "react-icons/tb";
 import { PiStarFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
-import { fetchAddressFromCoords } from "../api/kakaoMapAPI";
+import {
+  fetchAddressFromCoords,
+  fetchWCongnamulCoord,
+} from "../api/kakaoMapAPI";
 import { useNavigate } from "react-router-dom";
 import { getAvgScoreByToiletNo } from "../api/toiletReviewAPI";
 
 const ItemContainer = styled.div`
   padding: 10px;
-  height: 108px;
+  min-height: 108px;
   width: 100%;
   background-color: #ffffff;
   border-radius: 16px;
@@ -27,7 +30,7 @@ const ItemInfoContainer = styled.div`
 const ItemButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
 `;
 
@@ -48,10 +51,10 @@ const SearchButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
+  background-color: #0067c7;
   color: #ffffff;
   font-weight: 600;
-  height: 36px;
+  height: 38px;
   width: 100px;
   border-radius: 8px;
   display: flex;
@@ -64,10 +67,11 @@ const DetailButton = styled.button`
   font-size: 16px;
   border-radius: 18px;
   border: none;
-  background-color: #050505;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #0067c7;
+  border: 2px solid #0067c7;
   font-weight: 600;
-  height: 36px;
+  height: 38px;
   width: 100px;
   border-radius: 8px;
   display: flex;
@@ -91,6 +95,10 @@ const StyledTitle = styled.p`
   color: #000000;
   text-align: start;
   vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
 `;
 
 const StyledContent = styled.p`
@@ -101,17 +109,30 @@ const StyledContent = styled.p`
   vertical-align: middle;
 `;
 
+
 function ToiletListItem(props) {
   const {
-    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID }
+    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID, detail },
+    location,
   } = props;
   const [address, setAddress] = useState("");
   const [toiletScore, setToiletScore] = useState(3.0);
   const navigate = useNavigate();
 
+  const handleFindRoute = async (lat, lng, name) => {
+    try {
+      const startResult = await fetchWCongnamulCoord(location.center.lat, location.center.lng);
+      const destResult = await fetchWCongnamulCoord(lat, lng);
+      const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const getAddress = async () => {
-      const address = await fetchAddressFromCoords(X_WGS84, Y_WGS84);
+      const address = await fetchAddressFromCoords(Y_WGS84, X_WGS84);
       setAddress(address);
     };
     getAddress();
@@ -127,7 +148,7 @@ function ToiletListItem(props) {
     <ItemContainer>
       <ItemInfoContainer>
         <StyledTitle>
-          {FNAME} ({ANAME})
+          {FNAME} {ANAME && `(${ANAME})`}{detail && `(${detail})`}
         </StyledTitle>
         <ItemScoreDistanceContainer>
           <ItemScoreContainer>
@@ -139,7 +160,7 @@ function ToiletListItem(props) {
         <StyledContent>{address}</StyledContent>
       </ItemInfoContainer>
       <ItemButtonContainer>
-        <SearchButton>
+        <SearchButton onClick={() => handleFindRoute(Y_WGS84, X_WGS84, FNAME)}>
           <StyledTbRoadSign />
           길찾기
         </SearchButton>
