@@ -20,8 +20,6 @@ const Autolayout = styled.div`
 
   width: 819px;
   height: 830px;
-  //left: 310px;
-  //top: 0px;
 
   flex: none;
   order: 0;
@@ -76,7 +74,7 @@ const RegisterWhite = styled.div`
   gap: 24px;
 
   width: 606px;
-  height: 568px;
+  height: 450px;
 
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -201,27 +199,27 @@ const CheckBtn = styled.button`
   }
 `;
 
-function Search() {
+function FindId() {
 
   const [memId, setMemId] = useState('');
   const [memName, setMemName] = useState('');
   const [memEmail, setMemEmail] = useState('');
-  const [memPwd, setMemPwd] = useState('');
   const [error, setError] = useState('');
 
-  const handleSearch = async () => {
-    if (!memId || !memName || !memEmail) {
-      setError('아이디, 이름, 이메일을 전부 입력 해주세요.');
+  const handleFind = async () => {
+    if (!memName || !memEmail) {
+      alert('아이디, 이름, 이메일을 전부 입력 해주세요.');
       return;
     }
-
+    console.log("http://localhost:8080/find", {memName, memEmail });
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/search`, { memId, memName, memEmail });
-      setMemPwd(response.data.memPwd);
-      setError('');
+      const response = await axios.post("http://localhost:8080/find/id", {memName, memEmail });
+      setMemId(response.data.memId);
+      setError('아이디는 "' + response.data + '" 입니다');
+
     } catch (error) {
       console.error('Error fetching password:', error);
-      setMemPwd('');
+      setMemId('');
       setError('사용자를 찾을 수 없습니다.');
     }
   };
@@ -229,16 +227,9 @@ function Search() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>Searching for passwords</RegisterGround>
+        <RegisterGround>Find Id</RegisterGround>
           <RegisterWhite>
             <Sublayout>
-              <Autobox>
-                  <CommonInfo>
-                    <InfoStyle>ID</InfoStyle>
-                  </CommonInfo>
-                  <CommonInput  value={memId} onChange={(e) => setMemId(e.target.value)} />
-              </Autobox>
-
               <Autobox>
                   <CommonInfo>
                     <>Name</>
@@ -254,9 +245,9 @@ function Search() {
               </Autobox>
 
               <>
-                <CheckBtn onClick={handleSearch}>Check</CheckBtn>
+                <CheckBtn onClick={handleFind}>Check</CheckBtn>
               </>  
-              {memPwd && <div>비밀번호: {memPwd}</div>}
+              {setMemId && <div>{memId}</div>}
               {error && <div>{error}</div>} 
             </Sublayout>
           </RegisterWhite>
@@ -265,4 +256,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default FindId;

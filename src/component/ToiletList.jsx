@@ -3,25 +3,35 @@ import { MdTune } from "react-icons/md";
 import ToiletListItem from "./ToiletListItem";
 import { useOutletContext } from "react-router-dom";
 
+const ButtonListContainer = styled.div`
+  max-height: 780px;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
+  justify-content: center;
+  gap: 8px;
 `;
 
 const ToggleButton = styled.button`
   padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 16px;
-  border: 1px solid #3e4958;
+  font-size: 16px;
+  border-radius: 14px;
+  border: 1px solid #605d83;
   background-color: white;
-  color: #3e4958;
+  color: #605d83;
   font-weight: 600;
-  &:hover {
-    background-color: #3e4958;
-    color: white;
-  }
+`;
+
+const ToggleButtonToggled = styled.button`
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 14px;
+  border: 1px solid #605d83;
+  background-color: #605d83;
+  color: white;
+  font-weight: 600;
 `;
 
 const StyledMdTune = styled(MdTune)`
@@ -35,19 +45,60 @@ const ListContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   margin-top: 16px;
+  overflow-y: auto;
+  max-height: 728px;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
 `;
 
-function ToiletList(props) {
-  // const { closestToiletLocations } = props;
-  const closestToiletLocations = useOutletContext();
-  console.log(closestToiletLocations);
+function ToiletList() {
+  const {
+    closestToiletLocations,
+    location,
+    toggleCafeList,
+    addCafeList,
+    toggleGasList,
+    addGasList,
+    toggleUserToiletList,
+    addUserToiletList
+  } = useOutletContext();
+
 
   return (
-    <>
+    <ButtonListContainer>
       <ButtonContainer>
-        <ToggleButton>주유소</ToggleButton>
-        <ToggleButton>대형 까페</ToggleButton>
-        <ToggleButton>사용자 등록 화장실</ToggleButton>
+        {addGasList ? (
+          <ToggleButtonToggled onClick={() => toggleGasList()}>
+            주유소
+          </ToggleButtonToggled>
+        ) : (
+          <ToggleButton onClick={() => toggleGasList()}>주유소</ToggleButton>
+        )}
+        {addCafeList ? (
+          <ToggleButtonToggled onClick={() => toggleCafeList()}>
+            대형 까페
+          </ToggleButtonToggled>
+        ) : (
+          <ToggleButton onClick={() => toggleCafeList()}>
+            대형 까페
+          </ToggleButton>
+        )}
+        {addUserToiletList ? (
+          <ToggleButtonToggled onClick={() => toggleUserToiletList()}>
+            사용자 등록 화장실
+          </ToggleButtonToggled>
+        ) : (
+          <ToggleButton onClick={() => toggleUserToiletList()}>
+            사용자 등록 화장실
+          </ToggleButton>
+        )}
+
+        
         <StyledMdTune />
       </ButtonContainer>
       <ListContainer>
@@ -56,11 +107,12 @@ function ToiletList(props) {
             <ToiletListItem
               key={toiletLocation.POI_ID}
               toiletLocation={toiletLocation}
+              location={location}
             />
           );
         })}
       </ListContainer>
-    </>
+    </ButtonListContainer>
   );
 }
 

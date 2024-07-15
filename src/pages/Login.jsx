@@ -4,9 +4,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { loginSuccess } from "../features/member/memberSlice";
+import kakaoBtn from "../images/kakao_btn.png";
+import naverBtn from "../images/naver_btn.png";
 
 const LoginContainer = styled.div`
-  /* width: 100%; */
+  width: 100%;
   max-width: 1440px;
   background-color: #5fb393;
   min-height: 820px;
@@ -17,41 +19,22 @@ const Autolayout = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
   gap: 24px;
-  margin: 0 atuo;
-
-  width: 819px;
+  margin: 0 auto;
+  position: relative;
+  width: 1150px;
   height: 830px;
-  left: 310px;
-  top: 0px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const Sublayout = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding: 0 20px;
+  padding: 20px;
   gap: 24px;
-  margin: 0 auto;
-  /* padding-left: 20px; */
-
-  position: absolute;
-  width: 606px;
-  height: 548px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  width: 100%;
+  height: 644px;
 `;
-
 
 const RegisterWhite = styled.div`
   display: flex;
@@ -60,159 +43,122 @@ const RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
-  isolation: isolate;
-
-  width: 606px;
-  height: 548px;
-
+  width: 600px;
+  height: 644px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
 `;
 
 const Autobox = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; 
+  width: 100%;
   padding: 0px;
   gap: 8px;
-
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 20px; 
   line-height: 29px;
-
   color: #111111;
-
-  /* width: 606px; */
   height: 82px;
-
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
 `;
 
 const CommonInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  /* justify-content: space-between; */
-  align-items: center;
   padding: 0px;
+  width: 100%;
+  height: 28px;
+  box-sizing: border-box;
 
-  width: 559px;
-  height: 29px;
-
-  /* margin: 0 auto;
-  width: 22px;
-  height: 29px; */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const InfoStyle = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   padding: 0px;
-
-  width: 400px;
-  height: 29px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  width: 100%;
+  height: 28px;
+  box-sizing: border-box;
+  text-align: start;
 `;
 
 const CommonInput = styled.input`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  box-sizing: border-box;
   padding: 8px;
-
   font-size: 16px;
-
   width: 100%;
   height: 45px;
-
   background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
-
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
 `;
 
 const LoginBtn = styled.button`
   box-sizing: border-box;
-
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 8px;
-
-  width: 558px;
-  height: 45px;
-
+  height: 64px;
   background: #5fb393;
   border: none;
   border-radius: 8px;
-
-  flex: none;
-  order: 5;
-  align-self: stretch;
-  flex-grow: 0;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
   font-size: 20px;
-  line-height: 29px;
-
   color: #ffffff;
-
   &:hover {
     background: #5fb393;
     color: black;
     transition: 0.7s;
-    /* border: none; */
   }
 `;
 
-const Textbtn = styled.button`
-  width: 558px;
-  height: 20px;
+const KakaoBtn = styled.button`
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  border: none;
+  background: url(${kakaoBtn}) no-repeat center center;
+  flex: 1;
+  background-size: contain;
+  color: #ffffff;
+`;
 
+const NaverBtn = styled.button`
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: url(${naverBtn}) no-repeat center center;
+  flex: 1;
+  background-size: contain; 
+  color: #ffffff;
+  padding: 0; 
+`;
+
+const Textbtn = styled.button`
+  height: 20px;
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-
   background-color: white;
   border: none;
-
   color: darkolivegreen;
+`;
 
-  flex: none;
-  order: 3;
-  align-self: stretch;
-  flex-grow: 0;
+const SocialBtnContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 12px;
+  padding: 0;
 `;
 
 function Login() {
@@ -231,8 +177,6 @@ function Login() {
       ...formData,
       [name]: value,
     });
-
-    // console.log(formData);
   };
 
   const handleLogin = async (e) => {
@@ -243,40 +187,17 @@ function Login() {
       return;
     }
 
-    // axios.get(`http://localhost:8080/login?id=${formData.memId}&pw=${formData.memPwd}`)
-    //   .then(response => {
-    //     if (response.data) {
-
-    //       dispatch(loginSuccess({ name: formData.memId, nick: formData.memNick, role: formData.memRole }));
-
-    //       localStorage.setItem('token', response.data);
-
-    //       alert('로그인');
-    //       Navigate('/');
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert('아이디 또는 비밀번호가 잘못 입력되었습니다.');
-    //   });
-    // }
-
     try {
       const result = await axios.get(
         `${process.env.REACT_APP_API_URL}/login?id=${formData.memId}&pw=${formData.memPwd}`
       );
       console.log(result);
 
-      // if (result.data) {
-      // 로그인 성공 시 서버가 내려준 토큰(JWT)와 사용자 정보
       const { token, member } = result.data;
 
-      // 전역 상태에 사용자 정보 저장
       dispatch(loginSuccess(member));
 
-      // 발급 받은 토큰 저장
       localStorage.setItem("token", token);
-      // 로그인 상태를 유지하기 위해 로컬 스토리지 사용
       localStorage.setItem("member", JSON.stringify(member));
 
       navigate("/");
@@ -285,6 +206,18 @@ function Login() {
       console.log(error);
       alert("아이디 또는 비밀번호가 잘못 입력되었습니다.");
     }
+  };
+
+  // 카카오톡 로그인
+  const kakaolink = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY_K}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI_K}&response_type=code`;
+  const kakaoLoginHandler = () => {
+    window.location.href = kakaolink;
+  };
+
+  // 네이버 로그인
+  const naverlink = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.REACT_APP_REST_API_KEY_N}&response_type=code&redirect_uri=${process.env.REACT_APP_REDIRECT_URI_N}&state=${process.env.REACT_APP_CLIENT_SECRET_N}`;
+  const naverLoginHandler = () => {
+    window.location.href = naverlink;
   };
 
   return (
@@ -320,13 +253,17 @@ function Login() {
 
             <>
               <LoginBtn type="submit">Login</LoginBtn>
-              <Textbtn onClick={() => navigate("/search")}>
-                Forgot password?
-                {/* <span>Search for passwords</span> */}
+              <SocialBtnContainer>
+                <KakaoBtn type="button" onClick={kakaoLoginHandler} />
+                <NaverBtn type="button" onClick={naverLoginHandler} />
+              </SocialBtnContainer>
+            </>
+            <>
+              <Textbtn onClick={() => navigate("/find/Id")}>
+                Forgot ID?
               </Textbtn>
               <Textbtn onClick={() => navigate("/register")}>
                 Don’t have account?
-                {/* <span color="red">Create new account</span> */}
               </Textbtn>
             </>
           </Sublayout>

@@ -1,17 +1,22 @@
 import styled from "styled-components";
 import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
-import profileImg from "../images/profile.png";
+import familyImg from "../images/family_icon.png";
+import vipImg from "../images/vip_icon.png";
 import logoImg from "../images/logo.png";
-import { selectMember } from "../features/member/memberSlice";
-import { useSelector } from "react-redux";
+import { logoutSuccess } from "../features/member/memberSlice";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { fetchReviewListByWriter } from "../api/toiletReviewAPI";
+import ToiletComment from "../component/ToiletComment";
 
 const RegisterContainer = styled.div`
-  /* width: 100%; */
+  width: 100%;
   max-width: 1440px;
-  background-color: #5FB393;
-  min-height: 820px;
+  background-color: #5fb393;
+  min-height: 830px;
 `;
 
 const Autolayout = styled.div`
@@ -19,336 +24,193 @@ const Autolayout = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
-  padding-right: 600px;
   gap: 24px;
   margin: 0 auto;
-
   position: relative;
   width: 1150px;
   height: 830px;
-  left: 310px;
-  top: 0px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const Sublayout = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-  /* padding-top: 200px; */
-  /* padding-right: 200px; */
+  justify-content: space-between;
+  padding: 20px;
   gap: 24px;
-
-  position: absolute;
-  width: 850px;
-  height: 644px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  width: 100%;
+  height: 100%;
 `;
 
-const RegisterGround = styled.div`
-  /* padding-bottom: 550px; */
-  /* padding-right: 150px; */
-  /* margin-bottom: 20px; */
-  /* margin: 0 auto; */
-
-  /* width: 187px; */
-  height: 64px;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 900;
-  font-size: 36px;
-  line-height: 52px;
-  text-align: center;
-
-  color: #ffffff;
-
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-`;
-
-const  RegisterWhite = styled.div`
+const RegisterWhite = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 20px;
   gap: 24px;
-  isolation: isolate;
-
-  width: 850px;
+  width: 600px;
   height: 644px;
-  /* left: 152px;
-  top: 139px; */
-
-
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
 `;
 
 const NameCard = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 12px 12px 12px 20px;
-  gap: 12px;
-  isolation: isolate;
-
-  position: absolute;
-  width: 550px;
-  height: 88px;
-  /* left: 125px; */
-  top: 61px;
-
-  background: rgba(148, 210, 187, 0.29);
-  border: 2px solid #5FB393;
-  border-radius: 8px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
-
-  box-sizing: border-box;
-`;
-
-const CardImg = styled.div`
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  left: 38px;
-  top: 13px;
-  vertical-align: middle;
-
-  background: url(${profileImg});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
-`;
-
-const CardId = styled.div`
-  position: absolute;
-  width: 200px;
-  height: 64px;
-  /* left: 180px; */
-  top: 13px;
-  margin-left: 110px;
-  /* margin: 2px; */
-
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 19px;
-  line-height: 26px;
-  display: flex;
   align-items: center;
-
-  color: #3D405B;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
+  padding: 12px 40px;
+  gap: 32px;
+  width: 100%;
+  background: rgba(148, 210, 187, 0.29);
+  border: 2px solid #5fb393;
+  border-radius: 8px;
 `;
 
-const CardGrade = styled.div`
-  position: absolute;
-  width: 34px;
-  height: 29px;
-  /* right: 120px; */
-  top: 29px;
-  margin-left: 410px;
-  /* margin: 2px; */
+const ReviewList = styled.div`
+  padding: 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: rgba(148, 210, 187, 0.29);
+  border: 2px solid #5fb393;
+  border-radius: 8px;
+  flex: 1;
+`;
 
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: 900;
-  font-size: 20px;
-  line-height: 29px;
+const StyledTitle = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  text-align: start;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+`;
 
-  color: #F4BE00;
+const ToiletReviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
+`;
 
-  flex: none;
-  order: 2;
-  flex-grow: 0;
-  z-index: 2;
+const ToiletNameReviewContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CardImg = styled.img`
+  height: 80px;
+`;
+
+const CardName = styled.div`
+  flex: 1;
+  font-family: "Noto Sans KR";
+  font-weight: 600;
+  font-size: 24px;
+  color: #000000;
+  text-align: start;
 `;
 
 const CardPoint = styled.div`
-  position: absolute;
-  width: 63px;
-  height: 29px;
-  /* left: 501px; */
-  top: 30px;
-  margin-left: 320px;
-  /* margin: 2px; */
-
-  font-family: 'Noto Sans KR';
-  font-style: normal;
-  font-weight: 900;
+  display: flex;
+  font-family: "Noto Sans KR";
+  font-weight: 600;
   font-size: 20px;
-  line-height: 29px;
-
   color: #000000;
+  justify-content: flex-end;
+`;
 
-  flex: none;
-  order: 3;
-  flex-grow: 0;
-  z-index: 3;
+const CardActions = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 `;
 
 const EditIcons = styled.button`
-  position: absolute;
   width: 45px;
   height: 45px;
-  left: 590px;
-  top: 174px;
-
   border-style: none;
   background-color: white;
   font-size: 40px;
   vertical-align: middle;
-  line-height: 20px;
-
-  flex: none;
-  order: 3;
-  flex-grow: 0;
-  z-index: 3;
 `;
 
 const CartIcons = styled.button`
-  position: absolute;
   width: 45px;
   height: 45px;
-  left: 660px;
-  top: 174px;
-
   border-style: none;
   background-color: white;
   font-size: 40px;
   vertical-align: middle;
-  line-height: 20px;
-
-  flex: none;
-  order: 3;
-  flex-grow: 0;
-  z-index: 3;
 `;
 
 const Favorites = styled.div`
   box-sizing: border-box;
-  
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 12px 24px;
   gap: 20px;
-  isolation: isolate;
-
-  position: absolute;
   width: 501px;
   height: 224px;
   left: 174px;
   top: 234px;
-
-  background: #FFFFFF;
-  border: 2px solid #5FB393;
+  background: #ffffff;
+  border: 2px solid #5fb393;
   border-radius: 8px;
-
-  flex: none;
-  order: 2;
-  flex-grow: 0;
-  z-index: 2;
 `;
 
 const FavLogo = styled.div`
   width: 100px;
   height: 100px;
   margin-left: 20px;
-
   background: url(${logoImg});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const FavTitle = styled.div`
-  width: 70px;
-  height: 26px;
-  margin-left: 10px;
-
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
   line-height: 26px;
-
   display: flex;
   align-items: center;
   text-align: center;
-
   color: #000000;
-
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 `;
 
 const FavList = styled.div`
-  position: absolute;
   width: 180px;
   height: 210px;
   left: 269px;
   top: 8px;
   padding-left: 20px;
-  /* margin-left: 20px; */
-
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-  /* or 162% */
   display: flex;
   align-items: center;
   text-align: left;
-
   color: #000000;
-
-  flex: none;
-  order: 2;
-  flex-grow: 0;
-  z-index: 2;
 `;
 
 const NoticeBtn = styled.button`
@@ -357,22 +219,13 @@ const NoticeBtn = styled.button`
   align-items: center;
   padding: 12px 24px;
   gap: 20px;
-  isolation: isolate;
-
-  position: absolute;
   width: 200px;
   height: 70px;
-  left: 206px;
+  left: 210px;
   top: 483px;
-
-  background: #5FB393;
+  background: #5fb393;
   border-radius: 8px;
   border: none;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
 `;
 
 const ServiceBtn = styled.button`
@@ -381,139 +234,164 @@ const ServiceBtn = styled.button`
   align-items: center;
   padding: 12px 24px;
   gap: 20px;
-  isolation: isolate;
-
-  position: absolute;
   width: 200px;
   height: 70px;
-  left: 427px;
+  left: 440px;
   top: 483px;
-
-  background: #5FB393;
+  background: #5fb393;
   border-radius: 8px;
-  border: 2px solid #5FB393;
+  border: 2px solid #5fb393;
+`;
 
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
-
-  `;
-
-const CommonText = styled.text`
-  font-family: 'Noto Sans KR';
+const CommonText = styled.p`
+  font-family: "Noto Sans KR";
   font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 20px;
   line-height: 26px;
-
   display: flex;
   align-items: center;
   text-align: center;
   margin: 0 auto;
-
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
 const Withdrawal = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* padding: 12px 24px; */
   gap: 20px;
-  isolation: isolate;
-
-  position: absolute;
   width: 60px;
   height: 30px;
   left: 27px;
   top: 590px;
-
-  background: #4D4D4D;
+  background: #4d4d4d;
   border-radius: 8px;
-
-  flex: none;
-  order: 6;
-  flex-grow: 0;
-  z-index: 6;
-
 `;
 
-const RestText = styled.text`
-  font-family: 'Noto Sans KR';
+const RestText = styled.p`
+  font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
   line-height: 26px;
-
   display: flex;
   align-items: center;
   text-align: center;
-  /* justify-content: end; */
   margin: 0 auto;
-
-  color: #FFFFFF;
+  color: #ffffff;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+`;
 
 function MyPage() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const member = useSelector(selectMember);
-  
+  const member = JSON.parse(localStorage.getItem("member")) || {};
+  const [reviewList, setReviewList] = useState([]);
+
+  useEffect(() => {
+    const getReviewByWriter = async () => {
+      const review = await fetchReviewListByWriter();
+      console.log(member.memId);
+      console.log(review);
+      setReviewList(review);
+    };
+    getReviewByWriter();
+  }, []);
+  console.log(reviewList);
+
+  const handleDeleteMember = async () => {
+    try {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/delete-member/${member.memId}`
+      );
+      if (response.status === 200) {
+        window.confirm("탈퇴 하시겠습니까?");
+        if (true) {
+          dispatch(logoutSuccess());
+          localStorage.removeItem("member");
+          localStorage.removeItem("token");
+          alert("회원탈퇴가 완료되었습니다.");
+          navigate("/");
+        }
+      } else {
+        console.error("회원탈퇴 실패!");
+      }
+    } catch (error) {
+      console.error("회원탈퇴 중 오류 발생:", error);
+    }
+  };
+
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>My Page</RegisterGround>
-          <RegisterWhite>
-            <Sublayout>
-              <NameCard>
-                <CardImg />
-                <CardId>{member?.memId}</CardId>
-                <CardPoint>{member?.memPoint}P</CardPoint>
-                <CardGrade>{member?.memGrade}</CardGrade>
-              </NameCard>
+        <RegisterWhite>
+          <Sublayout>
+            <CardActions>
+              <EditIcons onClick={() => navigate("/mypage/modify")}>
+                <TbMoodEdit />
+              </EditIcons>
+              <CartIcons onClick={() => navigate("/cart")}>
+                <PiShoppingCartSimpleBold />
+              </CartIcons>
+            </CardActions>
+            <NameCard>
+              <CardImg
+                src={member?.memGrade === "FAMILY" ? familyImg : vipImg}
+              />
+              <CardName>
+                {member?.memName}님 ({member?.memGrade})
+              </CardName>
+              <CardPoint>
+                {Number(member?.memPoint).toLocaleString("ko-KR")} P
+              </CardPoint>
+            </NameCard>
+            <ReviewList>
+              <ToiletReviewContainer>
+                <StyledTitle>내가 쓴 댓글</StyledTitle>
+                {reviewList?.map((comment) => {
+                  return (
+                    <ToiletNameReviewContainer key={comment.reviewNo}>
+                      <ToiletComment comment={comment} />
+                      <p>{comment.toiletNo}</p>
+                    </ToiletNameReviewContainer>
+                  );
+                })}
+              </ToiletReviewContainer>
+            </ReviewList>
 
-              <div>
-                <EditIcons><TbMoodEdit /></EditIcons>
-                <CartIcons onClick={() => navigate('/cart')}><PiShoppingCartSimpleBold /></CartIcons>
-              </div>
-
-              <Favorites>
-                <FavLogo />
-                <FavTitle>즐겨찾기</FavTitle>
-                <FavList>
-                    <ul>
-                      <li>그린컴퓨터학원 구월점</li>
-                      <li>동암역</li> 
-                      <li>롯데백화점 인천점</li> 
-                    </ul>
-                  </FavList>
-              </Favorites>
-
-              <>
-                <NoticeBtn>
-                  <CommonText>
-                    공지사항
-                  </CommonText>
-                </NoticeBtn>
-                <ServiceBtn>
-                  <CommonText>
-                    고객센터
-                  </CommonText>
-                </ServiceBtn>
-              </>
-
-              <Withdrawal>
-                <RestText>
-                  회원탈퇴
-                </RestText>
-              </Withdrawal>
-            </Sublayout>
-          </RegisterWhite>
+            {/* <Favorites>
+              <FavLogo />
+              <FavTitle>즐겨찾기</FavTitle>
+              <FavList>
+                <ul>
+                  <li>그린컴퓨터학원 구월점</li>
+                  <li>동암역</li>
+                  <li>롯데백화점 인천점</li>
+                </ul>
+              </FavList>
+            </Favorites> */}
+            <ButtonContainer>
+              <NoticeBtn>
+                <CommonText>공지사항</CommonText>
+              </NoticeBtn>
+              <ServiceBtn>
+                <CommonText>고객센터</CommonText>
+              </ServiceBtn>
+            </ButtonContainer>
+            <Withdrawal>
+              <RestText onClick={handleDeleteMember}>회원탈퇴</RestText>
+            </Withdrawal>
+          </Sublayout>
+        </RegisterWhite>
       </Autolayout>
     </RegisterContainer>
   );
-};
+}
 
 export default MyPage;
