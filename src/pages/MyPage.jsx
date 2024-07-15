@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
-import profileImg from "../images/profile.png";
+import familyImg from "../images/family_icon.png";
+import vipImg from "../images/vip_icon.png";
 import logoImg from "../images/logo.png";
 import { logoutSuccess } from "../features/member/memberSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { fetchReviewListByWriter } from "../api/toiletReviewAPI";
+import ToiletComment from "../component/ToiletComment";
 
 const RegisterContainer = styled.div`
   width: 100%;
@@ -30,12 +34,11 @@ const Autolayout = styled.div`
 const Sublayout = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   padding: 20px;
   gap: 24px;
-  width: 600px;
-  height: 644px;
+  width: 100%;
+  height: 100%;
 `;
 
 const RegisterWhite = styled.div`
@@ -43,9 +46,9 @@ const RegisterWhite = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 20px;
   gap: 24px;
-  width: 850px;
+  width: 600px;
   height: 644px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -56,36 +59,76 @@ const NameCard = styled.div`
   display: flex;
   align-items: center;
   padding: 12px 40px;
-  gap: 12px;
-  width: 550px;
+  gap: 32px;
+  width: 100%;
   background: rgba(148, 210, 187, 0.29);
   border: 2px solid #5fb393;
   border-radius: 8px;
-  top: 61px;
 `;
 
-const CardImg = styled.div`
-  width: 60px;
-  height: 60px;
-  background: url(${profileImg}) no-repeat center/cover;
+const ReviewList = styled.div`
+  padding: 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: rgba(148, 210, 187, 0.29);
+  border: 2px solid #5fb393;
+  border-radius: 8px;
+  flex: 1;
+`;
+
+const StyledTitle = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  text-align: start;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+`;
+
+const ToiletReviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
+`;
+
+const ToiletNameReviewContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CardImg = styled.img`
+  height: 80px;
 `;
 
 const CardName = styled.div`
-  display: flex;
-  flex: 3;
+  flex: 1;
   font-family: "Noto Sans KR";
-  font-weight: 500;
-  font-size: 19px;
-  color: #3d405b;
-  justify-content: center;
-  align-items: center;
+  font-weight: 600;
+  font-size: 24px;
+  color: #000000;
+  text-align: start;
 `;
 
 const CardPoint = styled.div`
   display: flex;
-  flex: 2;
   font-family: "Noto Sans KR";
-  font-weight: 900;
+  font-weight: 600;
   font-size: 20px;
   color: #000000;
   justify-content: flex-end;
@@ -94,32 +137,25 @@ const CardPoint = styled.div`
 const CardActions = styled.div`
   display: flex;
   gap: 12px;
-  margin-top: 12px;
+  justify-content: flex-end;
 `;
 
 const EditIcons = styled.button`
   width: 45px;
   height: 45px;
-  left: 560px;
-  top: 174px;
   border-style: none;
   background-color: white;
   font-size: 40px;
   vertical-align: middle;
-  line-height: 20px;
 `;
 
 const CartIcons = styled.button`
   width: 45px;
   height: 45px;
-  left: 620px;
-  top: 174px;
-
   border-style: none;
   background-color: white;
   font-size: 40px;
   vertical-align: middle;
-  line-height: 20px;
 `;
 
 const Favorites = styled.div`
@@ -210,8 +246,8 @@ const ServiceBtn = styled.button`
 const CommonText = styled.p`
   font-family: "Noto Sans KR";
   font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 20px;
   line-height: 26px;
   display: flex;
   align-items: center;
@@ -246,10 +282,28 @@ const RestText = styled.p`
   color: #ffffff;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+`;
+
 function MyPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const member = JSON.parse(localStorage.getItem("member")) || {};
+  const [reviewList, setReviewList] = useState([]);
+
+  useEffect(() => {
+    const getReviewByWriter = async () => {
+      const review = await fetchReviewListByWriter();
+      console.log(member.memId);
+      console.log(review);
+      setReviewList(review);
+    };
+    getReviewByWriter();
+  }, []);
+  console.log(reviewList);
 
   const handleDeleteMember = async () => {
     try {
@@ -278,11 +332,6 @@ function MyPage() {
       <Autolayout>
         <RegisterWhite>
           <Sublayout>
-            <NameCard>
-              <CardImg />
-              <CardName>{member?.memName}</CardName>
-              <CardPoint>{member?.memPoint} P</CardPoint>
-            </NameCard>
             <CardActions>
               <EditIcons onClick={() => navigate("/mypage/modify")}>
                 <TbMoodEdit />
@@ -291,6 +340,31 @@ function MyPage() {
                 <PiShoppingCartSimpleBold />
               </CartIcons>
             </CardActions>
+            <NameCard>
+              <CardImg
+                src={member?.memGrade === "FAMILY" ? familyImg : vipImg}
+              />
+              <CardName>
+                {member?.memName}님 ({member?.memGrade})
+              </CardName>
+              <CardPoint>
+                {Number(member?.memPoint).toLocaleString("ko-KR")} P
+              </CardPoint>
+            </NameCard>
+            <ReviewList>
+              <ToiletReviewContainer>
+                <StyledTitle>내가 쓴 댓글</StyledTitle>
+                {reviewList?.map((comment) => {
+                  return (
+                    <ToiletNameReviewContainer key={comment.reviewNo}>
+                      <ToiletComment comment={comment} />
+                      <p>{comment.toiletNo}</p>
+                    </ToiletNameReviewContainer>
+                  );
+                })}
+              </ToiletReviewContainer>
+            </ReviewList>
+
             {/* <Favorites>
               <FavLogo />
               <FavTitle>즐겨찾기</FavTitle>
@@ -302,14 +376,14 @@ function MyPage() {
                 </ul>
               </FavList>
             </Favorites> */}
-            <>
+            <ButtonContainer>
               <NoticeBtn>
                 <CommonText>공지사항</CommonText>
               </NoticeBtn>
               <ServiceBtn>
                 <CommonText>고객센터</CommonText>
               </ServiceBtn>
-            </>
+            </ButtonContainer>
             <Withdrawal>
               <RestText onClick={handleDeleteMember}>회원탈퇴</RestText>
             </Withdrawal>

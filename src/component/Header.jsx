@@ -103,7 +103,7 @@ function Header() {
     localStorage.removeItem("token");
     navigate("/");
   };
-  console.log(member);
+  
   return (
     <HeaderContainer>
       <HeaderInner>

@@ -205,7 +205,7 @@ const StyledFormCheck = styled(Form.Check)`
 `;
 
 function ToiletDetail() {
-  const { closestToiletLocations, location, toggleListUpdated } = useOutletContext();
+  const { toilet, location, toggleListUpdated } = useOutletContext();
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
   const navigate = useNavigate();
@@ -220,11 +220,7 @@ function ToiletDetail() {
   const [diaperChecked, setDiaperChecked] = useState(false);
   const [paperChecked, setPaperChecked] = useState(false);
 
-  const selectedToilet = closestToiletLocations?.filter((location) => {
-    return location.POI_ID === toiletNo;
-  });
-  const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = selectedToilet[0] || {};
-
+  const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = toilet || {};
   useEffect(() => {
     const getAddress = async () => {
       if (X_WGS84 === undefined) {
@@ -234,7 +230,7 @@ function ToiletDetail() {
       setAddress(address);
     };
     getAddress();
-  }, [X_WGS84, Y_WGS84]);
+  }, [toilet]);
 
   useEffect(() => {
     const getCommentList = async () => {
@@ -248,7 +244,11 @@ function ToiletDetail() {
       setToiletScore(result);
     };
     getAvgScore();
-  }, [toiletNo]);
+  }, []);
+
+  if (!address || !toilet) {
+    return;
+  }
 
   const sortedCommentList = commentList?.sort(
     (a, b) => new Date(b.regDate) - new Date(a.regDate)
@@ -296,15 +296,11 @@ function ToiletDetail() {
         location.center.lng
       );
       const CVSCoord = await fetchCVSCoord(lat, lng);
-      console.log(CVSCoord);
       const CVSResult = await fetchWCongnamulCoord(
         CVSCoord[0].y,
         CVSCoord[0].x
       );
-      console.log(CVSResult);
-
       const destResult = await fetchWCongnamulCoord(lat, lng);
-
       const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${CVSResult[0].x}%2C${CVSResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${CVSCoord[0].place_name}&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
       window.open(url, "_blank");
     } catch (error) {
@@ -365,10 +361,6 @@ function ToiletDetail() {
       navigate(`/detail/${toiletNo}`);
     }
   };
-
-  if (!address || !closestToiletLocations) {
-    return;
-  }
 
   return (
     <ToiletDetailContainer>
