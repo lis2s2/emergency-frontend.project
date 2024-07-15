@@ -20,6 +20,7 @@ import {
 } from "../api/toiletReviewAPI";
 import { FaCoins } from "react-icons/fa6";
 import { registerToiletInfo } from "../api/toiletRegistorAPI";
+import { fetchMemberById } from "../api/memberAPI";
 
 const ToiletDetailContainer = styled.div`
   background-color: #ffffff;
@@ -270,7 +271,7 @@ function ToiletDetail() {
 
   const handleReviewButton = async () => {
     if (comment) {
-      const result = await registerToiletReview(toiletNo, comment, inputScore);
+      const result = await registerToiletReview(toiletNo, comment, inputScore, FNAME);
       setComment("");
       if (result) {
         const getReviewList = async () => {
@@ -350,7 +351,7 @@ function ToiletDetail() {
       setDiaperChecked(false);
       setPaperChecked(false);
       toggleListUpdated();
-      navigate(`/`);
+      navigate(`/detail/${toiletNo}`);
     } else {
       handleClose();
       alert("화장실 정보 등록 중 오류가 발생하였습니다.");
@@ -358,8 +359,15 @@ function ToiletDetail() {
       setDisabledChecked(false);
       setDiaperChecked(false);
       setPaperChecked(false);
-      navigate(`/detail/${toiletNo}`);
+      navigate(`/`);
     }
+    const getMemberByID = async () => {
+      const result = await fetchMemberById(member.memId);
+      console.log(result);
+      localStorage.setItem("member", JSON.stringify(result));
+    };
+
+    getMemberByID();
   };
 
   return (
