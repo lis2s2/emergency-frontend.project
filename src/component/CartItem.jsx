@@ -1,16 +1,14 @@
 import { IoCloseOutline } from "react-icons/io5";
-import { IoIosCheckbox,IoIosCheckboxOutline } from "react-icons/io";
+import { IoIosCheckbox, IoIosCheckboxOutline } from "react-icons/io";
 import styled from "styled-components";
-import axios from "axios";
 import { useState } from "react";
 
 const CartItemWrapper = styled.div`
-
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 15px 0;
-border-bottom: 1px solid #cdcdcd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #cdcdcd;
 
   .btn_wrapper {
     display: flex;
@@ -51,12 +49,12 @@ const CartItemImg = styled.img`
 const StyledCheckbox = styled(IoIosCheckbox)`
   width: 35px;
   height: 35px;
-  color: #5FB393;
+  color: #5fb393;
   cursor: pointer;
 `;
 
 const StyledOutlinCheckbox = styled(IoIosCheckboxOutline)`
-  color: #5FB393;
+  color: #5fb393;
   width: 35px;
   height: 35px;
   cursor: pointer;
@@ -82,70 +80,37 @@ const CloseBtn = styled(IoCloseOutline)`
 `;
 
 function CartItem(props) {
-  // const { isChecked, cartitem, onDelete, onUpdateCount } = props;
-  const { isChecked, cartitem, onUpdateCount, setCartList, cartList} = props;
-
+  const { isChecked, cartitem, onUpdateCount, onCheck, handleDeleteCartItem } = props;
   const [count, setCount] = useState(cartitem.prodCount);
 
-
-
-  
   const formatter = new Intl.NumberFormat('ko-KR');
-  const memId = JSON.parse(localStorage.getItem("member")).memId;
-
-
-  const handleDeleteCartItem = async () => {
-    try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartitem.no}/delete`);
-      setCartList(cartList.filter((item) => item.cartNo !== cartitem.no));
-      console.log("cartNo: " + cartitem.no);
-  
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
-
-      setCartList(response.data);
-    } catch (error) {
-      console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
-      console.log("cartNo: " + cartitem.no);
-    }
-  };
-
-  const updateCartCount = async (newCount) => {
-    try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartitem.no}/updateCount?prodCount=${newCount}`);
-      onUpdateCount(cartitem.no, newCount);
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`);
-      setCartList(response.data);
-    } catch (error) {
-      console.error('Error updating cart item count:', error);
-    }
-  };
 
   const handleDecrease = () => {
     if (count > 1) {
       setCount(count - 1);
-      updateCartCount(count - 1);
+      onUpdateCount(cartitem.no, count - 1);
     }
   };
 
   const handleIncrease = () => {
     setCount(count + 1);
-    updateCartCount(count + 1);
+    onUpdateCount(cartitem.no, count + 1);
   };
 
   return (
     <CartItemWrapper>
-      {isChecked ? <StyledCheckbox/> : <StyledOutlinCheckbox/>}
-        <CartItemImg src={cartitem.prodImgpath}/> 
-        <CartItemTitle>{cartitem.prodTitle}</CartItemTitle>
+      {isChecked ? <StyledCheckbox onClick={onCheck} /> : <StyledOutlinCheckbox onClick={onCheck} />}
+      <CartItemImg src={cartitem.prodImgpath} />
+      <CartItemTitle>{cartitem.prodTitle}</CartItemTitle>
       <div className="btn_wrapper">
         <button type="button" className="btn" onClick={handleDecrease}>-</button>
         <div className="count_area">{cartitem.prodCount}</div>
         <button type="button" className="btn" onClick={handleIncrease}>+</button>
       </div>
       <CartItemPrice>{formatter.format(cartitem.prodPrice * cartitem.prodCount)}원</CartItemPrice>
-      <CloseBtn onClick={() => handleDeleteCartItem(cartitem.cartNo)}/>
-  </CartItemWrapper>
+      <CloseBtn onClick={() => handleDeleteCartItem(cartitem.no)} />
+    </CartItemWrapper>
   );
-};
+}
 
-export default CartItem;  
+export default CartItem;
