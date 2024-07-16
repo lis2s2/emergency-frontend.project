@@ -14,14 +14,12 @@ const OrderWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
-
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 1440px;
 `;
-
 const Title = styled.p`
   font-weight: 700;
   font-size: 32px;
@@ -29,7 +27,6 @@ const Title = styled.p`
   color: #FFFFFF;
   margin-bottom: 10px;
 `;
-
 const DeliveryAddress = styled.div`
   width: 700px;
   background-color: #fff;
@@ -40,14 +37,12 @@ const DeliveryAddress = styled.div`
   align-items: center;
   margin-bottom: 30px;
 `;
-
 const InputGroup = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
   width: 100%;
 `;
-
 const Label = styled.span`
   display: inline-block;
   width: 80px;
@@ -55,7 +50,6 @@ const Label = styled.span`
   margin-right: 20px;
   color: #5FB393;
 `;
-
 const StyledInput = styled.input`
   border: 1px solid #5FB393;
   border-radius: 8px;
@@ -70,7 +64,6 @@ const StyledInput = styled.input`
     color: #96b1a6;
   }
 `;
-
 const StyledPostInput = styled.input`
   border: 1px solid #5FB393;
   border-radius: 8px;
@@ -86,7 +79,6 @@ const StyledPostInput = styled.input`
     color: #96b1a6;
   }
 `;
-
 const FindAddress = styled.button`
   height: 40px;
   background-color: #5FB393;
@@ -101,7 +93,6 @@ const FindAddress = styled.button`
     border: 1px solid #157347;
   }
 `;
-
 const PaymentInfo = styled.div`
   width: 650px;
   min-height: 200px;
@@ -109,26 +100,22 @@ const PaymentInfo = styled.div`
   border-radius: 12px;
   padding: 20px 10px;
 `;
-
 const InfoRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
 `;
-
 const InfoLabel = styled.span`
   font-weight: 700;
   font-size: 24px;
   color: #5FB393;
 `;
-
 const InfoValue = styled.span`
   font-size: 24px;
   color: #157347;
   font-weight: 700;
 `;
-
 const InfoInput = styled.input`
   width: 100px;
   border: 1px solid #5FB393;
@@ -139,7 +126,6 @@ const InfoInput = styled.input`
     outline: 1px solid #5FB393;
   }
 `;
-
 const OrderedProduct = styled.div`
   width: 700px;
   background-color: #fff;
@@ -149,7 +135,6 @@ const OrderedProduct = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
 const PayBtn = styled.div`
   margin-top: 40px;
   height: 60px;
@@ -173,7 +158,7 @@ const PayBtn = styled.div`
       color: #7be6bd;
     }
   }
-
+  
   .total {
     color: #003d17;
     font-weight: 700;
