@@ -72,7 +72,6 @@ const CommonInfo = styled.div`
   width: 100%;
   height: 28px;
   box-sizing: border-box;
-
 `;
 
 const InfoStyle = styled.div`
@@ -229,6 +228,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
+                <CheckStyle onClick={() => navigate("/find/id")}>Forgot Id?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -241,7 +241,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Password</InfoStyle>
-                {/* <CheckStyle>Forgot password?</CheckStyle> */}
+                <CheckStyle onClick={() => navigate("/find/pwd")}>Forgot password?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="password"
@@ -261,8 +261,12 @@ function Login() {
             </>
             <>
               <Textbtn onClick={() => navigate("/find/Id")}>
+
                 Forgot ID?
               </Textbtn>
+              <Textbtn onClick={() => navigate("/find/pwd")}>
+                Forgot Password?
+              </Textbtn> */}
               <Textbtn onClick={() => navigate("/register")}>
                 Don’t have account?
               </Textbtn>
