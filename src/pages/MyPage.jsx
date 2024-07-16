@@ -253,9 +253,14 @@ function MyPage() {
 
   const handleDeleteMember = async () => {
     try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/delete-member/${member.memId}`
-      );
+      const token = localStorage.getItem("token");
+
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/delete-member/${member.memId}`, {
+          headers : {
+            'Content-Type': `application/json`,
+            'Authorization': `Bearer ${token}`,
+          }
+        });
       if (response.status === 200) {
         window.confirm("탈퇴 하시겠습니까?");
         if (true) {
