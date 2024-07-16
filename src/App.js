@@ -17,6 +17,9 @@ import OAuth2NavertHandle from "./component/OAuth2NavertHandle";
 import OAuth2KakaoHandle from "./component/OAuth2KakaoHandle";
 import FindPwd from "./pages/FindPwd";
 import ToiletRegister from "./pages/ToiletRegister";
+import ShopItem from "./component/ShopItem";
+import Order from "./pages/Order";
+
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -61,6 +64,8 @@ function App() {
           <Route path="mypage/modify/*" element={<Modify />} />
           <Route path="login/oauth2/code/naver/*" element={<OAuth2NavertHandle />} />
           <Route path="login/oauth2/code/kakao/*" element={<OAuth2KakaoHandle />} />
+          <Route path="order" element={<Order/>} />
+
           <Route path="/*" element={<Main/>} />
         </Route>
       </Routes>

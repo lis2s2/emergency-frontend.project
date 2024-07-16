@@ -7,6 +7,7 @@ const ItemWrapper = styled.div`
   margin-left: 50px;
   margin-top: 40px;
   display: block;
+  cursor: pointer;
 `;
 
 const ItemTitle = styled.h4`
@@ -32,7 +33,7 @@ function ShopItem(props) {
   const formatter = new Intl.NumberFormat('ko-KR');
 
   return (
-    <ItemWrapper className="cursor-pointer">
+    <ItemWrapper>
       <img src={item?.imgpath} alt={item?.title} width="100%" height="75%" onClick={() => navigate(`detail/${item?.no}`)}/>
       <ItemTitle>{item?.title}</ItemTitle>
       <ItemPrice>{formatter.format( item?.price)}원</ItemPrice>

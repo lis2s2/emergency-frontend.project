@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import ToiletMap from "../component/ToiletMap";
 import { useEffect, useState } from "react";
-
 import { fetchToiletLocations, fetchUserToiletList } from "../api/toiletAPI";
 import { Outlet, useParams } from "react-router-dom";
 import ToiletDetailMap from "../component/ToiletDetailMap";
@@ -38,10 +37,10 @@ function Main() {
     errMsg: null,
     isLoading: true,
   });
-  const { toiletNo } = useParams();
+  
   const memGrade = JSON.parse(localStorage.getItem("member"))?.memGrade || "";
-
   const [closestToiletLocations, setClosestToiletLocations] = useState([]);
+  const [closestToiletAll, setClosestToiletAll] = useState();
   const [cafeList, setCafeList] = useState();
   const [gasList, setgasList] = useState();
   const [userToiletList, setUserToiletList] = useState();
@@ -49,6 +48,7 @@ function Main() {
   const [addCafeList, setAddCafeList] = useState(false);
   const [addUserToiletList, setAddUserToiletList] = useState(false);
   const [listUpdated, setListUpdated] = useState(false);
+  const { toiletNo } = useParams();
 
   useEffect(() => {
     const getFetchedToiletList = async () => {
@@ -66,8 +66,8 @@ function Main() {
           }))
           .sort((a, b) => a.distance - b.distance)
           .filter((value) => value.distance < 500);
-
         const UserResult = await fetchUserToiletList();
+        console.log(UserResult);
         const renamedKeyList = UserResult.map((toilet) => {
           return {
             POI_ID: toilet.toiletNo,
@@ -98,7 +98,6 @@ function Main() {
           );
           return addItem ? { ...origItem, ...addItem } : origItem;
         });
-
         const CafeResult = await fetchCafeList(
           location.center.lat,
           location.center.lng
@@ -124,10 +123,18 @@ function Main() {
         setgasList(gasMergedData);
 
         if (addCafeList) {
-          toiletUserInfoMergedData = handleCafeList(addCafeList, toiletUserInfoMergedData, cafeMergedData);
+          toiletUserInfoMergedData = handleCafeList(
+            addCafeList,
+            toiletUserInfoMergedData,
+            cafeMergedData
+          );
         }
         if (addGasList) {
-          toiletUserInfoMergedData = handleGasList(addGasList, toiletUserInfoMergedData, gasMergedData);
+          toiletUserInfoMergedData = handleGasList(
+            addGasList,
+            toiletUserInfoMergedData,
+            gasMergedData
+          );
         }
         if (addUserToiletList) {
           toiletUserInfoMergedData = handelUserToiletList(
@@ -137,33 +144,30 @@ function Main() {
           );
         }
         setClosestToiletLocations(toiletUserInfoMergedData);
-        if (toiletNo) {
-          const allCombinedList = [
-            ...toiletUserInfoMergedData,
-            ...cafeMergedData,
-            ...gasMergedData,
-            ...userRegToiletList
-          ];
-          setClosestToiletLocations(
-            allCombinedList
-              .map((toiletlocation) => ({
-                ...toiletlocation,
-                distance: getDistanceInMeters(
-                  location.center.lat,
-                  location.center.lng,
-                  toiletlocation.Y_WGS84,
-                  toiletlocation.X_WGS84
-                ),
-              }))
-              .sort((a, b) => a.distance - b.distance)
-          );
-        }
+
+        const allCombinedList = [
+          ...toiletUserInfoMergedData,
+          ...cafeMergedData,
+          ...gasMergedData,
+          ...userRegToiletList,
+        ]
+          .map((toiletlocation) => ({
+            ...toiletlocation,
+            distance: getDistanceInMeters(
+              location.center.lat,
+              location.center.lng,
+              toiletlocation.Y_WGS84,
+              toiletlocation.X_WGS84
+            ),
+          }))
+          .sort((a, b) => a.distance - b.distance);
+        setClosestToiletAll(allCombinedList);
       } catch (error) {
         console.error("Error fetching toilet locations:", error);
       }
     };
     getFetchedToiletList();
-  }, [location, listUpdated, toiletNo]);
+  }, [location, listUpdated]);
 
   const toggleCafeList = () => {
     setAddCafeList(!addCafeList);
@@ -210,7 +214,11 @@ function Main() {
       return;
     }
     setAddUserToiletList(!addUserToiletList);
-    handelUserToiletList(!addUserToiletList, closestToiletLocations, userToiletList);
+    handelUserToiletList(
+      !addUserToiletList,
+      closestToiletLocations,
+      userToiletList
+    );
   };
 
   const handelUserToiletList = (value, base, add) => {
@@ -255,6 +263,7 @@ function Main() {
     const distance = R * c;
     return Math.round(distance);
   };
+
   return (
     <MainContainer>
       <TolietListSection>
@@ -269,13 +278,16 @@ function Main() {
             toggleUserToiletList: toggleUserToiletList,
             addUserToiletList: addUserToiletList,
             toggleListUpdated: toggleListUpdated,
+            toilet: closestToiletAll?.find(
+              (toilet) => toilet.POI_ID === toiletNo
+            )
           }}
         />
       </TolietListSection>
       <MapSection>
         {toiletNo ? (
           <ToiletDetailMap
-            toilet={closestToiletLocations.find(
+            toilet={closestToiletAll?.find(
               (toilet) => toilet.POI_ID === toiletNo
             )}
           />

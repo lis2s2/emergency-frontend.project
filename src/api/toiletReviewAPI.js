@@ -22,7 +22,7 @@ export const fetchReviewListByWriter = async () => {
     const writer = JSON.parse(localStorage.getItem("member")).memId;
     const token = localStorage.getItem("token");
     const result = await axios.get(
-      `${process.env.REACT_APP_API_URL}/review/list/byToiletNo?no=${writer}`,
+      `${process.env.REACT_APP_API_URL}/review/list/byWriter?writer=${writer}`,
       {
         headers: {
           Authorization: token,
@@ -52,7 +52,7 @@ export const getAvgScoreByToiletNo = async (toiletNo) => {
   }
 };
 
-export const registerToiletReview = async (toiletNo, content, score) => {
+export const registerToiletReview = async (toiletNo, content, score, toiletTitle) => {
   const token = localStorage.getItem("token");
   const writer = JSON.parse(localStorage.getItem("member")).memId;
   const sendData = {
@@ -60,6 +60,7 @@ export const registerToiletReview = async (toiletNo, content, score) => {
     writer: writer,
     reviewContent: content,
     reviewScore: score,
+    toiletTitle: toiletTitle,
   };
   const result = await axios.post(
     `${process.env.REACT_APP_API_URL}/review/register`,

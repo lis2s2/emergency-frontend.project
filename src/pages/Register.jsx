@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const RegisterContainer = styled.div`
-  /* width: 100%; */
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   background-color: #5fb393;
@@ -16,33 +16,21 @@ const Autolayout = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
   gap: 24px;
-  width: 819px;
+  margin: 0 auto;
+  position: relative;
+  width: 1150px;
   height: 830px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const Sublayout = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding: 0 20px;
+  padding: 20px;
   gap: 24px;
-  margin: 0 auto;
-
-  position: absolute;
-  width: 606px;
-  height: 685px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  width: 100%;
+  height: 644px;
 `;
 
 const RegisterWhite = styled.div`
@@ -52,42 +40,28 @@ const RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
-  isolation: isolate;
-
-  width: 606px;
-  height: 685px;
-
+  width: 600px;
+  height: 644px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
 `;
 
 const Autobox = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  width: 100%;
   padding: 0px;
   gap: 8px;
-
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-
   color: #111111;
-
   height: 82px;
-
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
 `;
 
 const CommonInfo = styled.div`
@@ -96,14 +70,8 @@ const CommonInfo = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0px;
-
-  width: 559px;
+  width: 100%;
   height: 29px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const InfoStyle = styled.div`
@@ -111,49 +79,32 @@ const InfoStyle = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 0px;
-
   width: 490px;
   height: 29px;
-
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const CheckStyle = styled.div`
   margin: 0 auto;
   border-style: none;
-
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
-
   color: #007aff;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
+  white-space: nowrap;
 `;
 
 const CheckBtn = styled.button`
   margin: 0 auto;
   border-style: none;
-
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
-
   color: #ff0015;
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  z-index: 1;
+  white-space: nowrap;
 `;
 
 const CommonInput = styled.input`
@@ -162,51 +113,36 @@ const CommonInput = styled.input`
   justify-content: center;
   align-items: center;
   padding: 8px;
-
   font-size: 16px;
-
   width: 100%;
   height: 45px;
-
   background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
-
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
+  &:disabled {
+    background-color: #f0f0f0;  
+    color: #a0a0a0;             
+  }
 `;
 
 const CommonBtn = styled.button`
   box-sizing: border-box;
-
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 8px;
-
-  width: 558px;
+  width: 100%;
   height: 45px;
-
   background: #5fb393;
   border: none;
   border-radius: 8px;
-
-  flex: none;
-  order: 5;
-  align-self: stretch;
-  flex-grow: 0;
-
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-
   color: #ffffff;
-
   &:hover {
     background: #5fb393;
     color: black;
@@ -215,8 +151,8 @@ const CommonBtn = styled.button`
 `;
 
 function Register() {
-  const [stateid, setStateid] = useState(false);
-  const [stateemail, setStateemail] = useState(false);
+  const [stateId, setStateid] = useState(false);
+  const [stateEmail, setStateEmail] = useState(false);
 
   const [formData, setFormData] = useState({
     memId: "",
@@ -237,7 +173,9 @@ function Register() {
 
   const handleIdCheck = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/register/checkid?name=${formData.memId}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/register/checkid?name=${formData.memId}`
+      );
       console.log(response);
       if (!response.data) {
         setStateid(false);
@@ -253,13 +191,19 @@ function Register() {
 
   const handleEmailCheck = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/register/checkemail?name=${formData.memEmail}`);
-      console.log(response);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/register/checkemail?name=${formData.memEmail}`
+      );
+      const emailPattern = /^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/;
+      if (!emailPattern.test(formData.memEmail)) {
+        alert("이메일 형식이 아닙니다.");
+        return;
+      }
       if (!response.data) {
-        setStateemail(false);
+        setStateEmail(false);
         alert("이미 존재하는 이메일입니다.");
       } else {
-        setStateemail(true);
+        setStateEmail(true);
         alert("사용 가능한 이메일입니다.");
       }
     } catch (error) {
@@ -270,23 +214,10 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 아이디와 비밀번호 패턴에 대한 검증 로직
-    // const idPattern = /^[a-z0-9]{6,15}$/;
     const pwdPattern = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{6,15}$/;
-    const emailPattern = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-
-    // if (!idPattern.test(formData.memId)) {
-    //   alert("아이디는 소문자와 숫자를 포함한 6~15자리로 입력해주세요.");
-    //   return;
-    // }
 
     if (!pwdPattern.test(formData.memPwd)) {
       alert("비밀번호는 소문자와 숫자를 포함한 6~15자리로 입력해주세요.");
-      return;
-    }
-
-    if (!emailPattern.test(formData.memEmail)) {
-      alert("이메일 형식이 아닙니다.");
       return;
     }
 
@@ -299,15 +230,22 @@ function Register() {
       alert("빈칸이 존재합니다.");
       return;
     }
-
+    if (!stateId) {
+      alert('아이디 중복체크를 하세요.');
+      return;
+    }
+    if (!stateEmail) {
+      alert('이메일 중복체크를 하세요.');
+      return;
+    }
     axios
       .post(`${process.env.REACT_APP_API_URL}/register`, formData)
       .then((response) => {
-        if (stateid === true && stateemail === true) {
-          console.log(stateid);
+        if (stateId === true && stateEmail === true) {
+          console.log(stateId);
           alert("회원가입을 성공하였습니다.");
           navigate("/login");
-        } else if (stateid === false || stateemail === false) {
+        } else if (stateId === false || stateEmail === false) {
           alert("다시 시도해주세요.");
         }
       })
@@ -325,14 +263,16 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
-                <CheckBtn type="button" onClick={handleIdCheck}>중복체크</CheckBtn>
+                <CheckBtn type="button" onClick={handleIdCheck}>
+                  중복체크
+                </CheckBtn>
               </CommonInfo>
               <CommonInput
                 type="text"
                 name="memId"
                 value={formData.memId}
                 onChange={handleChange}
-                
+                disabled={stateId}
               />
             </Autobox>
 
@@ -364,7 +304,9 @@ function Register() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Email</InfoStyle>
-                <CheckBtn type="button" onClick={handleEmailCheck}>중복체크</CheckBtn>
+                <CheckBtn type="button" onClick={handleEmailCheck}>
+                  중복체크
+                </CheckBtn>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -372,17 +314,9 @@ function Register() {
                 name="memEmail"
                 value={formData.memEmail}
                 onChange={handleChange}
-                
+                disabled={stateEmail}
               />
             </Autobox>
-
-            {/* <Autobox>
-                <CommonInfo>
-                  <>Nick-Name</>
-                </CommonInfo>
-                <CommonInput type="text" name="memNick" value={formData.memNick} onChange={handleChange} />
-              </Autobox> */}
-
             <>
               <CommonBtn type="submit" onClick={handleSubmit}>
                 Sign Up
