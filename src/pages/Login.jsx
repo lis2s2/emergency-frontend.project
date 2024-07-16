@@ -68,11 +68,27 @@ const Autobox = styled.div`
 `;
 
 const CommonInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   padding: 0px;
   width: 100%;
   height: 28px;
   box-sizing: border-box;
 `;
+// const CommonInfo = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   padding: 0px;
+//   height: 28px;
+//   flex: none;
+//   order: 0;
+//   flex-grow: 0;
+//   z-index: 0;
+//   justify-content: space-between;
+// `;
 
 const InfoStyle = styled.div`
   padding: 0px;
@@ -158,6 +174,19 @@ const SocialBtnContainer = styled.div`
   width: 100%;
   gap: 12px;
   padding: 0;
+`;
+
+const CheckStyle = styled.button`
+  padding: 2px 8px;
+  border-style: none;
+  border-radius: 16px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 20px;
+  color: #007aff;
+  white-space: nowrap;
 `;
 
 function Login() {
@@ -260,7 +289,7 @@ function Login() {
               </SocialBtnContainer>
             </>
             <>
-              <Textbtn onClick={() => navigate("/find/Id")}>
+              {/* <Textbtn onClick={() => navigate("/find/Id")}>
 
                 Forgot ID?
               </Textbtn>

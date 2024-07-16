@@ -76,6 +76,7 @@ const ReviewList = styled.div`
   border: 2px solid #5fb393;
   border-radius: 8px;
   flex: 1;
+  max-height: 220px;
 `;
 
 const StyledTitle = styled.p`

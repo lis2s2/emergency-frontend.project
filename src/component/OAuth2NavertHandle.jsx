@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loginSuccess } from "../features/member/memberSlice";
-import { fetchMemberById } from "../api/memberAPI";
 
 
 function OAuth2NavertHandle() {
@@ -84,8 +83,7 @@ function OAuth2NavertHandle() {
     };
 
     fetchToken(code, state);
-  }, []);
-  // }, [code, state, navigate, dispatch]);
+  }, [code, navigate, dispatch, state]);
 
   return null;
 }

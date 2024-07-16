@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loginSuccess} from "../features/member/memberSlice";
-import { fetchMemberById } from "../api/memberAPI";
 
 function OAuth2KakaoHandle() {
   const navigate = useNavigate();
