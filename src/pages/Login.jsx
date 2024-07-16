@@ -11,7 +11,7 @@ const LoginContainer = styled.div`
   width: 100%;
   max-width: 1440px;
   background-color: #5fb393;
-  min-height: 820px;
+  min-height: 830px;
 `;
 
 const Autolayout = styled.div`
@@ -270,7 +270,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Password</InfoStyle>
-                <CheckStyle onClick={() => navigate("/find/pwd")}>Forgot password?</CheckStyle>
+                <CheckStyle onClick={() => navigate("/find/pwd")}>Forgot Password?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="password"
@@ -289,13 +289,6 @@ function Login() {
               </SocialBtnContainer>
             </>
             <>
-              {/* <Textbtn onClick={() => navigate("/find/Id")}>
-
-                Forgot ID?
-              </Textbtn>
-              <Textbtn onClick={() => navigate("/find/pwd")}>
-                Forgot Password?
-              </Textbtn> */}
               <Textbtn onClick={() => navigate("/register")}>
                 Don’t have account?
               </Textbtn>
