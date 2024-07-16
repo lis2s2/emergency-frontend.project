@@ -5,6 +5,9 @@ import styled from "styled-components";
 import { FaCoins } from "react-icons/fa6";
 import { registerToilet } from "../api/toiletRegistorAPI";
 import uuid from "react-uuid";
+import { fetchMemberById } from "../api/memberAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess, selectMember } from "../features/member/memberSlice";
 
 const ToiletRegisterInfoContainer = styled.div`
   background-color: #ffffff;
@@ -108,6 +111,8 @@ const ToiletRegisterButton = styled.button`
 
 function ToiletRegisterInfo(props) {
   const { address, clickedLocation } = props;
+  const member = useSelector(selectMember);
+  const dispatch = useDispatch();
   const [toiletTitle, setToiletTitle] = useState();
   const [toiletDetail, setToiletDetail] = useState();
   const [separatedChecked, setSeparatedChecked] = useState(false);
@@ -148,6 +153,13 @@ function ToiletRegisterInfo(props) {
       );
       if (result.data === true) {
         alert('감사합니다. 1000포인트가 지급되었습니다.')
+        const getMemberByID = async () => {
+          const result = await fetchMemberById(member.memId);
+          localStorage.setItem("member", JSON.stringify(result));
+          dispatch(loginSuccess(result));
+        };
+        getMemberByID();
+
         navigate(`/`);
       } else {
         alert('화장실 등록 중 오류가 발생하였습니다.');

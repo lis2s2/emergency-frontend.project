@@ -4,8 +4,9 @@ import styled, { css } from "styled-components";
 import logoImg from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logoutSuccess } from "../features/member/memberSlice";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutSuccess, selectMember } from "../features/member/memberSlice";
 import axios from "axios";
 import { useState } from "react";
 
@@ -181,9 +182,8 @@ const CloseBtn = styled(IoCloseOutline)`
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const member = JSON.parse(localStorage.getItem("member"));
   const [isToggle, setIsToggle] = useState(false);
-
+  const member = useSelector(selectMember);
 
   const handleMyPageClick = () =>  {
     navigate("/mypage");
@@ -227,6 +227,9 @@ function Header() {
   }
   
   const handleToToiletRegister = () => {
+    if (!member) {
+      alert('로그인 하세요.');
+    }
     navigate('/toilet_register');
     setIsToggle(false);
   }
@@ -268,8 +271,8 @@ function Header() {
                       alignContent: "flex-end"
                     }}
                   >
-                    {member.memName}님
-                    <StyledContent>({Number(member.memPoint).toLocaleString('ko-KR')}점)</StyledContent>
+                    {member?.memName}님
+                    <StyledContent>({Number(member?.memPoint).toLocaleString('ko-KR')}점)</StyledContent>
                   </Nav.Link>
                   <LoginBtn
                     className="ms-3"

@@ -1,20 +1,13 @@
 import axios from "axios";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { loginSuccess, selectMember } from "../features/member/memberSlice";
+import { loginSuccess } from "../features/member/memberSlice";
 
-const REST_API_KEY_K = '6725e27a1c1047905dfd6bad61521355';
-const REDIRECT_URI_K = 'http://localhost:3000/login/oauth2/code/kakao';
-
-const REST_API_KEY_N = 'QiZW7Xq40T2iOCfUC6EH';
-const REDIRECT_URI_N = 'http://localhost:3000/login/oauth2/code/naver';
-const CLIENT_SECRET_N = 'nImi9vDd6q';
 
 function OAuth2NavertHandle() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const member = useSelector(selectMember);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);  
   const code = searchParams.get("code");
@@ -22,10 +15,7 @@ function OAuth2NavertHandle() {
 
   useEffect(() => { 
     const fetchToken = async () => {
-      // console.log(code);
-      // console.log(state);
-      
-      const TOKEN_URL = `http://localhost:8080/api/proxy/naver-token`;
+      const TOKEN_URL = `${process.env.REACT_APP_API_URL}/api/proxy/naver-token`;
       
       try {
         const tokenResponse = await axios.post(TOKEN_URL, null, {
@@ -40,12 +30,16 @@ function OAuth2NavertHandle() {
         const { access_token } =  tokenResponse.data;
         const authorization = `Bearer ${access_token}`;
       
-        const userResponse = await axios.get(`http://localhost:8080/api/proxy/naver-user`, {
+        const userResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/proxy/naver-user`, {
           headers: { Authorization: authorization },
         });
 
-        // if (member.memId === null) {
-        //   // 회원 정보가 없는 경우, 소셜 동의 항목을 다시 요청
+        // 리다이렉트 하고 싶다!
+        // 회원 존재 여부 확인
+        // const checkMemberResponse = await axios.get(`http://localhost:8080/check-member/${userInfo.id}`);
+        // const memberExists = checkMemberResponse.data;
+        // if (!memberExists) {
+        //   // 회원 정보가 없는 경우, 소셜 동의 화면으로 리다이렉트
         //   window.location.href = `https://nid.naver.com/oauth2.0/authorize?client_id=${REST_API_KEY_N}&response_type=code&redirect_uri=${REDIRECT_URI_N}&state=${CLIENT_SECRET_N}`;
         //   return;
         // }
@@ -56,18 +50,34 @@ function OAuth2NavertHandle() {
           memPwd: 'default_password', // 기본 비밀번호 설정
           memName: userInfo.name,
           memEmail: userInfo.email,
-          provider: 'naver',
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
-          memPoint: 0
+          memPoint: 0,
+          provider: 'naver'
         };
-
-        // DB에 저장
-          await axios.post("http://localhost:8080/register", memberData);
-
-        dispatch(loginSuccess(memberData));
-        localStorage.setItem("member", JSON.stringify(userInfo));
-        localStorage.setItem("token", access_token);
+        console.log(memberData);
+        console.log("사용자 정보: ", userResponse.data);
+        const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);
+        console.log(reponse);
+        if (reponse.data === false) {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
+          );
+          console.log(result);
+          const { token, member } = result.data;
+          console.log(result.data);
+          dispatch(loginSuccess(member));
+          localStorage.setItem("token", token);
+          localStorage.setItem("member", JSON.stringify(member));
+        } else {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
+          );
+          const { token, member } = result.data;
+          dispatch(loginSuccess(member));
+          localStorage.setItem("token", token);
+          localStorage.setItem("member", JSON.stringify(member));
+        }
 
         navigate('/');
       } catch (error) {
@@ -76,8 +86,7 @@ function OAuth2NavertHandle() {
     };
 
     fetchToken(code, state);
-  }, []);
-  // }, [code, state, navigate, dispatch]);
+  }, [code, navigate, dispatch, state]);
 
   return null;
 }

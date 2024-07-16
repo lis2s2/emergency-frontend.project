@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { MdTune } from "react-icons/md";
 import ToiletListItem from "./ToiletListItem";
 import { useOutletContext } from "react-router-dom";
+import { Button, Form, Modal } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
 
 const ButtonListContainer = styled.div`
   max-height: 780px;
@@ -56,6 +58,16 @@ const ListContainer = styled.div`
   }
 `;
 
+const StyledFormCheck = styled(Form.Check)`
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+`;
+
+const StyledFilterButton = styled(StyledMdTune)`
+  cursor: pointer;
+`;
+
 function ToiletList() {
   const {
     closestToiletLocations,
@@ -65,9 +77,65 @@ function ToiletList() {
     toggleGasList,
     addGasList,
     toggleUserToiletList,
-    addUserToiletList
+    addUserToiletList,
+    setClosestToiletLocations
   } = useOutletContext();
 
+  const [separatedChecked, setSeparatedChecked] = useState(false);
+  const [disabledChecked, setDisabledChecked] = useState(false);
+  const [diaperChecked, setDiaperChecked] = useState(false);
+  const [paperChecked, setPaperChecked] = useState(false);
+  const [regModalShow, setRegModalShow] = useState(false);
+  const [unfilteredList, setUnfilteredList] = useState();
+  const [filteredList, setFilteredList] = useState();
+  const asyncDataLoaded = useRef(false);
+
+
+  useEffect(() => {
+    if (closestToiletLocations.length !== 0 && !asyncDataLoaded.current) {
+      setUnfilteredList(closestToiletLocations);
+      setFilteredList(closestToiletLocations);
+    }
+  }, [closestToiletLocations]);
+
+  const handleClose = () => setRegModalShow(false);
+  const hadleModlaShow = () => setRegModalShow(true);
+
+  const handleSeparatedChange = (e) => {
+    setSeparatedChecked(e.target.checked);
+  };
+  const handleDisabledChange = (e) => {
+    setDisabledChecked(e.target.checked);
+  };
+  const handleDiaperChange = (e) => {
+    setDiaperChecked(e.target.checked);
+  };
+  const handlePaperChange = (e) => {
+    setPaperChecked(e.target.checked);
+  };
+
+  const handleToiletFilter = () => {
+    let filtedToiletList = filteredList;
+    console.log(filtedToiletList);
+    if (separatedChecked) {
+      filtedToiletList = filtedToiletList.filter(toilet => toilet.separated === true)
+    }
+    console.log(filtedToiletList);
+    if (disabledChecked) {
+      filtedToiletList = filtedToiletList.filter(toilet => toilet.disabled === true)
+    }
+    if (diaperChecked) {
+      filtedToiletList = filtedToiletList.filter(toilet => toilet.diaper === true)
+    }
+    if (paperChecked) {
+      filtedToiletList = filtedToiletList.filter(toilet => toilet.paper === true)
+    }
+    setClosestToiletLocations(filtedToiletList);
+    setFilteredList(unfilteredList);
+    asyncDataLoaded.current = true;
+    handleClose();
+
+  };
 
   return (
     <ButtonListContainer>
@@ -97,10 +165,65 @@ function ToiletList() {
             사용자 등록 화장실
           </ToggleButton>
         )}
-
-        
-        <StyledMdTune />
+        <StyledFilterButton onClick={hadleModlaShow}/>
       </ButtonContainer>
+      <Modal
+        show={regModalShow}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>화장실 필터 적용</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <StyledFormCheck
+            type="checkbox"
+            id="separated-checkbox"
+            label="남녀 화장실 구분"
+            checked={separatedChecked}
+            onChange={handleSeparatedChange}
+          />
+          <StyledFormCheck
+            type="checkbox"
+            id="disabled-checkbox"
+            label="장애인 화장실"
+            checked={disabledChecked}
+            onChange={handleDisabledChange}
+          />
+          <StyledFormCheck
+            type="checkbox"
+            id="diaper-checkbox"
+            label="아기 기저귀 갈이대"
+            checked={diaperChecked}
+            onChange={handleDiaperChange}
+          />
+          <StyledFormCheck
+            type="checkbox"
+            id="paper-checkbox"
+            label="화장지가 구비"
+            checked={paperChecked}
+            onChange={handlePaperChange}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            닫기
+          </Button>
+          <Button
+            variant="primary"
+            style={{
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+              background: "#0067c7",
+            }}
+            onClick={() => {handleToiletFilter()}}
+          >
+            적용하기
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <ListContainer>
         {closestToiletLocations?.map((toiletLocation) => {
           return (

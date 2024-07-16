@@ -10,8 +10,8 @@ import {
 } from "../api/kakaoMapAPI";
 import ToiletComment from "./ToiletComment";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { selectMember } from "../features/member/memberSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess, selectMember } from "../features/member/memberSlice";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
   fetchReviewListByToiletNo,
@@ -20,6 +20,7 @@ import {
 } from "../api/toiletReviewAPI";
 import { FaCoins } from "react-icons/fa6";
 import { registerToiletInfo } from "../api/toiletRegistorAPI";
+import { fetchMemberById } from "../api/memberAPI";
 
 const ToiletDetailContainer = styled.div`
   background-color: #ffffff;
@@ -209,6 +210,7 @@ function ToiletDetail() {
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [inputScore, setInputScore] = useState(3);
@@ -270,7 +272,7 @@ function ToiletDetail() {
 
   const handleReviewButton = async () => {
     if (comment) {
-      const result = await registerToiletReview(toiletNo, comment, inputScore);
+      const result = await registerToiletReview(toiletNo, comment, inputScore, FNAME);
       setComment("");
       if (result) {
         const getReviewList = async () => {
@@ -330,7 +332,7 @@ function ToiletDetail() {
     setPaperChecked(e.target.checked);
   };
 
-  const handleToileRegistor = async () => {
+  const handleToiletRegistor = async () => {
     const result = await registerToiletInfo(
       toiletNo,
       Y_WGS84,
@@ -350,7 +352,13 @@ function ToiletDetail() {
       setDiaperChecked(false);
       setPaperChecked(false);
       toggleListUpdated();
-      navigate(`/`);
+      const getMemberByID = async () => {
+        const result = await fetchMemberById(member.memId);
+        localStorage.setItem("member", JSON.stringify(result));
+        dispatch(loginSuccess(result));
+      };
+      getMemberByID();
+      navigate(`/detail/${toiletNo}`);
     } else {
       handleClose();
       alert("화장실 정보 등록 중 오류가 발생하였습니다.");
@@ -358,8 +366,11 @@ function ToiletDetail() {
       setDisabledChecked(false);
       setDiaperChecked(false);
       setPaperChecked(false);
-      navigate(`/detail/${toiletNo}`);
+      navigate(`/`);
     }
+    
+
+    
   };
 
   return (
@@ -516,7 +527,7 @@ function ToiletDetail() {
               alignItems: "center",
               background: "#0067c7"
             }}
-            onClick={handleToileRegistor}
+            onClick={handleToiletRegistor}
           >
             <FaCoins />
             제출하기

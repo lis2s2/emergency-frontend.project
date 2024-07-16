@@ -34,25 +34,38 @@ function OAuth2KakaoHandle() {
         
         const userInfo = userResponse.data;
         const userInfoDetails = userResponse.data.kakao_account;
+        
         const memberData = {
           memId: 'k_' + userInfo.id,
           memPwd: 'default_password', // 기본 비밀번호 설정
           memName: userInfoDetails.profile.nickname,
           memEmail: userInfoDetails.email,
-          provider: 'kakao',
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
-          memPoint: 0
+          memPoint: 0,
+          provider: 'kakao'
         };
         
         console.log("사용자 정보: ", userResponse.data);
+        const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);
 
-        await axios.post("http://localhost:8080/register", memberData);
-
-        dispatch(loginSuccess(memberData));
-        localStorage.setItem("member", JSON.stringify(userInfoDetails));
-        localStorage.setItem("token", access_token);
-
+        if (reponse.data === false) {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
+          );
+          const { token, member } = result.data;
+          dispatch(loginSuccess(member));
+          localStorage.setItem("token", token);
+          localStorage.setItem("member", JSON.stringify(member));
+        } else {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
+          );
+          const { token, member } = result.data;
+          dispatch(loginSuccess(member));
+          localStorage.setItem("token", token);
+          localStorage.setItem("member", JSON.stringify(member));
+        }
         navigate('/');
 
       } catch (error) {

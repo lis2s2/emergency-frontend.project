@@ -67,7 +67,6 @@ function Main() {
           .sort((a, b) => a.distance - b.distance)
           .filter((value) => value.distance < 500);
         const UserResult = await fetchUserToiletList();
-        console.log(UserResult);
         const renamedKeyList = UserResult.map((toilet) => {
           return {
             POI_ID: toilet.toiletNo,
@@ -280,7 +279,8 @@ function Main() {
             toggleListUpdated: toggleListUpdated,
             toilet: closestToiletAll?.find(
               (toilet) => toilet.POI_ID === toiletNo
-            )
+            ),
+            setClosestToiletLocations: setClosestToiletLocations,
           }}
         />
       </TolietListSection>

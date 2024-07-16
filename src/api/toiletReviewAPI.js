@@ -52,7 +52,7 @@ export const getAvgScoreByToiletNo = async (toiletNo) => {
   }
 };
 
-export const registerToiletReview = async (toiletNo, content, score, toiletTiltle) => {
+export const registerToiletReview = async (toiletNo, content, score, toiletTitle) => {
   const token = localStorage.getItem("token");
   const writer = JSON.parse(localStorage.getItem("member")).memId;
   const sendData = {
@@ -60,7 +60,7 @@ export const registerToiletReview = async (toiletNo, content, score, toiletTiltl
     writer: writer,
     reviewContent: content,
     reviewScore: score,
-    toiletTilet: toiletTiltle,
+    toiletTitle: toiletTitle,
   };
   const result = await axios.post(
     `${process.env.REACT_APP_API_URL}/review/register`,

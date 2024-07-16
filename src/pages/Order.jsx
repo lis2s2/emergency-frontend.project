@@ -170,14 +170,16 @@ function Order() {
   const open = useDaumPostcodePopup(postcodeScriptUrl);
   const [getFullAddress, setGetFullAddress] = useState('');
   const [postCode, setPostCode] = useState('');
-  const member = JSON.parse(localStorage.getItem("member"));
   const navigate = useNavigate();
-
+  
   const selectedItems = useSelector(state => state.cart.selectedItems);
   const cartList = useSelector(state => state.cart.items);
   const orderItems = cartList.filter(item => selectedItems.includes(item.no));
-  const memId = member.memId;
+
+
   const token = localStorage.getItem("token");
+  const member = JSON.parse(localStorage.getItem("member"));
+  const memId = member.memId;
 
   const formatter = new Intl.NumberFormat('ko-KR');
 
@@ -267,7 +269,7 @@ function Order() {
 
     if (!window.IMP) return;
     const { IMP } = window;
-    IMP.init("imp46283852"); // 가맹점 식별코드
+    IMP.init(`${process.env.REACT_APP_PORT_ONE_KEY}`); // 가맹점 식별코드
 
     const data = {
       pg: "kakaopay",

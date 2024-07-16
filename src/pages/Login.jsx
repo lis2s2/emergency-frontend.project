@@ -11,7 +11,7 @@ const LoginContainer = styled.div`
   width: 100%;
   max-width: 1440px;
   background-color: #5fb393;
-  min-height: 820px;
+  min-height: 830px;
 `;
 
 const Autolayout = styled.div`
@@ -68,12 +68,27 @@ const Autobox = styled.div`
 `;
 
 const CommonInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   padding: 0px;
   width: 100%;
   height: 28px;
   box-sizing: border-box;
-
 `;
+// const CommonInfo = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   padding: 0px;
+//   height: 28px;
+//   flex: none;
+//   order: 0;
+//   flex-grow: 0;
+//   z-index: 0;
+//   justify-content: space-between;
+// `;
 
 const InfoStyle = styled.div`
   padding: 0px;
@@ -161,6 +176,19 @@ const SocialBtnContainer = styled.div`
   padding: 0;
 `;
 
+const CheckStyle = styled.button`
+  padding: 2px 8px;
+  border-style: none;
+  border-radius: 16px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 20px;
+  color: #007aff;
+  white-space: nowrap;
+`;
+
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -216,6 +244,7 @@ function Login() {
 
   // 네이버 로그인
   const naverlink = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.REACT_APP_REST_API_KEY_N}&response_type=code&redirect_uri=${process.env.REACT_APP_REDIRECT_URI_N}&state=${process.env.REACT_APP_CLIENT_SECRET_N}`;
+  console.log(naverlink);
   const naverLoginHandler = () => {
     window.location.href = naverlink;
   };
@@ -228,6 +257,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
+                <CheckStyle onClick={() => navigate("/find/id")}>Forgot Id?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -240,7 +270,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Password</InfoStyle>
-                {/* <CheckStyle>Forgot password?</CheckStyle> */}
+                <CheckStyle onClick={() => navigate("/find/pwd")}>Forgot Password?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="password"
@@ -259,9 +289,6 @@ function Login() {
               </SocialBtnContainer>
             </>
             <>
-              <Textbtn onClick={() => navigate("/find/Id")}>
-                Forgot ID?
-              </Textbtn>
               <Textbtn onClick={() => navigate("/register")}>
                 Don’t have account?
               </Textbtn>

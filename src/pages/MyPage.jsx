@@ -3,9 +3,8 @@ import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import familyImg from "../images/family_icon.png";
 import vipImg from "../images/vip_icon.png";
-import logoImg from "../images/logo.png";
-import { logoutSuccess } from "../features/member/memberSlice";
-import { useDispatch } from "react-redux";
+import { logoutSuccess, selectMember } from "../features/member/memberSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -77,6 +76,7 @@ const ReviewList = styled.div`
   border: 2px solid #5fb393;
   border-radius: 8px;
   flex: 1;
+  max-height: 220px;
 `;
 
 const StyledTitle = styled.p`
@@ -110,6 +110,17 @@ const ToiletReviewContainer = styled.div`
 const ToiletNameReviewContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+`;
+
+const ToiletName = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  text-align: start;
+  vertical-align: middle;
+  white-space: nowrap;
 `;
 
 const CardImg = styled.img`
@@ -156,61 +167,6 @@ const CartIcons = styled.button`
   background-color: white;
   font-size: 40px;
   vertical-align: middle;
-`;
-
-const Favorites = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px 24px;
-  gap: 20px;
-  width: 501px;
-  height: 224px;
-  left: 174px;
-  top: 234px;
-  background: #ffffff;
-  border: 2px solid #5fb393;
-  border-radius: 8px;
-`;
-
-const FavLogo = styled.div`
-  width: 100px;
-  height: 100px;
-  margin-left: 20px;
-  background: url(${logoImg});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-`;
-
-const FavTitle = styled.div`
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 26px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #000000;
-`;
-
-const FavList = styled.div`
-  width: 180px;
-  height: 210px;
-  left: 269px;
-  top: 8px;
-  padding-left: 20px;
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 26px;
-  display: flex;
-  align-items: center;
-  text-align: left;
-  color: #000000;
 `;
 
 const NoticeBtn = styled.button`
@@ -291,24 +247,29 @@ const ButtonContainer = styled.div`
 function MyPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const member = JSON.parse(localStorage.getItem("member")) || {};
+  const member = useSelector(selectMember);
   const [reviewList, setReviewList] = useState([]);
 
   useEffect(() => {
     const getReviewByWriter = async () => {
       const review = await fetchReviewListByWriter();
-      console.log(member.memId);
-      console.log(review);
       setReviewList(review);
     };
     getReviewByWriter();
   }, []);
-  console.log(reviewList);
 
   const handleDeleteMember = async () => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/delete-member/${member.memId}`
+        `${process.env.REACT_APP_API_URL}/delete-member/${member.memId}`,
+        {
+          headers: {
+            "Content-Type": `application/json`,
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.status === 200) {
         window.confirm("탈퇴 하시겠습니까?");
@@ -332,14 +293,16 @@ function MyPage() {
       <Autolayout>
         <RegisterWhite>
           <Sublayout>
-            <CardActions>
-              <EditIcons onClick={() => navigate("/mypage/modify")}>
-                <TbMoodEdit />
-              </EditIcons>
-              <CartIcons onClick={() => navigate("/cart")}>
-                <PiShoppingCartSimpleBold />
-              </CartIcons>
-            </CardActions>
+            {!member?.provider && (
+              <CardActions>
+                <EditIcons onClick={() => navigate("/mypage/modify")}>
+                  <TbMoodEdit />
+                </EditIcons>
+                <CartIcons onClick={() => navigate("/cart")}>
+                  <PiShoppingCartSimpleBold />
+                </CartIcons>
+              </CardActions>
+            )}
             <NameCard>
               <CardImg
                 src={member?.memGrade === "FAMILY" ? familyImg : vipImg}
@@ -356,26 +319,17 @@ function MyPage() {
                 <StyledTitle>내가 쓴 댓글</StyledTitle>
                 {reviewList?.map((comment) => {
                   return (
-                    <ToiletNameReviewContainer key={comment.reviewNo}>
+                    <ToiletNameReviewContainer
+                      onClick={() => navigate(`/detail/${comment.toiletNo}`)}
+                      key={comment.reviewNo}
+                    >
+                      <ToiletName>{comment.toiletTitle}</ToiletName>
                       <ToiletComment comment={comment} />
-                      <p>{comment.toiletNo}</p>
                     </ToiletNameReviewContainer>
                   );
                 })}
               </ToiletReviewContainer>
             </ReviewList>
-
-            {/* <Favorites>
-              <FavLogo />
-              <FavTitle>즐겨찾기</FavTitle>
-              <FavList>
-                <ul>
-                  <li>그린컴퓨터학원 구월점</li>
-                  <li>동암역</li>
-                  <li>롯데백화점 인천점</li>
-                </ul>
-              </FavList>
-            </Favorites> */}
             <ButtonContainer>
               <NoticeBtn>
                 <CommonText>공지사항</CommonText>
