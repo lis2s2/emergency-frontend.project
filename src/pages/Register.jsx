@@ -6,7 +6,6 @@ import styled from "styled-components";
 const RegisterContainer = styled.div`
   width: 100%;
   max-width: 1440px;
-  margin: 0 auto;
   background-color: #5fb393;
   min-height: 820px;
 `;
@@ -21,6 +20,10 @@ const Autolayout = styled.div`
   position: relative;
   width: 1150px;
   height: 830px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 400px;
+  };
 `;
 
 const Sublayout = styled.form`
@@ -30,7 +33,7 @@ const Sublayout = styled.form`
   padding: 20px;
   gap: 24px;
   width: 100%;
-  height: 644px;
+  height: 644px;  
 `;
 
 const RegisterWhite = styled.div`
@@ -40,25 +43,30 @@ const RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
-  width: 600px;
-  height: 644px;
+  width: 605px;
+  height: 645px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 440px;
+  }
+  @media screen and (max-width: 480px) {
+    max-width: 360px;
+  }
 `;
 
 const Autobox = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; 
   width: 100%;
   padding: 0px;
   gap: 8px;
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 20px; 
   line-height: 29px;
   color: #111111;
   height: 82px;
@@ -67,27 +75,26 @@ const Autobox = styled.div`
 const CommonInfo = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
   padding: 0px;
   width: 100%;
-  height: 29px;
+  height: 28px;
+  box-sizing: border-box;
 `;
 
 const InfoStyle = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   padding: 0px;
-  width: 490px;
-  height: 29px;
+  width: 100%;
+  height: 28px;
+  box-sizing: border-box;
+  text-align: start;
 `;
 
 const CheckStyle = styled.div`
   margin: 0 auto;
   border-style: none;
-  font-family: "Noto Sans KR";
-  font-style: normal;
+  border-radius: 8px;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
@@ -96,10 +103,9 @@ const CheckStyle = styled.div`
 `;
 
 const CheckBtn = styled.button`
+  box-sizing: border-box;
   margin: 0 auto;
   border-style: none;
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
@@ -108,10 +114,7 @@ const CheckBtn = styled.button`
 `;
 
 const CommonInput = styled.input`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  box-sizing: border-box;
   padding: 8px;
   font-size: 16px;
   width: 100%;
@@ -119,10 +122,6 @@ const CommonInput = styled.input`
   background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
-  &:disabled {
-    background-color: #f0f0f0;  
-    color: #a0a0a0;             
-  }
 `;
 
 const CommonBtn = styled.button`
@@ -132,19 +131,18 @@ const CommonBtn = styled.button`
   justify-content: center;
   align-items: center;
   padding: 8px;
-  width: 100%;
-  height: 45px;
+  height: 64px;
   background: #5fb393;
   border: none;
   border-radius: 8px;
-  font-family: "Noto Sans KR";
-  font-style: normal;
+  flex: none;
+  order: 5;
+  align-self: stretch;
   font-weight: 900;
   font-size: 20px;
-  line-height: 29px;
   color: #ffffff;
   &:hover {
-    background: #5fb393;
+    background:  #5FB393;
     color: black;
     transition: 0.7s;
   }
@@ -294,7 +292,7 @@ function Register() {
 
             <Autobox>
               <CommonInfo>
-                <>Name</>
+                <InfoStyle>Name</InfoStyle>
               </CommonInfo>
               <CommonInput
                 type="text"
