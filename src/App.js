@@ -15,6 +15,7 @@ import FindId from "./pages/FindId";
 import Modify from "./pages/Modify";
 import OAuth2NavertHandle from "./component/OAuth2NavertHandle";
 import OAuth2KakaoHandle from "./component/OAuth2KakaoHandle";
+import FindPwd from "./pages/FindPwd";
 import ToiletRegister from "./pages/ToiletRegister";
 import ShopItem from "./component/ShopItem";
 import Order from "./pages/Order";
@@ -55,6 +56,7 @@ function App() {
           <Route path="login/*" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="find/id" element={<FindId />} />
+          <Route path="find/pwd" element={<FindPwd />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="shop" element={<Shop />} />
           <Route path="shop/detail/:productId" element={<ItemDetail />} />

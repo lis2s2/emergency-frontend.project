@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const RegisterContainer = styled.div`
@@ -16,7 +17,7 @@ const Autolayout = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px;
-  gap: 20px;
+  gap: 24px;
 
   width: 819px;
   height: 830px;
@@ -74,7 +75,7 @@ const RegisterWhite = styled.div`
   gap: 24px;
 
   width: 606px;
-  height: 440px;
+  height: 480px;
 
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -199,27 +200,26 @@ const CheckBtn = styled.button`
   }
 `;
 
-function FindId() {
-
+function FindPwd() {
+  const navigator = useNavigate();
   const [memId, setMemId] = useState('');
   const [memName, setMemName] = useState('');
   const [memEmail, setMemEmail] = useState('');
   const [error, setError] = useState('');
 
   const handleFind = async () => {
-    if (!memName || !memEmail) {
-      alert('이름, 이메일을 전부 입력 해주세요.');
+    if (!memId || !memName || !memEmail) {
+      alert('아이디, 이름, 이메일을 전부 입력 해주세요.');
       return;
     }
-    console.log("http://localhost:8080/find", { memName, memEmail });
-    try {
-      const response = await axios.post("http://localhost:8080/find/id", { memName, memEmail });
-      setMemId(response.data.memId);
-      setError('아이디는 "' + response.data + '" 입니다');
 
+    // console.log("http://localhost:8080/find-password", { memId, memName, memEmail });
+    try {
+      const response = await axios.post("http://localhost:8080/find/pwd", { memId, memName, memEmail });
+      // console.log(response);
+      setError('이메일로 임시 비밀번호를 보냈습니다.');
     } catch (error) {
       console.error('Error fetching password:', error);
-      setMemId('');
       setError('사용자를 찾을 수 없습니다.');
     }
   };
@@ -227,9 +227,16 @@ function FindId() {
   return (
     <RegisterContainer>
       <Autolayout>
-        <RegisterGround>Find Id</RegisterGround>
+        <RegisterGround>Find Password</RegisterGround>
           <RegisterWhite>
             <Sublayout>
+              <Autobox>
+                  <CommonInfo>
+                    <>Id</>
+                    </CommonInfo>
+                  <CommonInput  value={memId} onChange={(e) => setMemId(e.target.value)} />
+              </Autobox>
+
               <Autobox>
                   <CommonInfo>
                     <>Name</>
@@ -247,7 +254,7 @@ function FindId() {
               <>
                 <CheckBtn onClick={handleFind}>Check</CheckBtn>
               </>  
-              {setMemId && <div>{memId}</div>}
+              {/* {<div>'이메일로 임시 비밀번호를 보냈습니다.'</div>} */}
               {error && <div>{error}</div>} 
             </Sublayout>
           </RegisterWhite>
@@ -256,4 +263,4 @@ function FindId() {
   );
 }
 
-export default FindId;
+export default FindPwd;
