@@ -279,7 +279,8 @@ function Main() {
             toggleListUpdated: toggleListUpdated,
             toilet: closestToiletAll?.find(
               (toilet) => toilet.POI_ID === toiletNo
-            )
+            ),
+            setClosestToiletLocations: setClosestToiletLocations,
           }}
         />
       </TolietListSection>

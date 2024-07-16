@@ -332,7 +332,7 @@ function ToiletDetail() {
     setPaperChecked(e.target.checked);
   };
 
-  const handleToileRegistor = async () => {
+  const handleToiletRegistor = async () => {
     const result = await registerToiletInfo(
       toiletNo,
       Y_WGS84,
@@ -527,7 +527,7 @@ function ToiletDetail() {
               alignItems: "center",
               background: "#0067c7"
             }}
-            onClick={handleToileRegistor}
+            onClick={handleToiletRegistor}
           >
             <FaCoins />
             제출하기
