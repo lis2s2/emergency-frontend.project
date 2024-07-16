@@ -172,11 +172,14 @@ function Register() {
   };
 
   const handleIdCheck = async () => {
+    if (!formData.memId) {
+      alert('아이디를 입력하세요.');
+      return;
+    }
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/register/checkid?name=${formData.memId}`
       );
-      console.log(response);
       if (!response.data) {
         setStateid(false);
         alert("이미 존재하는 아이디입니다.");
