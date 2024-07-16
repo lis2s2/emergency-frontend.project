@@ -10,8 +10,8 @@ import {
 } from "../api/kakaoMapAPI";
 import ToiletComment from "./ToiletComment";
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { selectMember } from "../features/member/memberSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess, selectMember } from "../features/member/memberSlice";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import {
   fetchReviewListByToiletNo,
@@ -210,6 +210,7 @@ function ToiletDetail() {
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [inputScore, setInputScore] = useState(3);
@@ -351,6 +352,12 @@ function ToiletDetail() {
       setDiaperChecked(false);
       setPaperChecked(false);
       toggleListUpdated();
+      const getMemberByID = async () => {
+        const result = await fetchMemberById(member.memId);
+        localStorage.setItem("member", JSON.stringify(result));
+        dispatch(loginSuccess(result));
+      };
+      getMemberByID();
       navigate(`/detail/${toiletNo}`);
     } else {
       handleClose();
@@ -361,13 +368,9 @@ function ToiletDetail() {
       setPaperChecked(false);
       navigate(`/`);
     }
-    const getMemberByID = async () => {
-      const result = await fetchMemberById(member.memId);
-      console.log(result);
-      localStorage.setItem("member", JSON.stringify(result));
-    };
+    
 
-    getMemberByID();
+    
   };
 
   return (

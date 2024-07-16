@@ -11,6 +11,7 @@ export const fetchMemberById = async (id) => {
         },
       }
     );
+    console.log(result.data);
     return result.data;
   } catch (err) {
     console.error(err);

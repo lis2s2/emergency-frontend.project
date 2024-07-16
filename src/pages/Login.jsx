@@ -216,6 +216,7 @@ function Login() {
 
   // 네이버 로그인
   const naverlink = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.REACT_APP_REST_API_KEY_N}&response_type=code&redirect_uri=${process.env.REACT_APP_REDIRECT_URI_N}&state=${process.env.REACT_APP_CLIENT_SECRET_N}`;
+  console.log(naverlink);
   const naverLoginHandler = () => {
     window.location.href = naverlink;
   };

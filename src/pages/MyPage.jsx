@@ -3,8 +3,8 @@ import { TbMoodEdit } from "react-icons/tb";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import familyImg from "../images/family_icon.png";
 import vipImg from "../images/vip_icon.png";
-import { logoutSuccess } from "../features/member/memberSlice";
-import { useDispatch } from "react-redux";
+import { logoutSuccess, selectMember } from "../features/member/memberSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -246,7 +246,7 @@ const ButtonContainer = styled.div`
 function MyPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const member = JSON.parse(localStorage.getItem("member")) || {};
+  const member = useSelector(selectMember);
   const [reviewList, setReviewList] = useState([]);
 
   useEffect(() => {

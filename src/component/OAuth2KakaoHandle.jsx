@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loginSuccess} from "../features/member/memberSlice";
+import { fetchMemberById } from "../api/memberAPI";
 
 function OAuth2KakaoHandle() {
   const navigate = useNavigate();
@@ -46,13 +47,25 @@ function OAuth2KakaoHandle() {
         };
         
         console.log("사용자 정보: ", userResponse.data);
+        const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);
 
-        await axios.post("http://localhost:8080/register", memberData);
-
-        dispatch(loginSuccess(memberData));
-        localStorage.setItem("member", JSON.stringify(userInfoDetails));
-        localStorage.setItem("token", access_token);
-
+        if (reponse.data === false) {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
+          );
+          const { token, member } = result.data;
+          dispatch(loginSuccess(member));
+          localStorage.setItem("token", token);
+          localStorage.setItem("member", JSON.stringify(member));
+        } else {
+          const result = await axios.get(
+            `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
+          );
+          const { token, member } = result.data;
+          dispatch(loginSuccess(member));
+          localStorage.setItem("token", token);
+          localStorage.setItem("member", JSON.stringify(member));
+        }
         navigate('/');
 
       } catch (error) {
