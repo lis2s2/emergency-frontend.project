@@ -75,7 +75,6 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const member = useSelector(selectMember);
-  console.log(member);
   
 
   const handleMyPageClick = () => {
@@ -116,8 +115,14 @@ function Header() {
             </Navbar.Brand>
             <Nav className="ml-auto" style={{ alignItems: "center" }}>
               <Nav.Link
-                href="/toilet_register"
                 className="ms-3 align-self-center"
+                onClick={() => {
+                  if (!member) {
+                    alert('로그인 하세요.');
+                  } else {
+                    navigate('/toilet_register');
+                  }
+                }}
               >
                 화장실 등록
               </Nav.Link>

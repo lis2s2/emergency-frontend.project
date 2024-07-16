@@ -262,12 +262,15 @@ function MyPage() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/delete-member/${member.memId}`, {
-          headers : {
-            'Content-Type': `application/json`,
-            'Authorization': `Bearer ${token}`,
-          }
-        });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/delete-member/${member.memId}`,
+        {
+          headers: {
+            "Content-Type": `application/json`,
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.status === 200) {
         window.confirm("탈퇴 하시겠습니까?");
         if (true) {
@@ -290,14 +293,16 @@ function MyPage() {
       <Autolayout>
         <RegisterWhite>
           <Sublayout>
-            <CardActions>
-              <EditIcons onClick={() => navigate("/mypage/modify")}>
-                <TbMoodEdit />
-              </EditIcons>
-              <CartIcons onClick={() => navigate("/cart")}>
-                <PiShoppingCartSimpleBold />
-              </CartIcons>
-            </CardActions>
+            {!member?.provider && (
+              <CardActions>
+                <EditIcons onClick={() => navigate("/mypage/modify")}>
+                  <TbMoodEdit />
+                </EditIcons>
+                <CartIcons onClick={() => navigate("/cart")}>
+                  <PiShoppingCartSimpleBold />
+                </CartIcons>
+              </CardActions>
+            )}
             <NameCard>
               <CardImg
                 src={member?.memGrade === "FAMILY" ? familyImg : vipImg}

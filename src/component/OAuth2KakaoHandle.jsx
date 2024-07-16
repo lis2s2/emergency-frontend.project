@@ -37,7 +37,8 @@ function OAuth2KakaoHandle() {
           memEmail: userInfoDetails.email,
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
-          memPoint: 0
+          memPoint: 0,
+          provider: 'kakao'
         };
         
         const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);

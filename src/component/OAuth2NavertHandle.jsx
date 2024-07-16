@@ -47,16 +47,22 @@ function OAuth2NavertHandle() {
           memEmail: userInfo.email,
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
-          memPoint: 0
+          memPoint: 0,
+          provider: 'naver'
         };
 
-        const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);
+        console.log(memberData);
+        console.log("사용자 정보: ", userResponse.data);
 
+        const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);
+        console.log(reponse);
         if (reponse.data === false) {
           const result = await axios.get(
             `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
           );
+          console.log(result);
           const { token, member } = result.data;
+          console.log(result.data);
           dispatch(loginSuccess(member));
           localStorage.setItem("token", token);
           localStorage.setItem("member", JSON.stringify(member));
