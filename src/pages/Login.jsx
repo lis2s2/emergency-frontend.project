@@ -332,69 +332,6 @@ function Login() {
     window.location.href = naverlink;
   };
 
-  // useEffect(() => {
-  //   const searchParams = new URLSearchParams(location.search);
-  //   const code = searchParams.get("code");
-  //   const state = searchParams.get("state");
-
-  //   if (code) {
-  //     const fetchToken = async () => {
-  //       try {
-  //         const response = await axios.post(`https://nid.naver.com/oauth2.0/token?`, {
-  //           code,
-  //           state,
-  //         });
-  //         const { token, member } = response.data;
-
-  //         dispatch(loginSuccess(member));
-  //         localStorage.setItem("token", token);
-  //         localStorage.setItem("member", JSON.stringify(member));
-
-  //         navigate("/");
-  //         console.log(token, member);
-  //         alert("^^");
-  //       } catch (error) {
-  //         console.log(error);
-  //         alert("네이버 로그인에 실패하였습니다.");
-  //       }
-  //     };
-
-  //     fetchToken();
-  //   }
-  // }, [location.search, dispatch, navigate]);
-
-  // useEffect(() => { 
-  //   const searchParams = new URLSearchParams(location.search);
-  //   const code = searchParams.get("code");
-  //   const state = searchParams.get("state");
-  //   console.log(code);
-  //   console.log(state);
-  //   //   const tokenParams = {
-  //   //   client_id: REST_API_KEY_N,
-  //   //   client_secret: CLIENT_SECRET_N,
-  //   //   code: token,
-  //   //   grant_type : 'authorization_code',
-  //   //   state: CLIENT_SECRET_N,
-  //   // }
-  //   axios.post( `https://nid.naver.com/oauth2.0/token?code=${code}&state=${state}&grant_type=authorization_code&client_id=${REST_API_KEY_N}&client_secret=${CLIENT_SECRET_N}`)
-  //   // axios.post('https://nid.naver.com/oauth2.0/token?' + tokenParams)
-  //   .then(response => {
-  //     const { token, member } = response.data;
-  //     console.log(token);
-  //     dispatch(loginSuccess(member));
-  //     localStorage.setItem("token", JSON.stringify(token));
-  //     localStorage.setItem("member", JSON.stringify(member));
-
-  //     // navigate("/");
-  //     console.log(token, member);
-  //     // alert("^^");
-  //   })
-  //   .catch(error => {
-  //     // alert('네이버 API 실패');
-  //     // console.log(error);
-  //   })
-  // }, []);
-
   return (
     <LoginContainer>
       <Autolayout>
