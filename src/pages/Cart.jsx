@@ -172,10 +172,14 @@ function Cart() {
     };
     fetchCartList();
   }, [dispatch, memId, token]);
-
+  
   const onUpdateCount = async (cartNo, newCount) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartNo}/updateCount?prodCount=${newCount}`);
+      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartNo}/updateCount?prodCount=${newCount}`,{
+        headers: {
+          Authorization: token,
+        }
+      });
       dispatch(setCartItems(
         cartList.map((item) => item.no === cartNo ? { ...item, prodCount: newCount } : item)
       ));
@@ -186,7 +190,11 @@ function Cart() {
 
   const handleDeleteCartItem = async (cartNo) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartNo}/delete`);
+      await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartNo}/delete`, {
+        headers: {
+          Authorization: token,
+        }
+      });
       dispatch(setCartItems(cartList.filter((item) => item.no !== cartNo)));
     } catch (error) {
       console.error("장바구니 항목을 삭제하는 중 오류가 발생했습니다:", error);
@@ -210,7 +218,11 @@ function Cart() {
     try {
       // 선택된 항목들 삭제
       for (const cartNo of selectedItems) {
-        await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartNo}/delete`);
+        await axios.put(`${process.env.REACT_APP_API_URL}/carts/${cartNo}/delete`, {
+          headers: {
+            Authorization: token
+          }
+        });
       }
       // 삭제된 항목을 제외한 새로운 장바구니 목록 업데이트
       dispatch(setCartItems(cartList.filter((item) => !selectedItems.includes(item.no))));

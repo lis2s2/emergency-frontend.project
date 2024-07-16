@@ -16,15 +16,51 @@ const ShopWrapper = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   padding: 40px;
-`;
+
+
+  @media screen and (max-width: 1280px) {
+  /** 타블렛 가로, 노트북 */
+    max-width: 1280px;
+  }
+  
+  @media screen and (max-width: 1023px) {
+    max-width: 1023px;
+  }
+  
+  @media screen and (max-width: 768px){
+    max-width: 768px;
+  }
+
+  @media screen and (max-width: 480px) {
+    max-width: 480px;
+  }
+  `;
 
 const ShopContainer = styled.div`
-  width: 1400px;
+  max-width: 100%;
   height: 600px;
   top: 80px;
   margin-top: 40px;
   background: #FFFFFF;
   border-radius: 40px;
+  
+  @media screen and (max-width: 1280px) {
+    /** 타블렛 가로, 노트북 */
+    max-width: 1280px;
+  }
+  
+  @media screen and (max-width: 1023px) {
+    max-width: 900px;
+  }
+  
+  @media screen and (max-width: 768px){
+    max-width: 660px;
+  }
+
+  @media screen and (max-width: 480px) {
+    max-width: 320px;
+  }
+
 `;
 
 const Title = styled.span`
@@ -34,6 +70,12 @@ const Title = styled.span`
   padding-top: 45px;
   padding-left: 110px;
   display: flex;
+
+  @media screen and (max-width: 480px) {
+    font-size: 28px;
+    padding-left: 35px;
+
+  }
 `;
 
 const Content = styled.span`
@@ -43,15 +85,27 @@ const Content = styled.span`
   padding-top: 10px;
   padding-left: 110px;
   font-weight: 300;
+
+  @media screen and (max-width: 480px) {
+    font-size: 18px;
+    padding-left: 35px;
+
+  }
 `;
 
 function Shop() {
 const [items, setItems] = useState([]);
 const [toiletItems, setToiletItems] = useState([]);
+const token = localStorage.getItem("token");
+
 
 useEffect(() => {
   try {
-    axios.get(`${process.env.REACT_APP_API_URL}/shops`)
+    axios.get(`${process.env.REACT_APP_API_URL}/shops`, {
+      headers: {
+        Authorization: token
+      }
+    })
     .then((res)=> {
       setItems(res.data);
     })
@@ -95,14 +149,39 @@ const navigate = useNavigate();
 
         <Swiper
           modules={[Navigation, A11y, Autoplay]}
-          slidesPerView={4}
-          slidesPerGroup={4}
+          slidesPerView={1}
+          slidesPerGroup={1}
+          // spaceBetween={20}
           navigation
           loop={false}
           speed={1000}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           style={{
             "--swiper-navigation-color": "#5FB393"
+          }}
+          breakpoints={{
+            320: {
+              slidesPerView:1,
+              spaceBetween:25
+            },
+            480: {
+              slidesPerView:2,
+              spaceBetween: 30
+            },
+            768 : {
+              slidesPerView:3,
+              slidesPerGroup:3,
+              spaceBetween:10
+            },
+            1024:{
+              slidesPerView:3,
+              slidesPerGroup:3,
+              spaceBetween:5
+            },
+            1280: {
+              slidesPerView:4,
+              slidesPerGroup:4,
+            }
           }}
         >
           
@@ -123,14 +202,38 @@ const navigate = useNavigate();
 
         <Swiper
           modules={[Navigation, A11y, Autoplay]}
-          slidesPerView={4}
-          slidesPerGroup={4}
+          slidesPerView={1}
+          slidesPerGroup={1}
           navigation
           loop={false}
           speed={1000}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           style={{
             "--swiper-navigation-color": "#5FB393"
+          }}
+          breakpoints={{
+            320: {
+              slidesPerView:1,
+              spaceBetween:25
+            },
+            480: {
+              slidesPerView:2,
+              spaceBetween: 30
+            },
+            768 : {
+              slidesPerView:3,
+              slidesPerGroup:3,
+              spaceBetween:10
+            },
+            1024:{
+              slidesPerView:3,
+              slidesPerGroup:3,
+              spaceBetween:5
+            },
+            1280: {
+              slidesPerView:4,
+              slidesPerGroup:4,
+            }
           }}
         >
           {toiletItems?.map((item) => {

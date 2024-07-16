@@ -16,11 +16,20 @@ const CartIcon = styled.div`
   align-items: center;
   justify-content: center;
   transition: 0.2s background ease-in;
-  z-index: 999;
+  z-index: 1;
   cursor: pointer;
 
   &:hover {
     background: #f0f0f0;
+  }
+  
+  @media screen and (max-width: 768px){
+    top: 110px;
+    right: 22px;
+
+  }
+
+  @media screen and (max-width: 480px) {
   }
 `;
 
@@ -36,6 +45,12 @@ const CartNumDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 768px){
+    right: 43px;
+    top: 136px;
+  }
+
 `;
 
 const CartNum = styled.span`
