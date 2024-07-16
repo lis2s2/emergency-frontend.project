@@ -42,7 +42,8 @@ function OAuth2KakaoHandle() {
           memEmail: userInfoDetails.email,
           memGrade: 'FAMILY',
           memRole: 'ROLE_USER',
-          memPoint: 0
+          memPoint: 0,
+          provider: 'kakao'
         };
         
         console.log("사용자 정보: ", userResponse.data);
