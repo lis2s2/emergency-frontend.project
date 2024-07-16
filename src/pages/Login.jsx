@@ -219,7 +219,6 @@ function Login() {
       const result = await axios.get(
         `${process.env.REACT_APP_API_URL}/login?id=${formData.memId}&pw=${formData.memPwd}`
       );
-      console.log(result);
 
       const { token, member } = result.data;
 
