@@ -141,7 +141,7 @@ const handleEdit = async () => {
       const response = await axios.put('http://localhost:8080/mypage/modify', data,  {
         headers : {
           'Content-Type': `application/json`,
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `${token}`,
         }
       });
       if (response.status === 200) {
