@@ -119,8 +119,8 @@ function ToiletRegisterInfo(props) {
   const { address, clickedLocation } = props;
   const member = useSelector(selectMember);
   const dispatch = useDispatch();
-  const [toiletTitle, setToiletTitle] = useState();
-  const [toiletDetail, setToiletDetail] = useState();
+  const [toiletTitle, setToiletTitle] = useState('');
+  const [toiletDetail, setToiletDetail] = useState('');
   const [separatedChecked, setSeparatedChecked] = useState(false);
   const [disabledChecked, setDisabledChecked] = useState(false);
   const [diaperChecked, setDiaperChecked] = useState(false);
@@ -206,7 +206,7 @@ function ToiletRegisterInfo(props) {
             id="toilet_location"
             placeholder="지도를 클릭해서 주소를 입력하세요."
             readOnly
-            value={address}
+            value={address || ''}
           />
         </InputContainer>
         <InputContainer className="mb-3">

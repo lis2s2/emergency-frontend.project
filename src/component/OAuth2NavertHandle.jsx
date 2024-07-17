@@ -40,12 +40,7 @@ function OAuth2NavertHandle() {
           memPoint: 0,
           provider: 'naver'
         };
-
-        console.log(memberData);
-        console.log("사용자 정보: ", userResponse.data);
-
         const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);
-        console.log(reponse);
         if (reponse.data === false) {
           const result = await axios.get(
             `${process.env.REACT_APP_API_URL}/login?id=${memberData.memId}&pw=${memberData.memPwd}`
