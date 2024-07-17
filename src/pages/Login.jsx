@@ -249,7 +249,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>ID</InfoStyle>
-                <CheckStyle onClick={() => navigate("/find/id")}>Forgot Id?</CheckStyle>
+                <CheckStyle type="button" onClick={() => navigate("/find/id")}>Forgot Id?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="text"
@@ -262,7 +262,7 @@ function Login() {
             <Autobox>
               <CommonInfo>
                 <InfoStyle>Password</InfoStyle>
-                <CheckStyle onClick={() => navigate("/find/pwd")}>Forgot Password?</CheckStyle>
+                <CheckStyle type="button" onClick={() => navigate("/find/pwd")}>Forgot Password?</CheckStyle>
               </CommonInfo>
               <CommonInput
                 type="password"
@@ -273,7 +273,7 @@ function Login() {
               />
             </Autobox>
             <>
-              <Textbtn onClick={() => navigate("/register")}>
+              <Textbtn type="button" onClick={() => navigate("/register")}>
                 Don’t have account?
               </Textbtn>
             </>

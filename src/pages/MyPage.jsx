@@ -75,6 +75,10 @@ const NameCard = styled.div`
   border: 2px solid #5fb393;
   border-radius: 8px;
 
+  @media screen and (max-width: 767px) {
+    gap: 18px;
+  }
+
   @media screen and (max-width: 480px) {
     justify-content: center;
     padding: 8px;
@@ -131,6 +135,8 @@ const ToiletNameReviewContainer = styled.div`
   justify-content: space-between;
   gap: 12px;
   cursor: pointer;
+
+
 `;
 
 const ToiletName = styled.p`
