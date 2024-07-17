@@ -8,40 +8,80 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const OrderWrapper = styled.div`
-  min-width: 1440px;
+  width: 1440px;
   min-height: 820px;
   padding: 20px;
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 1280px) {
+    max-width: 100%;
+  }
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+  }
 `;
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 1440px;
+  @media screen and (max-width: 1280px) {
+    max-width: 100%;
+    display: block;
+  }
+  
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+    display: block;
+  }
+
+  .box_container {
+    max-width: 100%;
+  }
 `;
-const Title = styled.p`
+const Title = styled.span`
   font-weight: 700;
   font-size: 32px;
   text-align: left;
   color: #FFFFFF;
   margin-bottom: 10px;
+  width: 100%;
+
+  @media screen and (max-width: 1280px) {
+    text-align: center;
+  }
+
+  @media screen and (max-width: 480px) {
+    text-align: center;
+  }
 `;
 const DeliveryAddress = styled.div`
-  width: 700px;
+  width: 650px;
   background-color: #fff;
   border-radius: 12px;
   padding: 20px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  margin: 15px auto;
+  @media screen and (max-width: 1280px) {
+    max-width: 100%;
+    margin: 15px auto;
+  }
+  
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+    margin: 15px auto;
+    padding: 20px 5px;
+  }
 `;
 const InputGroup = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
   width: 100%;
+
 `;
 const Label = styled.span`
   display: inline-block;
@@ -49,6 +89,9 @@ const Label = styled.span`
   text-align: right;
   margin-right: 20px;
   color: #5FB393;
+  @media screen and (max-width: 480px) {
+    width: 65px;
+  }
 `;
 const StyledInput = styled.input`
   border: 1px solid #5FB393;
@@ -92,6 +135,10 @@ const FindAddress = styled.button`
     background-color: #157347;
     border: 1px solid #157347;
   }
+
+  @media screen and (max-width: 480px) {
+    font-size: 15px;
+  }
 `;
 const PaymentInfo = styled.div`
   width: 650px;
@@ -99,6 +146,16 @@ const PaymentInfo = styled.div`
   background-color: #fff;
   border-radius: 12px;
   padding: 20px 10px;
+  margin: 15px auto;
+  @media screen and (max-width: 1280px) {
+    max-width: 100%;
+    margin: 15px auto;
+  }
+
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+    margin: 15px auto;
+  }
 `;
 const InfoRow = styled.div`
   display: flex;
@@ -127,13 +184,27 @@ const InfoInput = styled.input`
   }
 `;
 const OrderedProduct = styled.div`
-  width: 700px;
+  width: 650px;
+  min-height: 300px;
   background-color: #fff;
   border-radius: 12px;
   padding: 20px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 15px auto;
+  @media screen and (max-width: 1280px) {
+    max-width: 100%;
+    min-height: 200px;
+    margin: 15px auto;
+  }
+  
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+    min-height: 200px;
+    margin: 15px auto;
+  }
+  
 `;
 const PayBtn = styled.div`
   margin-top: 40px;
@@ -323,7 +394,7 @@ function Order() {
   return (
     <OrderWrapper>
       <Container>
-        <div>
+        <div className="box_container">
           <Title>배송지</Title>
           <DeliveryAddress>
             <InputGroup>
@@ -385,7 +456,7 @@ function Order() {
           </OrderedProduct>
         </div>
 
-        <div>
+        <div className="box_container">
           <Title>결제 상세</Title>
           <PaymentInfo>
             <InfoRow>

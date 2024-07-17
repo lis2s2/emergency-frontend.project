@@ -14,88 +14,172 @@ const DetailWarpper = styled.div`
   border-top: 20px solid #5FB393;
   border-bottom: 20px solid #5FB393;
   padding: 20px;
+
+    @media screen and (max-width: 1280px) {
+      max-width: 100%;
+    }
+    
+    @media screen and (max-width: 480px) {
+      max-width: 100%;
+    }
 `;
 
 const DetailContainer = styled.div`
 
-height: 600px;
-width: 100%;
-border-bottom: 1px solid black;
-display: flex;
-
-.img_warpper {
-  width: 50%;
-  margin: auto 0;
-}
-
-.content_warpper {
-  width: 50%;
-}
-
-.title_container {
-  width: 500px;
-  height: 200px;
+  min-height: 600px;
+  width: 100%;
   border-bottom: 1px solid black;
-  margin: 0 auto;
   display: flex;
-  align-items: center;
-  justify-content: start;
-  padding: 10px;
-}
 
-.title {
-  font-size: 30px;
-  font-weight: 600;
-  color: #4d4d4d;
-  text-align: left;
-  line-height: 34px;
-}
+  @media screen and (max-width: 1023px) {
+      max-width: 1023px;
+      display: block;
+    }
 
-.price_warpper {
-  display: flex;
-  gap: 10px;
-  margin: 0 auto;
-  width: 500px;
-  height: 96px;
-  align-items: center;
-}
+  .img_warpper {
+    width: 50%;
+    margin: auto 0;
 
-.discount_rate {
-  font-weight: 300;
-  font-size: 32px;
-  line-height: 38px;
-  color: #FF0000;
-}
+    @media screen and (max-width: 1023px) {
+      margin: 0 auto;
+    }
+  
+    @media screen and (max-width: 480px) {
+      margin: 0 auto;
+    }
+  }
 
-.price {
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 38px;
-  color: #000000;
-}
+  .content_warpper {
+    width: 50%;
 
-.strike_through {
-  font-weight: 300;
-  font-size: 32px;
-  line-height: 38px;
-  text-decoration-line: line-through;
-  color: #707070;
-}
+    @media screen and (max-width: 1023px) {
+      margin: 0 auto;
+    }
+    
+    @media screen and (max-width: 768px){
+      width: 100%;
+    }
+  }
 
-.btn_container {
-  width: 512px;
-  height: 100px;
-  margin: 40px auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  .title_container {
+    width: 500px;
+    height: 200px;
+    border-bottom: 1px solid black;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 10px;
+    
+    @media screen and (max-width: 768px) {
+      max-width: 100%;
+    }
+    
+  }
+
+  .title {
+    font-size: 30px;
+    font-weight: 600;
+    color: #4d4d4d;
+    text-align: left;
+    line-height: 34px;
+
+
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+    
+    @media screen and (max-width: 480px) {
+      font-size: 20px;
+    }
+  }
+
+  .price_warpper {
+    display: flex;
+    gap: 10px;
+    margin: 0 auto;
+    width: 500px;
+    height: 96px;
+    align-items: center;
+    @media screen and (max-width: 768px){
+      max-width: 100%;
+    }
+    
+    @media screen and (max-width: 480px) {
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .discount_rate {
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 38px;
+    color: #FF0000;
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+    
+    @media screen and (max-width: 480px) {
+      font-size: 20px;
+    }
+  }
+
+  .price {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    color: #000000;
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+
+  }
+
+  .strike_through {
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 38px;
+    text-decoration-line: line-through;
+    color: #707070;
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+    
+    @media screen and (max-width: 480px) {
+      font-size: 20px;
+    }
+  }
+
+  .btn_container {
+    width: 512px;
+    height: 100px;
+    margin: 40px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media screen and (max-width: 480px) {
+      max-width: 100%;
+      justify-content: space-around;
+    }
+  }
 `;
 
 const ImgEx = styled.img`
   width: 500px;
   height: 500px;
   background-color: #bbb;
+
+  @media screen and (max-width: 768px){
+    max-width: 100%;
+    height: 100%;
+  }
+  
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+    height: 100%;
+  }
 `;
 
 
@@ -110,6 +194,10 @@ const ProductWarpper = styled.div`
   align-items: center;
   padding: 20px;
 
+  @media screen and (max-width: 768px){
+    max-width: 100%;
+  }
+
   .btn_group {
     display: flex;
     align-items: center;
@@ -118,6 +206,10 @@ const ProductWarpper = styled.div`
     width: 150px;
     height: 40px;
     border-radius: 8px;
+    @media screen and (max-width: 768px){
+      max-width: 100%;
+    }
+
   }
 
   .btn {
@@ -159,6 +251,16 @@ const StyledBtnWhite = styled.button`
     color: #fff;
     border: 2px solid #157347;
   }
+
+  @media screen and (max-width: 768px){
+    font-size: 24px;
+  }
+    
+  @media screen and (max-width: 480px) {
+    max-width: 150px;
+    height: 50px;
+    font-size: 20px;
+  }
 `;
 
 const StyledBtn = styled.button`
@@ -176,10 +278,25 @@ const StyledBtn = styled.button`
   &:hover {
     background: #157347;
   }
+
+  @media screen and (max-width: 768px){
+    font-size: 24px;
+  }
+    
+  @media screen and (max-width: 480px) {
+    max-width: 150px;
+    height: 50px;
+    font-size: 20px;
+  }
 `;
 
+const DetailImg = styled.img`
 
+@media screen and (max-width: 768px){
+  max-width: 100%;
+}
 
+`;
 
 function ItemDetail() {
   const [count, setCount] = useState(1);
@@ -277,7 +394,6 @@ function ItemDetail() {
               <p className="title">{item.title}</p>
             </div>
             <div className="price_warpper">
-
               <p className="discount_rate">10%</p>
               <p className="price">{formatter.format(item.price)}원</p>
               <p className="strike_through">{formatter.format(item.price * 1.1)}</p>
@@ -301,7 +417,7 @@ function ItemDetail() {
 
       </DetailContainer>
           <CartListIcon/>
-          <img src={item.detailImgpath} alt={item.title} />
+          <DetailImg src={item.detailImgpath} alt={item.title} />
     </DetailWarpper>
   );
 };
