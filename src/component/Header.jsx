@@ -130,6 +130,9 @@ const MLoginBtn = styled.button`
   }
   @media screen and (max-width: 767px){
     display: block;
+    position: absolute;
+    bottom: 100px;
+    right: 28px;
   }
 `;
 
@@ -311,32 +314,23 @@ function Header() {
           </Container>
         </CustomedNavbar>
       </HeaderInner>
-
-      {/* {isToggle?  */}
       <Menu $isToggle={isToggle}>
         <CloseBtn onClick={handleHamburder}/>
         <div className="menu-container">
           <ul className="m-menu-ul">
-            
             <li className="m-menu-li" onClick={handleToToiletRegister}>화장실등록</li>
             <li className="m-menu-li" onClick={handleToShop}>포인트샵</li>
             {member? <li className="m-menu-li" onClick={handleMyPageClick}>마이페이지</li>:null}
           </ul>
-
           <ul className="m-menu-ul login">
             {member? 
-            // (<li className="m-menu-li logout" onClick={handleLogout} >로그아웃</li>)
             <MLoginBtn onClick={handleLogout}>로그아웃</MLoginBtn>
             :
-            // (<li className="m-menu-li login" onClick={handleLogin}>로그인</li>)}
             <MLoginBtn onClick={handleLogin}>로그인</MLoginBtn>
             }
           </ul>
         </div>
       </Menu>
-      {/* :
-      null
-      } */}
     </HeaderContainer>
   );
 }

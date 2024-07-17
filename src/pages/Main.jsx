@@ -10,22 +10,39 @@ const MainContainer = styled.div`
   width: 100%;
   max-width: 1440px;
   background-color: #5fb393;
-  height: 820px;
   display: flex;
+  height: 100%;
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    height: 100%;
+    gap: 0;
+  }
 `;
 
 const TolietListSection = styled.div`
   min-width: 492px;
   background: #5fb393;
-  height: 100%;
+  height: 830px;
   padding: 20px;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    padding: 10px;
+    min-width: initial;
+  }
 `;
 
 const MapSection = styled.div`
-  min-width: 946px;
+  flex: 1;
   background-color: #5fb393;
   height: 100%;
   padding: 20px 20px 20px 0;
+  height: 830px;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    padding: 10px;
+    min-width: initial;
+    flex: none;
+  }
 `;
 
 function Main() {

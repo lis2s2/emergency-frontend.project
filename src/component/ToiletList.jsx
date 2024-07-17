@@ -6,7 +6,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { useEffect, useRef, useState } from "react";
 
 const ButtonListContainer = styled.div`
-  max-height: 780px;
+  height: 100%;
 `;
 
 const ButtonContainer = styled.div`
@@ -48,7 +48,8 @@ const ListContainer = styled.div`
   gap: 16px;
   margin-top: 16px;
   overflow-y: auto;
-  max-height: 728px;
+  max-height: 734px;
+  height: 100%;
   &::-webkit-scrollbar {
     width: 4px;
   }
