@@ -164,9 +164,8 @@ function FindId() {
       alert('이름, 이메일을 전부 입력 해주세요.');
       return;
     }
-    console.log("http://localhost:8080/find", { memName, memEmail });
     try {
-      const response = await axios.post("http://localhost:8080/find/id", { memName, memEmail });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/find/id`, { memName, memEmail });
       setMemId(response.data.memId);
       setError('아이디는 "' + response.data + '" 입니다');
 

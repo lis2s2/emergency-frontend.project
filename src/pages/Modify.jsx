@@ -150,7 +150,7 @@ const handleEdit = async () => {
     if (email) data.memEmail = email;
     if (password) data.memPwd = password;
 
-      const response = await axios.put('http://localhost:8080/mypage/modify', data,  {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/mypage/modify`, data,  {
         headers : {
           'Content-Type': `application/json`,
           'Authorization': `${token}`,
