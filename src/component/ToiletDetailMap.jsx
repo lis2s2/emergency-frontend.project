@@ -67,7 +67,7 @@ function ToiletDetailMap(props) {
       >
         <ToiletInfoWrapper>
           <StyledTitle>
-            {toilet.FNAME}({toilet.ANAME})
+            {toilet.FNAME} {toilet.ANAME && `(${toilet.ANAME})`}
           </StyledTitle>
           <IconContainer>
             {toilet.disabled === true && <StyledImg src={disabledImg} />}

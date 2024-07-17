@@ -31,7 +31,7 @@ export const registerToilet = async (
   };
   console.log(sendData);
   const result = await axios.post(
-    `${process.env.REACT_APP_API_URL}/toilet/list`,
+    `${process.env.REACT_APP_API_URL}/toilet/register`,
     sendData,
     {
       headers: {

@@ -157,7 +157,7 @@ function ToiletRegisterInfo(props) {
         diaperChecked,
         paperChecked
       );
-      if (result.data === true) {
+      if (result.status === 201) {
         alert('감사합니다. 1000포인트가 지급되었습니다.')
         const getMemberByID = async () => {
           const result = await fetchMemberById(member.memId);
@@ -165,12 +165,13 @@ function ToiletRegisterInfo(props) {
           dispatch(loginSuccess(result));
         };
         getMemberByID();
-
-        navigate(`/`);
       } else {
         alert('화장실 등록 중 오류가 발생하였습니다.');
-        navigate("/");
       }
+      if (result.data === 'VIP') {
+        alert('축하합니다. VIP 등급으로 변경되었습니다.')
+      }
+      navigate("/");
     } else {
       alert('건물 이름, 주소를 입력하세요.');
     }

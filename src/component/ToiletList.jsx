@@ -17,23 +17,29 @@ const ButtonContainer = styled.div`
 `;
 
 const ToggleButton = styled.button`
-  padding: 10px;
+  padding: 10px 20px;
   font-size: 16px;
   border-radius: 14px;
   border: 1px solid #605d83;
   background-color: white;
   color: #605d83;
   font-weight: 600;
+  @media screen and (max-width: 767px) {
+    padding: 10px;
+  }
 `;
 
 const ToggleButtonToggled = styled.button`
-  padding: 10px;
+  padding: 10px 20px;
   font-size: 16px;
   border-radius: 14px;
   border: 1px solid #605d83;
   background-color: #605d83;
   color: white;
   font-weight: 600;
+  @media screen and (max-width: 767px) {
+    padding: 10px;
+  }
 `;
 
 const StyledMdTune = styled(MdTune)`
@@ -117,11 +123,9 @@ function ToiletList() {
 
   const handleToiletFilter = () => {
     let filtedToiletList = filteredList;
-    console.log(filtedToiletList);
     if (separatedChecked) {
       filtedToiletList = filtedToiletList.filter(toilet => toilet.separated === true)
     }
-    console.log(filtedToiletList);
     if (disabledChecked) {
       filtedToiletList = filtedToiletList.filter(toilet => toilet.disabled === true)
     }

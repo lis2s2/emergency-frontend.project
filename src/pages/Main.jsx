@@ -91,7 +91,7 @@ function Main() {
             Y_WGS84: toilet.lat,
             FNAME: toilet.toiletName,
             toiletAddress: toilet.toiletAddress,
-            detail: toilet.detail,
+            ANAME: toilet.detail,
             diaper: toilet.diaper,
             disabled: toilet.disabled,
             memRegister: toilet.memRegister,

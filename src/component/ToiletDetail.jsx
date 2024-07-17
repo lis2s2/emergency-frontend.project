@@ -358,7 +358,7 @@ function ToiletDetail() {
       diaperChecked,
       paperChecked
     );
-    if (result.data === true) {
+    if (result.status === 201) {
       handleClose();
       alert("감사합니다. 500포인트가 지급되었습니다.");
       setSeparatedChecked(false);
@@ -370,9 +370,13 @@ function ToiletDetail() {
         const result = await fetchMemberById(member.memId);
         localStorage.setItem("member", JSON.stringify(result));
         dispatch(loginSuccess(result));
+        
       };
       getMemberByID();
-      navigate(`/detail/${toiletNo}`);
+      if (result.data === 'VIP') {
+        alert('축하합니다. VIP 등급으로 변경되었습니다.')
+      }
+      navigate(`/`);
     } else {
       handleClose();
       alert("화장실 정보 등록 중 오류가 발생하였습니다.");
@@ -402,7 +406,7 @@ function ToiletDetail() {
       <ToiletInfoCommentContainer>
         <ToiletInfoContainer>
           <StyledTitle>
-            {FNAME} ({ANAME})
+            {FNAME} {ANAME && `(${ANAME})`}
           </StyledTitle>
           <ToiletScoreDistanceContainer>
             <ToiletScoreContainer>
