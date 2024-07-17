@@ -127,6 +127,11 @@ const SearchButton = styled.button`
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
+  @media screen and (max-width: 767px) {
+    flex: 1;
+    justify-content: center;
+  }
 `;
 
 const GoToListButton = styled.button`
@@ -143,6 +148,7 @@ const GoToListButton = styled.button`
   justify-content: center;
   align-items: center;
   flex: 1;
+  white-space: nowrap;
 `;
 
 const StyledTbRoadSign = styled(TbRoadSign)`
