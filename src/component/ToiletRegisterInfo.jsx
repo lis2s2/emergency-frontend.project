@@ -109,6 +109,12 @@ const ToiletRegisterButton = styled.button`
   flex: 1;
 `;
 
+const StyledFaCoins = styled(FaCoins)`
+    @media screen and (max-width: 767px) {
+    display: none;
+  }
+`;
+
 function ToiletRegisterInfo(props) {
   const { address, clickedLocation } = props;
   const member = useSelector(selectMember);
@@ -249,7 +255,7 @@ function ToiletRegisterInfo(props) {
       <ButtonContainer>
         <GoToListButton onClick={() => navigate("/")}>돌아가기</GoToListButton>
         <ToiletRegisterButton onClick={handleToileRegistor}>
-          <FaCoins />
+          <StyledFaCoins />
           화장실 등록하고 포인트 받기
         </ToiletRegisterButton>
       </ButtonContainer>

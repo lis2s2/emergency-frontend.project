@@ -69,7 +69,6 @@ export const registerToiletInfo = async (
     paper: paper,
     toiletStatus: "registered",
   };
-  console.log(sendData);
   const result = await axios.post(
     `${process.env.REACT_APP_API_URL}/toilet/registerInfo`,
     sendData,

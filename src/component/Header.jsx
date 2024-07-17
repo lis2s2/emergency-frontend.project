@@ -13,15 +13,16 @@ const HeaderContainer = styled.div`
   width: 100%;
   height: 100px;
   background-color: #ffffff;
-  `;
+`;
+
 const HeaderInner = styled.div`
   width: 100%;
   max-width: 1440px;
   background-color: #ffffff;
   margin: 0 auto;
   font-size: 18px;
-  @media screen and (max-width: 767px) { 
-    .ms-3.align-self-center{
+  @media screen and (max-width: 767px) {
+    .ms-3.align-self-center {
       display: none;
     }
     .ms-4.member-name {
@@ -63,7 +64,7 @@ const RegBtn = styled(Button)`
   height: 48px;
   font-size: 16px;
   width: 120px;
-  @media screen and (max-width: 767px){
+  @media screen and (max-width: 767px) {
     display: none;
   }
 `;
@@ -76,10 +77,10 @@ const MyPageBtn = styled(Button)`
   height: 48px;
   font-size: 16px;
   width: 120px;
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 768px) {
     display: none;
   }
-  `;
+`;
 
 const StyledContent = styled.p`
   font-size: 16px;
@@ -87,10 +88,10 @@ const StyledContent = styled.p`
   color: #888888;
   text-align: start;
   vertical-align: middle;
-  @media screen and (max-width: 767px){
+  @media screen and (max-width: 767px) {
     display: none;
   }
-  `;
+`;
 
 const HamburgerBtn = styled(GiHamburgerMenu)`
   width: 40px;
@@ -98,15 +99,14 @@ const HamburgerBtn = styled(GiHamburgerMenu)`
   color: #5fb393;
   cursor: pointer;
   display: none;
-  
-  
-  @media screen and (max-width: 767px){
+
+  @media screen and (max-width: 767px) {
     display: block;
   }
 `;
 
 const MLoginBtn = styled.button`
-  width: 100px ;
+  width: 100px;
   box-sizing: border-box;
   background-color: #ffffff;
   color: #5fb393;
@@ -123,7 +123,7 @@ const MLoginBtn = styled.button`
     transition: 0.7s;
     border: 2px solid #157347;
   }
-  @media screen and (max-width: 767px){
+  @media screen and (max-width: 767px) {
     display: block;
     position: absolute;
     bottom: 100px;
@@ -141,14 +141,14 @@ const Menu = styled.div`
   top: 0;
   display: flex;
   right: 0;
-  right:-100%;
+  right: -100%;
   flex-direction: column;
   transition: 0.5s;
-  ${(props) => props.$isToggle &&
-      css`
-        right: 0;
-      `
-    }
+  ${(props) =>
+    props.$isToggle &&
+    css`
+      right: 0;
+    `}
   .menu-container {
     display: flex;
     justify-content: space-between;
@@ -182,16 +182,16 @@ function Header() {
   const [isToggle, setIsToggle] = useState(false);
   const member = useSelector(selectMember);
 
-  const handleMyPageClick = () =>  {
+  const handleMyPageClick = () => {
     navigate("/mypage");
     setIsToggle(false);
   };
-  
+
   const handleRegisterClick = () => {
     navigate("/register");
     setIsToggle(false);
   };
-  
+
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -234,7 +234,6 @@ function Header() {
   const handleHamburder = () => {
     setIsToggle(!isToggle);
   };
-
 
   return (
     <HeaderContainer>
@@ -307,26 +306,33 @@ function Header() {
                   </RegBtn>
                 </>
               )}
-              <HamburgerBtn onClick={handleHamburder}/>
-
+              <HamburgerBtn onClick={handleHamburder} />
             </Nav>
           </Container>
         </CustomedNavbar>
       </HeaderInner>
       <Menu $isToggle={isToggle}>
-        <CloseBtn onClick={handleHamburder}/>
+        <CloseBtn onClick={handleHamburder} />
         <div className="menu-container">
           <ul className="m-menu-ul">
-            <li className="m-menu-li" onClick={handleToToiletRegister}>화장실등록</li>
-            <li className="m-menu-li" onClick={handleToShop}>포인트샵</li>
-            {member? <li className="m-menu-li" onClick={handleMyPageClick}>마이페이지</li>:null}
+            <li className="m-menu-li" onClick={handleToToiletRegister}>
+              화장실등록
+            </li>
+            <li className="m-menu-li" onClick={handleToShop}>
+              포인트샵
+            </li>
+            {member ? (
+              <li className="m-menu-li" onClick={handleMyPageClick}>
+                마이페이지
+              </li>
+            ) : null}
           </ul>
           <ul className="m-menu-ul login">
-            {member? 
-            <MLoginBtn onClick={handleLogout}>로그아웃</MLoginBtn>
-            :
-            <MLoginBtn onClick={handleLogin}>로그인</MLoginBtn>
-            }
+            {member ? (
+              <MLoginBtn onClick={handleLogout}>로그아웃</MLoginBtn>
+            ) : (
+              <MLoginBtn onClick={handleLogin}>로그인</MLoginBtn>
+            )}
           </ul>
         </div>
       </Menu>

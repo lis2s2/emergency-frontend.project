@@ -52,7 +52,12 @@ export const getAvgScoreByToiletNo = async (toiletNo) => {
   }
 };
 
-export const registerToiletReview = async (toiletNo, content, score, toiletTitle) => {
+export const registerToiletReview = async (
+  toiletNo,
+  content,
+  score,
+  toiletTitle
+) => {
   const token = localStorage.getItem("token");
   const writer = JSON.parse(localStorage.getItem("member")).memId;
   const sendData = {
@@ -64,7 +69,20 @@ export const registerToiletReview = async (toiletNo, content, score, toiletTitle
   };
   const result = await axios.post(
     `${process.env.REACT_APP_API_URL}/review/register`,
-    sendData, 
+    sendData,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  return result;
+};
+
+export const deleteToiletReview = async (reviewNo) => {
+  const token = localStorage.getItem("token");
+  const result = await axios.get(
+    `${process.env.REACT_APP_API_URL}/review/delete?no=${reviewNo}`,
     {
       headers: {
         Authorization: token,

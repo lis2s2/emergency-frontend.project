@@ -25,8 +25,6 @@ function ToiletRegisterMap(props) {
       style={{ width: "100%", height: "100%" }}
       level={0}
       onClick={handleMapClick}
-      zoomable={false}
-      draggable={false}
     >
       <MapMarker position={location.center} />
       <MapMarker

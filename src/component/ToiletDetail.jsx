@@ -21,6 +21,7 @@ import {
 import { FaCoins } from "react-icons/fa6";
 import { registerToiletInfo } from "../api/toiletRegistorAPI";
 import { fetchMemberById } from "../api/memberAPI";
+import ToiletCommentUser from "./ToiletCommentUser";
 
 const ToiletDetailContainer = styled.div`
   background-color: #ffffff;
@@ -147,6 +148,9 @@ const GoToListButton = styled.button`
 const StyledTbRoadSign = styled(TbRoadSign)`
   height: 22px;
   width: 22px;
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const StyledPiStarFill = styled(PiStarFill)`
@@ -221,6 +225,7 @@ function ToiletDetail() {
   const [disabledChecked, setDisabledChecked] = useState(false);
   const [diaperChecked, setDiaperChecked] = useState(false);
   const [paperChecked, setPaperChecked] = useState(false);
+  const [toggleCommentList, setToggleCommentList] = useState(false);
 
   const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = toilet || {};
   useEffect(() => {
@@ -246,7 +251,11 @@ function ToiletDetail() {
       setToiletScore(result);
     };
     getAvgScore();
-  }, []);
+  }, [toggleCommentList]);
+
+  const handleCommentList = () => {
+    setToggleCommentList(!toggleCommentList);
+  }
 
   if (!address || !toilet) {
     return;
@@ -272,7 +281,12 @@ function ToiletDetail() {
 
   const handleReviewButton = async () => {
     if (comment) {
-      const result = await registerToiletReview(toiletNo, comment, inputScore, FNAME);
+      const result = await registerToiletReview(
+        toiletNo,
+        comment,
+        inputScore,
+        FNAME
+      );
       setComment("");
       if (result) {
         const getReviewList = async () => {
@@ -368,9 +382,6 @@ function ToiletDetail() {
       setPaperChecked(false);
       navigate(`/`);
     }
-    
-
-    
   };
 
   return (
@@ -404,9 +415,16 @@ function ToiletDetail() {
         </ToiletInfoContainer>
         {sortedCommentList?.length > 0 && <StlyedHr />}
         <ToiletCommentContainer>
-          {sortedCommentList?.map((comment) => {
-            return <ToiletComment key={comment.reviewNo} comment={comment} />;
-          })}
+          {sortedCommentList
+            ?.filter((comment) => comment.writer === member?.memId)
+            .map((comment) => (
+              <ToiletCommentUser key={comment.reviewNo} comment={comment} handleCommentList={handleCommentList}/>
+            ))}
+          {sortedCommentList
+            ?.filter((comment) => comment.writer !== member?.memId)
+            .map((comment) => (
+              <ToiletComment key={comment.reviewNo} comment={comment} />
+            ))}
         </ToiletCommentContainer>
         {sortedCommentList?.length > 0 && <StlyedHr />}
         <MemIdScoreInputContainer>
@@ -525,7 +543,7 @@ function ToiletDetail() {
               display: "flex",
               gap: "8px",
               alignItems: "center",
-              background: "#0067c7"
+              background: "#0067c7",
             }}
             onClick={handleToiletRegistor}
           >
