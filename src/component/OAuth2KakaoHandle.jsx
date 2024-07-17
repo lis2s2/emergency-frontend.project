@@ -19,12 +19,7 @@ function OAuth2KakaoHandle() {
         const tokenResponse = await axios.post(TOKEN_URL, null, {
           params: { code },
         });
-        
-        console.log("최종 응답: ", tokenResponse.data);
-        console.log("access_token - ", tokenResponse.data.access_token);
-        console.log("refresh_token - ", tokenResponse.data.refresh_token);
-        console.log("토큰만료(초) - ", tokenResponse.data.expires_in);
-        
+
         const { access_token } =  tokenResponse.data;
         const authorization = `Bearer ${access_token}`;
       
@@ -46,7 +41,6 @@ function OAuth2KakaoHandle() {
           provider: 'kakao'
         };
         
-        console.log("사용자 정보: ", userResponse.data);
         const reponse = await axios.post(`${process.env.REACT_APP_API_URL}/register`, memberData);
 
         if (reponse.data === false) {

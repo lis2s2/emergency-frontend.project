@@ -15,7 +15,7 @@ const RegisterContainer = styled.div`
   width: 100%;
   max-width: 1440px;
   background-color: #5fb393;
-  min-height: 830px;
+  min-height: 820px;
 `;
 
 const Autolayout = styled.div`
@@ -28,12 +28,16 @@ const Autolayout = styled.div`
   position: relative;
   width: 1150px;
   height: 830px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 400px;
+  }
 `;
 
 const Sublayout = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 20px;
   gap: 24px;
   width: 100%;
@@ -45,13 +49,20 @@ const RegisterWhite = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 24px;
   gap: 24px;
-  width: 600px;
-  height: 644px;
+  width: 605px;
+  height: 645px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 440px;
+  }
+  @media screen and (max-width: 480px) {
+    max-width: 360px;
+  }
 `;
 
 const NameCard = styled.div`
@@ -63,6 +74,11 @@ const NameCard = styled.div`
   background: rgba(148, 210, 187, 0.29);
   border: 2px solid #5fb393;
   border-radius: 8px;
+
+  @media screen and (max-width: 480px) {
+    justify-content: center;
+    padding: 8px;
+  }
 `;
 
 const ReviewList = styled.div`
@@ -82,19 +98,22 @@ const ReviewList = styled.div`
 const StyledTitle = styled.p`
   font-size: 18px;
   font-weight: 600;
+  font-weight: 800;
   color: #000000;
   text-align: start;
   vertical-align: middle;
+  text-decoration: underline;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 300px;
+  height: 20px;
 `;
 
 const ToiletReviewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 15px;
   overflow-y: auto;
   width: 100%;
   height: 100%;
@@ -115,7 +134,7 @@ const ToiletNameReviewContainer = styled.div`
 `;
 
 const ToiletName = styled.p`
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #000000;
   text-align: start;
@@ -125,24 +144,36 @@ const ToiletName = styled.p`
 
 const CardImg = styled.img`
   height: 80px;
+
+  @media screen and (max-width: 480px) {
+    height: 60px;
+  }
 `;
 
 const CardName = styled.div`
   flex: 1;
-  font-family: "Noto Sans KR";
   font-weight: 600;
   font-size: 24px;
   color: #000000;
   text-align: start;
+
+  @media screen and (max-width: 480px) {
+    max-width: 80px;
+    font-size: 21px;
+  }
 `;
 
 const CardPoint = styled.div`
   display: flex;
-  font-family: "Noto Sans KR";
   font-weight: 600;
   font-size: 20px;
   color: #000000;
   justify-content: flex-end;
+  white-space: nowrap;
+
+  @media screen and (max-width: 480px) {
+    font-size: 18px;
+  }
 `;
 
 const CardActions = styled.div`
@@ -200,8 +231,6 @@ const ServiceBtn = styled.button`
 `;
 
 const CommonText = styled.p`
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
@@ -226,8 +255,6 @@ const Withdrawal = styled.button`
 `;
 
 const RestText = styled.p`
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 400;
   font-size: 11px;
   line-height: 26px;
@@ -267,7 +294,7 @@ function MyPage() {
         {
           headers: {
             "Content-Type": `application/json`,
-            Authorization: `Bearer ${token}`,
+            Authorization: `${token}`,
           },
         }
       );
@@ -316,7 +343,7 @@ function MyPage() {
             </NameCard>
             <ReviewList>
               <ToiletReviewContainer>
-                <StyledTitle>내가 쓴 댓글</StyledTitle>
+                <StyledTitle># 내가 쓴 댓글</StyledTitle>
                 {reviewList?.map((comment) => {
                   return (
                     <ToiletNameReviewContainer
@@ -324,8 +351,8 @@ function MyPage() {
                       key={comment.reviewNo}
                     >
                       <ToiletName>{comment.toiletTitle}</ToiletName>
-                      <ToiletComment comment={comment} />
-                    </ToiletNameReviewContainer>
+                    <ToiletComment comment={comment} />
+                </ToiletNameReviewContainer>
                   );
                 })}
               </ToiletReviewContainer>

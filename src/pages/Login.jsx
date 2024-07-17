@@ -24,6 +24,10 @@ const Autolayout = styled.div`
   position: relative;
   width: 1150px;
   height: 830px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 400px;
+  }
 `;
 
 const Sublayout = styled.form`
@@ -33,7 +37,7 @@ const Sublayout = styled.form`
   padding: 20px;
   gap: 24px;
   width: 100%;
-  height: 644px;
+  height: 644px;  
 `;
 
 const RegisterWhite = styled.div`
@@ -43,11 +47,18 @@ const RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
-  width: 600px;
-  height: 644px;
+  width: 605px;
+  height: 545px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 440px;
+  }
+  @media screen and (max-width: 480px) {
+    max-width: 360px;
+  }
 `;
 
 const Autobox = styled.div`
@@ -58,8 +69,6 @@ const Autobox = styled.div`
   width: 100%;
   padding: 0px;
   gap: 8px;
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
   font-size: 20px; 
   line-height: 29px;
@@ -77,18 +86,6 @@ const CommonInfo = styled.div`
   height: 28px;
   box-sizing: border-box;
 `;
-// const CommonInfo = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   padding: 0px;
-//   height: 28px;
-//   flex: none;
-//   order: 0;
-//   flex-grow: 0;
-//   z-index: 0;
-//   justify-content: space-between;
-// `;
 
 const InfoStyle = styled.div`
   padding: 0px;
@@ -158,8 +155,6 @@ const NaverBtn = styled.button`
 
 const Textbtn = styled.button`
   height: 20px;
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
   font-size: 14px;
   line-height: 20px;
@@ -180,8 +175,6 @@ const CheckStyle = styled.button`
   padding: 2px 8px;
   border-style: none;
   border-radius: 16px;
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 800;
   font-size: 13px;
   line-height: 20px;
@@ -219,7 +212,6 @@ function Login() {
       const result = await axios.get(
         `${process.env.REACT_APP_API_URL}/login?id=${formData.memId}&pw=${formData.memPwd}`
       );
-      console.log(result);
 
       const { token, member } = result.data;
 
@@ -280,18 +272,17 @@ function Login() {
                 onChange={handleChange}
               />
             </Autobox>
-
+            <>
+              <Textbtn onClick={() => navigate("/register")}>
+                Don’t have account?
+              </Textbtn>
+            </>
             <>
               <LoginBtn type="submit">Login</LoginBtn>
               <SocialBtnContainer>
                 <KakaoBtn type="button" onClick={kakaoLoginHandler} />
                 <NaverBtn type="button" onClick={naverLoginHandler} />
               </SocialBtnContainer>
-            </>
-            <>
-              <Textbtn onClick={() => navigate("/register")}>
-                Don’t have account?
-              </Textbtn>
             </>
           </Sublayout>
         </RegisterWhite>

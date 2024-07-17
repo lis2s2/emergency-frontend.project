@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const RegisterContainer = styled.div`
-  /* width: 100%; */
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   background-color: #5fb393;
@@ -15,42 +15,30 @@ const Autolayout = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px;
-  gap: 20px;
-
+  margin: 0 auto;
+  gap: 24px;
   width: 819px;
   height: 830px;
 
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  @media screen and (max-width: 767px) {
+    max-width: 400px;
+  }
 `;
 
 const Sublayout = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding: 0 20px;
+  padding: 20px;
   gap: 24px;
   margin: 0 auto;
-  
-  position: absolute;
-  width: 606px;
-  height: 685px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  width: 100%;
+  height: 440px;
 `;
 
 const RegisterGround = styled.div`
   height: 64px;
 
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
   font-size: 36px;
   line-height: 52px;
@@ -59,10 +47,6 @@ const RegisterGround = styled.div`
   color: #ffffff;
 
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 `;
 
 const RegisterWhite = styled.div`
@@ -72,58 +56,44 @@ const RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
-
-  width: 606px;
+  width: 605px;
   height: 440px;
-
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
-  flex: none;
-  order: 1;
-  flex-grow: 0;
+  @media screen and (max-width: 767px) {
+    max-width: 440px;
+  }
+  @media screen and (max-width: 480px) {
+    max-width: 360px;
+  }
 `;
 
 const Autobox = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   padding: 0px;
   gap: 8px;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
   font-size: 20px;
   line-height: 29px;
-
   color: #111111;
-
-  /* width: 606px; */
+  width: 100%;
   height: 82px;
-
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
 `;
 
 const CommonInfo = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: flex-start;
   padding: 0px;
-
-  width: 559px;
-  height: 29px;
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
+  width: 100%;
+  height: 28px;
+  box-sizing: border-box;
 `;
 
 const InfoStyle = styled.div`
@@ -134,11 +104,6 @@ const InfoStyle = styled.div`
 
   width: 490px;
   height: 29px;
-
-  /* flex: none; */
-  order: 0;
-  flex-grow: 0;
-  z-index: 0;
 `;
 
 const CommonInput = styled.input`
@@ -163,35 +128,23 @@ const CommonInput = styled.input`
   flex-grow: 0;
 `;
 
-const CheckBtn = styled.button`
+const CommonBtn = styled.button`
   box-sizing: border-box;
-
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 8px;
-
-  width: 558px;
-  height: 45px;
-
+  height: 64px;
   background: #5fb393;
   border: none;
   border-radius: 8px;
-
   flex: none;
   order: 5;
   align-self: stretch;
-  flex-grow: 0;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
   font-weight: 900;
   font-size: 20px;
-  line-height: 29px;
-
   color: #ffffff;
-
   &:hover {
     background:  #5FB393;
     color: black;
@@ -245,7 +198,7 @@ function FindId() {
               </Autobox>
 
               <>
-                <CheckBtn onClick={handleFind}>Check</CheckBtn>
+                <CommonBtn onClick={handleFind}>Check</CommonBtn>
               </>  
               {setMemId && <div>{memId}</div>}
               {error && <div>{error}</div>} 

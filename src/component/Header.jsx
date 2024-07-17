@@ -20,7 +20,6 @@ const HeaderInner = styled.div`
   background-color: #ffffff;
   margin: 0 auto;
   font-size: 18px;
-
   @media screen and (max-width: 767px) { 
     .ms-3.align-self-center{
       display: none;
@@ -29,7 +28,6 @@ const HeaderInner = styled.div`
       display: none !important;
     }
   }
-  
 `;
 
 const CustomedNavbar = styled(Navbar)`
@@ -65,7 +63,6 @@ const RegBtn = styled(Button)`
   height: 48px;
   font-size: 16px;
   width: 120px;
-
   @media screen and (max-width: 767px){
     display: none;
   }
@@ -79,7 +76,6 @@ const MyPageBtn = styled(Button)`
   height: 48px;
   font-size: 16px;
   width: 120px;
-
   @media screen and (max-width: 768px){
     display: none;
   }
@@ -91,7 +87,6 @@ const StyledContent = styled.p`
   color: #888888;
   text-align: start;
   vertical-align: middle;
-
   @media screen and (max-width: 767px){
     display: none;
   }
@@ -200,46 +195,47 @@ function Header() {
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
     try {
-      const result = await axios.get(`${process.env.REACT_APP_API_URL}/logout`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}/logout`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       if (result.status === 200) {
-        alert('정상적으로 로그아웃 되었습니다.');
+        alert("정상적으로 로그아웃 되었습니다.");
       }
     } catch (error) {
-      alert('인터넷 접속 상태를 확인하세요.')
+      alert("인터넷 접속 상태를 확인하세요.");
     }
     dispatch(logoutSuccess());
     localStorage.removeItem("member");
     localStorage.removeItem("token");
-    setIsToggle(false)
+    setIsToggle(false);
     navigate("/");
   };
 
   const handleLogin = () => {
     navigate("/login");
     setIsToggle(false);
-  }
+  };
 
   const handleToShop = () => {
-    navigate('/shop');
+    navigate("/shop");
     setIsToggle(false);
-  }
-  
+  };
+
   const handleToToiletRegister = () => {
-    if (!member) {
-      alert('로그인 하세요.');
-    }
-    navigate('/toilet_register');
+    navigate("/toilet_register");
     setIsToggle(false);
-  }
+  };
 
   const handleHamburder = () => {
     setIsToggle(!isToggle);
-  }
-  
+  };
+
+
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -270,11 +266,13 @@ function Header() {
                     style={{
                       display: "flex",
                       gap: "4px",
-                      alignContent: "flex-end"
+                      alignContent: "flex-end",
                     }}
                   >
-                    {member?.memName}님
-                    <StyledContent>({Number(member?.memPoint).toLocaleString('ko-KR')}점)</StyledContent>
+                    {member.memName}님
+                    <StyledContent>
+                      ({Number(member.memPoint).toLocaleString("ko-KR")}점)
+                    </StyledContent>
                   </Nav.Link>
                   <LoginBtn
                     className="ms-3"
@@ -310,6 +308,7 @@ function Header() {
                 </>
               )}
               <HamburgerBtn onClick={handleHamburder}/>
+
             </Nav>
           </Container>
         </CustomedNavbar>

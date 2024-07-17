@@ -11,7 +11,7 @@ const RegisterContainer = styled.div`
   width: 100%;
   max-width: 1440px;
   background-color: #5fb393;
-  min-height: 830px;
+  min-height: 820px;
 `;
 
 const Autolayout = styled.div`
@@ -24,6 +24,10 @@ const Autolayout = styled.div`
   position: relative;
   width: 1150px;
   height: 830px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 400px;
+  };
 `;
 
 const Sublayout = styled.div`
@@ -43,11 +47,18 @@ const RegisterWhite = styled.div`
   align-items: center;
   padding: 24px;
   gap: 24px;
-  width: 600px;
-  height: 644px;
+  width: 605px;
+  height: 470px;
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
+
+  @media screen and (max-width: 767px) {
+    max-width: 440px;
+  }
+  @media screen and (max-width: 480px) {
+    max-width: 360px;
+  }
 `;
 
 const EditIcons = styled.button`
@@ -81,16 +92,14 @@ const Favorites = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px 20px;
+  padding: 40px;
   gap: 15px;
   background: #ffffff;
   border: 2px solid #5fb393;
   border-radius: 8px;
 `;
 
-const FavTitle = styled.div`
-  font-family: "Noto Sans KR";
-  font-style: normal;
+const ModifyInfo = styled.div`
   font-weight: 700;
   font-size: 18px;
   line-height: 26px;
@@ -98,21 +107,24 @@ const FavTitle = styled.div`
   align-items: center;
   text-align: center;
   color: #000000;
+
+  
 `;
 
 const CommonInput = styled.input`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  box-sizing: border-box;
   padding: 8px;
-  margin: 0 auto;
+  text-align: center;
   font-size: 16px;
-  width: 70%;
+  width: 90%;
   height: 45px;
   background: #ffffff;
   border: 1px solid rgba(145, 145, 145, 0.5);
   border-radius: 8px;
+
+  @media screen and (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 function Modify() {
@@ -141,7 +153,7 @@ const handleEdit = async () => {
       const response = await axios.put('http://localhost:8080/mypage/modify', data,  {
         headers : {
           'Content-Type': `application/json`,
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `${token}`,
         }
       });
       if (response.status === 200) {
@@ -174,9 +186,9 @@ const handleCancel = () => {
               </CancelIcons>
             </ButtonContainer>
             <Favorites>
-              <FavTitle>이메일 변경</FavTitle>
+              <ModifyInfo>이메일 변경</ModifyInfo>
               <CommonInput  type="email" value={email} onChange={handleEmailChange}></CommonInput>
-              <FavTitle>비밀번호 변경</FavTitle>
+              <ModifyInfo>비밀번호 변경</ModifyInfo>
               <CommonInput type="password" value={password} onChange={handlePasswordChange}></CommonInput>
             </Favorites>
           </Sublayout>
