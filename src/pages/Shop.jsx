@@ -20,19 +20,7 @@ const ShopWrapper = styled.div`
 
   @media screen and (max-width: 1280px) {
   /** 타블렛 가로, 노트북 */
-    max-width: 1280px;
-  }
-  
-  @media screen and (max-width: 1023px) {
-    max-width: 1023px;
-  }
-  
-  @media screen and (max-width: 768px){
-    max-width: 768px;
-  }
-
-  @media screen and (max-width: 480px) {
-    max-width: 480px;
+    max-width: 100%;
   }
   `;
 
@@ -46,19 +34,7 @@ const ShopContainer = styled.div`
   
   @media screen and (max-width: 1280px) {
     /** 타블렛 가로, 노트북 */
-    max-width: 1280px;
-  }
-  
-  @media screen and (max-width: 1023px) {
-    max-width: 900px;
-  }
-  
-  @media screen and (max-width: 768px){
-    max-width: 660px;
-  }
-
-  @media screen and (max-width: 480px) {
-    max-width: 320px;
+    max-width: 100%;
   }
 
 `;
@@ -160,17 +136,13 @@ const navigate = useNavigate();
             "--swiper-navigation-color": "#5FB393"
           }}
           breakpoints={{
-            320: {
+            550: {
               slidesPerView:1,
-              spaceBetween:25
-            },
-            480: {
-              slidesPerView:2,
-              spaceBetween: 30
+              slidesPerGroup:1,
             },
             768 : {
-              slidesPerView:3,
-              slidesPerGroup:3,
+              slidesPerView:2,
+              slidesPerGroup:2,
               spaceBetween:10
             },
             1024:{
@@ -212,17 +184,13 @@ const navigate = useNavigate();
             "--swiper-navigation-color": "#5FB393"
           }}
           breakpoints={{
-            320: {
+            550: {
               slidesPerView:1,
-              spaceBetween:25
-            },
-            480: {
-              slidesPerView:2,
-              spaceBetween: 30
+              slidesPerGroup:1,
             },
             768 : {
-              slidesPerView:3,
-              slidesPerGroup:3,
+              slidesPerView:2,
+              slidesPerGroup:2,
               spaceBetween:10
             },
             1024:{

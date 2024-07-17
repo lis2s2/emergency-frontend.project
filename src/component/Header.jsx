@@ -3,7 +3,6 @@ import { IoCloseOutline } from "react-icons/io5";
 import styled, { css } from "styled-components";
 import logoImg from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess, selectMember } from "../features/member/memberSlice";

@@ -12,11 +12,49 @@ const CartWarpper = styled.div`
   min-height: 820px;
   margin: 0 auto;
   padding: 40px 0;
-  .cartlist_warpper {
+
+  @media screen and (max-width: 1280px) {
+    max-width: 1280px;
+  }
+    
+  @media screen and (max-width: 1023px) {
+    /* max-width: 1023px; */
+    max-width: 100%;
+  }
+    
+  @media screen and (max-width: 768px){
+    width: 768px;
+  }
+    
+  @media screen and (max-width: 500px) {
+    padding: 20px 10px;
     width: 100%;
+  }
+
+  .cartlist_warpper {
+    max-width: 100%;
     display: flex;
     margin: 20px;
     justify-content: space-between;
+
+    @media screen and (max-width: 1280px) {
+      max-width: 100%;
+    }
+      
+    @media screen and (max-width: 1023px) {
+      max-width: 100%;
+      display: block;
+    }
+      
+    @media screen and (max-width: 768px){
+      max-width: 768px;
+      display: block;
+    }
+    
+    @media screen and (max-width: 500px) {
+      max-width: 480px;
+      display: block;
+    }
     .cartlist_warpper_left {
       width: 635px;
       border: 1px solid #fff;
@@ -24,6 +62,26 @@ const CartWarpper = styled.div`
       background: #ffffff;
       border: 1px solid #928f8f;
       border-radius: 16px;
+      @media screen and (max-width: 1280px) {
+        max-width: 100%;
+      }
+        
+      @media screen and (max-width: 1023px) {
+        min-height: 300px;
+        margin-bottom: 20px;
+        max-width: 100%;
+      }
+        
+      @media screen and (max-width: 768px) {
+        min-height: 300px;
+        margin-bottom: 20px;
+        max-width: 100%;
+      }
+        
+      @media screen and (max-width: 500px) {
+        width: 100%;
+        padding: 8px 10px;
+      }
     }
     .cartlist_warpper_right {
       width: 500px;
@@ -31,6 +89,21 @@ const CartWarpper = styled.div`
       border: 1px solid #928f8f;
       padding: 20px;
       border-radius: 16px 16px 0 0;
+
+      @media screen and (max-width: 1023px) {
+        max-width: 100%;
+      }
+      
+      @media screen and (max-width: 768px){
+        max-width: 100%;
+      }
+
+      @media screen and (max-width: 500px) {
+        max-width: 100%;
+        padding: 20px 10px;
+        margin-top: 20px;
+      }
+
       .cartList_payment_info {
         border-bottom: 2px solid black;
         text-align: left;
@@ -81,6 +154,9 @@ const CartWarpper = styled.div`
           font-weight: 900;
           font-size: 22px;
           margin-left: 16px;
+          @media screen and (max-width: 500px) {
+            font-size: 20px;
+          }
         }
       }
     }
@@ -91,9 +167,22 @@ const CartWarpper = styled.div`
         margin: 15px;
         font-weight: 300;
         cursor: pointer;
+        @media screen and (max-width: 500px) {
+          font-size: 20px;
+        }
       }
     }
   }
+.payment_info_container {
+  max-width: 500px;
+  @media screen and (max-width: 768px){
+    max-width: 100%;
+  }
+  
+  @media screen and (max-width: 500px) {
+    max-width: 100%;
+  } 
+}
 `;
 
 const Title = styled.div`
@@ -104,6 +193,20 @@ const Title = styled.div`
   width: 1200px;
   text-align: start;
   padding: 0 30px;
+
+  @media screen and (max-width: 1023px) {
+    max-width: 100%;
+  }
+  
+  @media screen and (max-width: 768px){
+    max-width: 100%;
+  }
+
+  @media screen and (max-width: 500px) {
+    font-size: 24px;
+    width: 100%;
+    padding: 0 10px;
+  }
 `;
 
 const StyledCheckbox = styled(IoIosCheckbox)`
@@ -126,7 +229,17 @@ const ToShopBtn = styled.button`
   background-color: #fff;
   color: #928f8f;
   border-radius: 0 0 0 16px;
-`;
+
+  @media screen and (max-width: 768px){
+    /* display: block; */
+  }
+  
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    border-radius: 0;
+    display: block;
+  }
+  `;
 
 const ToPaymentBtn = styled.button`
   margin-top: -1px;
@@ -136,6 +249,15 @@ const ToPaymentBtn = styled.button`
   background-color: #000;
   color: #fff;
   border-radius: 0 0 16px 0;
+  @media screen and (max-width: 768px){
+    /* display: block; */
+  }
+  
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    border-radius: 0 0 16px 16px;
+    display: block;
+  }
 `;
 
 function Cart() {
@@ -270,7 +392,7 @@ function Cart() {
             );
           })}
         </div>
-        <div>
+        <div className="payment_info_container">
           <div className="cartlist_warpper_right">
             <div className="cartList_payment_info">결제 정보</div>
             <div className="total_product_amount">

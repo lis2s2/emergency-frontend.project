@@ -18,6 +18,9 @@ const CartItemWrapper = styled.div`
     width: 116px;
     height: 24px;
     border-radius: 4px;
+    @media screen and (max-width: 480px) {
+      width: 74px;
+    }
   }
 
   .btn {
@@ -44,6 +47,10 @@ const CartItemWrapper = styled.div`
 const CartItemImg = styled.img`
   width: 150px;
   height: 150px;
+  @media screen and (max-width: 480px) {
+    width: 90px;
+    height: 90px;
+  }
 `;
 
 const StyledCheckbox = styled(IoIosCheckbox)`
@@ -66,11 +73,18 @@ const CartItemTitle = styled.div`
   font-size: 18px;
   line-height: 19px;
   text-align: center;
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+  }
+  
 `;
 
 const CartItemPrice = styled.p`
   font-size: 20px;
   font-weight: 700;
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const CloseBtn = styled(IoCloseOutline)`

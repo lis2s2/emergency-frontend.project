@@ -16,6 +16,11 @@ const StyledImg = styled.img`
   width: 120px;
   height: 120px;
   margin-right: 10px;
+
+  @media screen and (max-width: 480px) {
+    width: 90px;
+    height: 90px;
+  }
 `;
 
 const ItemsTitle = styled.p`

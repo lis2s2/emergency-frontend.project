@@ -9,7 +9,6 @@ import { addItem, selectItem } from "../features/cart/cartSlice";
 
 const DetailWarpper = styled.div`
   width: 1440px;
-  /* max-width: 1440px; */
   margin: 0 auto;
   background-color: #fff;
   border-top: 20px solid #5FB393;
@@ -17,49 +16,23 @@ const DetailWarpper = styled.div`
   padding: 20px;
 
     @media screen and (max-width: 1280px) {
-      width: 1280px;
-    }
-    
-    @media screen and (max-width: 1023px) {
-      width: 1023px;
-      /* display: block; */
-    }
-    
-    @media screen and (max-width: 768px){
-      width: 768px;
-      /* display: block; */
+      max-width: 100%;
     }
     
     @media screen and (max-width: 480px) {
-      width: 480px;
-      /* display: block; */
+      max-width: 100%;
     }
 `;
 
 const DetailContainer = styled.div`
 
   min-height: 600px;
-  /* max-width: 100%; */
   width: 100%;
   border-bottom: 1px solid black;
   display: flex;
 
-  @media screen and (max-width: 1280px) {
-      max-width: 1280px;
-    }
-    
   @media screen and (max-width: 1023px) {
       max-width: 1023px;
-      display: block;
-    }
-    
-    @media screen and (max-width: 768px){
-      max-width: 768px;
-      display: block;
-    }
-    
-    @media screen and (max-width: 480px) {
-      max-width: 480px;
       display: block;
     }
 
@@ -70,11 +43,7 @@ const DetailContainer = styled.div`
     @media screen and (max-width: 1023px) {
       margin: 0 auto;
     }
-
-    @media screen and (max-width: 768px){
-      margin: 0 auto;
-    }
-    
+  
     @media screen and (max-width: 480px) {
       margin: 0 auto;
     }
@@ -86,13 +55,9 @@ const DetailContainer = styled.div`
     @media screen and (max-width: 1023px) {
       margin: 0 auto;
     }
-
-    @media screen and (max-width: 768px){
-      margin: 0 auto;
-    }
     
-    @media screen and (max-width: 480px) {
-      margin: 0 auto;
+    @media screen and (max-width: 768px){
+      width: 100%;
     }
   }
 
@@ -105,7 +70,10 @@ const DetailContainer = styled.div`
     align-items: center;
     justify-content: start;
     padding: 10px;
-
+    
+    @media screen and (max-width: 768px) {
+      max-width: 100%;
+    }
     
   }
 
@@ -115,6 +83,15 @@ const DetailContainer = styled.div`
     color: #4d4d4d;
     text-align: left;
     line-height: 34px;
+
+
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+    
+    @media screen and (max-width: 480px) {
+      font-size: 20px;
+    }
   }
 
   .price_warpper {
@@ -124,6 +101,14 @@ const DetailContainer = styled.div`
     width: 500px;
     height: 96px;
     align-items: center;
+    @media screen and (max-width: 768px){
+      max-width: 100%;
+    }
+    
+    @media screen and (max-width: 480px) {
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .discount_rate {
@@ -131,6 +116,13 @@ const DetailContainer = styled.div`
     font-size: 32px;
     line-height: 38px;
     color: #FF0000;
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+    
+    @media screen and (max-width: 480px) {
+      font-size: 20px;
+    }
   }
 
   .price {
@@ -138,6 +130,10 @@ const DetailContainer = styled.div`
     font-size: 32px;
     line-height: 38px;
     color: #000000;
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+
   }
 
   .strike_through {
@@ -146,6 +142,13 @@ const DetailContainer = styled.div`
     line-height: 38px;
     text-decoration-line: line-through;
     color: #707070;
+    @media screen and (max-width: 768px){
+      font-size: 24px;
+    }
+    
+    @media screen and (max-width: 480px) {
+      font-size: 20px;
+    }
   }
 
   .btn_container {
@@ -155,6 +158,11 @@ const DetailContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media screen and (max-width: 480px) {
+      max-width: 100%;
+      justify-content: space-around;
+    }
   }
 `;
 
@@ -162,6 +170,16 @@ const ImgEx = styled.img`
   width: 500px;
   height: 500px;
   background-color: #bbb;
+
+  @media screen and (max-width: 768px){
+    max-width: 100%;
+    height: 100%;
+  }
+  
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+    height: 100%;
+  }
 `;
 
 
@@ -176,6 +194,10 @@ const ProductWarpper = styled.div`
   align-items: center;
   padding: 20px;
 
+  @media screen and (max-width: 768px){
+    max-width: 100%;
+  }
+
   .btn_group {
     display: flex;
     align-items: center;
@@ -184,6 +206,10 @@ const ProductWarpper = styled.div`
     width: 150px;
     height: 40px;
     border-radius: 8px;
+    @media screen and (max-width: 768px){
+      max-width: 100%;
+    }
+
   }
 
   .btn {
@@ -225,6 +251,16 @@ const StyledBtnWhite = styled.button`
     color: #fff;
     border: 2px solid #157347;
   }
+
+  @media screen and (max-width: 768px){
+    font-size: 24px;
+  }
+    
+  @media screen and (max-width: 480px) {
+    max-width: 150px;
+    height: 50px;
+    font-size: 20px;
+  }
 `;
 
 const StyledBtn = styled.button`
@@ -242,10 +278,25 @@ const StyledBtn = styled.button`
   &:hover {
     background: #157347;
   }
+
+  @media screen and (max-width: 768px){
+    font-size: 24px;
+  }
+    
+  @media screen and (max-width: 480px) {
+    max-width: 150px;
+    height: 50px;
+    font-size: 20px;
+  }
 `;
 
+const DetailImg = styled.img`
 
+@media screen and (max-width: 768px){
+  max-width: 100%;
+}
 
+`;
 
 function ItemDetail() {
   const [count, setCount] = useState(1);
@@ -343,7 +394,6 @@ function ItemDetail() {
               <p className="title">{item.title}</p>
             </div>
             <div className="price_warpper">
-
               <p className="discount_rate">10%</p>
               <p className="price">{formatter.format(item.price)}원</p>
               <p className="strike_through">{formatter.format(item.price * 1.1)}</p>
@@ -367,7 +417,7 @@ function ItemDetail() {
 
       </DetailContainer>
           <CartListIcon/>
-          <img src={item.detailImgpath} alt={item.title} />
+          <DetailImg src={item.detailImgpath} alt={item.title} />
     </DetailWarpper>
   );
 };
