@@ -287,6 +287,17 @@ function ToiletDetail() {
         inputScore,
         FNAME
       );
+      await registerToiletInfo(
+        toiletNo,
+        Y_WGS84,
+        X_WGS84,
+        address,
+        FNAME,
+        separatedChecked,
+        disabledChecked,
+        diaperChecked,
+        paperChecked
+      );
       setComment("");
       if (result) {
         const getReviewList = async () => {
@@ -346,7 +357,8 @@ function ToiletDetail() {
     setPaperChecked(e.target.checked);
   };
 
-  const handleToiletRegistor = async () => {
+
+  const handleToiletRegister = async () => {
     const result = await registerToiletInfo(
       toiletNo,
       Y_WGS84,
@@ -549,7 +561,7 @@ function ToiletDetail() {
               alignItems: "center",
               background: "#0067c7",
             }}
-            onClick={handleToiletRegistor}
+            onClick={handleToiletRegister}
           >
             <FaCoins />
             제출하기

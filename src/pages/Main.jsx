@@ -279,7 +279,6 @@ function Main() {
     const distance = R * c;
     return Math.round(distance);
   };
-
   return (
     <MainContainer>
       <TolietListSection>
