@@ -27,7 +27,7 @@ const ToggleButton = styled.button`
 `;
 
 const ToggleButtonToggled = styled.button`
-  padding: 10px 20px;
+  padding: 10px;
   font-size: 16px;
   border-radius: 14px;
   border: 1px solid #605d83;
