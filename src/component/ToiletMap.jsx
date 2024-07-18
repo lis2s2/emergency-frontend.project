@@ -65,6 +65,10 @@ const SearchButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 4px #aaa;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -87,6 +91,10 @@ const DetailButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 4px #aaa;
+  }
 `;
 const StyledTbRoadSign = styled(TbRoadSign)`
   height: 22px;
