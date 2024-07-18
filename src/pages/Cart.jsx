@@ -267,7 +267,7 @@ function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const memId = JSON.parse(localStorage.getItem("member")).memId;
+  const memId = JSON.parse(localStorage.getItem("member"))?.memId;
   const token = localStorage.getItem("token");
 
   const handleCheck = () => {
@@ -281,6 +281,12 @@ function Cart() {
 
   useEffect(() => {
     const fetchCartList = async () => {
+      if (!memId) {
+        alert('회원 전용입니다.');
+        navigate('/login');
+        return;
+      }
+
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/carts?id=${memId}`, {
           headers: {
@@ -290,6 +296,7 @@ function Cart() {
         dispatch(setCartItems(response.data));
       } catch (error) {
         console.error(error);
+        alert()
       }
     };
     fetchCartList();

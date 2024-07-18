@@ -323,10 +323,17 @@ function ItemDetail() {
 
   }, []);
   
-  const memId = JSON.parse(localStorage.getItem("member")).memId;
+  const memId = JSON.parse(localStorage.getItem("member"))?.memId;
   const token = localStorage.getItem("token");
 
   const addCartItem = async () => {
+
+    if (!memId) {
+      alert('회원 전용입니다.');
+      navigate('/login');
+      return;
+    }
+
     try {
       const result = await axios.post(`${process.env.REACT_APP_API_URL}/carts/add`, {
         prodNo: productId,
@@ -372,6 +379,12 @@ function ItemDetail() {
 
 
   const handleDirectPurchase = () => {
+    if (!memId) {
+      alert('회원 전용입니다.');
+      navigate('/login');
+      return;
+    }
+
     const confirmed = window.confirm("결제창으로 이동하시겠습니까?");
     if (confirmed) {
       const itemToAdd = { no: item.prodNo, prodTitle: item.title, prodPrice: item.price, prodCount: count, prodImgpath: item.imgpath };
