@@ -66,6 +66,7 @@ function Main() {
   const [addUserToiletList, setAddUserToiletList] = useState(false);
   const [listUpdated, setListUpdated] = useState(false);
   const { toiletNo } = useParams();
+  const [mapMarker, setMapMarker] = useState('');
 
   useEffect(() => {
     const getFetchedToiletList = async () => {
@@ -297,6 +298,8 @@ function Main() {
               (toilet) => toilet.POI_ID === toiletNo
             ),
             setClosestToiletLocations: setClosestToiletLocations,
+            setMapMarker: setMapMarker,
+            mapMarker: mapMarker
           }}
         />
       </TolietListSection>
@@ -311,6 +314,7 @@ function Main() {
           <ToiletMap
             closestToiletLocations={closestToiletLocations}
             location={location}
+            mapMarker={mapMarker}
           />
         )}
       </MapSection>

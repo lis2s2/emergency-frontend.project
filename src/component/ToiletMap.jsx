@@ -8,7 +8,7 @@ import saparatedImg from "../images/separated.png";
 import disabledImg from "../images/disabled.png";
 import diaperImg from "../images/diaper.png";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbRoadSign } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { fetchWCongnamulCoord } from "../api/kakaoMapAPI";
@@ -92,9 +92,12 @@ const StyledTbRoadSign = styled(TbRoadSign)`
 `;
 
 function ToiletMap(props) {
-  const { closestToiletLocations, location } = props;
+  const { closestToiletLocations, location, mapMarker } = props;
   const [openMarkerInfo, setOpenMarkerInfo] = useState({});
   const navigate = useNavigate();
+  useEffect(() => {
+    toggleMarker(mapMarker);
+  }, [mapMarker]);
 
   const toggleMarker = (toiletNo) => {
     setOpenMarkerInfo((prev) => ({

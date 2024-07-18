@@ -25,6 +25,7 @@ const ItemInfoContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
+  cursor: pointer;
 `;
 
 const ItemButtonContainer = styled.div`
@@ -117,11 +118,20 @@ const StyledContent = styled.p`
   vertical-align: middle;
 `;
 
-
 function ToiletListItem(props) {
   const {
-    toiletLocation: { FNAME, ANAME, distance, X_WGS84, Y_WGS84, POI_ID, detail },
+    toiletLocation: {
+      FNAME,
+      ANAME,
+      distance,
+      X_WGS84,
+      Y_WGS84,
+      POI_ID,
+      detail,
+    },
     location,
+    setMapMarker,
+    mapMarker,
   } = props;
   const [address, setAddress] = useState("");
   const [toiletScore, setToiletScore] = useState(3.0);
@@ -129,7 +139,10 @@ function ToiletListItem(props) {
 
   const handleFindRoute = async (lat, lng, name) => {
     try {
-      const startResult = await fetchWCongnamulCoord(location.center.lat, location.center.lng);
+      const startResult = await fetchWCongnamulCoord(
+        location.center.lat,
+        location.center.lng
+      );
       const destResult = await fetchWCongnamulCoord(lat, lng);
       const url = `https://map.kakao.com/?map_type=TYPE_MAP&target=walk&rt=${startResult[0].x}%2C${startResult[0].y}%2C${destResult[0].x}%2C${destResult[0].y}&rt1=내위치&rt2=${name}&rtIds=%2C&rtTypes=%2C`;
       window.open(url, "_blank");
@@ -154,9 +167,19 @@ function ToiletListItem(props) {
 
   return (
     <ItemContainer>
-      <ItemInfoContainer>
+      <ItemInfoContainer
+        onClick={() => {
+          if (mapMarker === POI_ID) {
+            setMapMarker("TEMP_VALUE");
+            setTimeout(() => setMapMarker(POI_ID), 0);
+          } else {
+            setMapMarker(POI_ID);
+          }
+        }}
+      >
         <StyledTitle>
-          {FNAME} {ANAME && `(${ANAME})`}{detail && `(${detail})`}
+          {FNAME} {ANAME && `(${ANAME})`}
+          {detail && `(${detail})`}
         </StyledTitle>
         <ItemScoreDistanceContainer>
           <ItemScoreContainer>

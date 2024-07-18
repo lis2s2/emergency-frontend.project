@@ -93,7 +93,9 @@ function ToiletList() {
     addGasList,
     toggleUserToiletList,
     addUserToiletList,
-    setClosestToiletLocations
+    setClosestToiletLocations,
+    setMapMarker,
+    mapMarker
   } = useOutletContext();
 
   const [separatedChecked, setSeparatedChecked] = useState(false);
@@ -244,6 +246,8 @@ function ToiletList() {
               key={toiletLocation.POI_ID}
               toiletLocation={toiletLocation}
               location={location}
+              setMapMarker={setMapMarker}
+              mapMarker={mapMarker}
             />
           );
         })}
