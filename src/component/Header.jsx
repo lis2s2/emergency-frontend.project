@@ -227,8 +227,12 @@ function Header() {
   };
 
   const handleToToiletRegister = () => {
-    navigate("/toilet_register");
     setIsToggle(false);
+    if (!member) {
+      alert('로그인을 하세요.');
+      return;
+    }
+    navigate("/toilet_register");
   };
 
   const handleHamburder = () => {

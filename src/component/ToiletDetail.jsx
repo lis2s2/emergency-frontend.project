@@ -217,6 +217,7 @@ const StyledFormCheck = styled(Form.Check)`
 
 function ToiletDetail() {
   const { toilet, location, toggleListUpdated } = useOutletContext();
+  const { Y_WGS84, X_WGS84, FNAME, ANAME, distance, separated, disabled, diaper, paper} = toilet || {};
   const { toiletNo } = useParams();
   const member = useSelector(selectMember);
   const navigate = useNavigate();
@@ -233,7 +234,13 @@ function ToiletDetail() {
   const [paperChecked, setPaperChecked] = useState(false);
   const [toggleCommentList, setToggleCommentList] = useState(false);
 
-  const { Y_WGS84, X_WGS84, FNAME, ANAME, distance } = toilet || {};
+  useEffect(() => {
+    setSeparatedChecked(separated || false);
+    setDisabledChecked(disabled || false);
+    setDiaperChecked(diaper || false);
+    setPaperChecked(paper || false);
+  }, [toilet]);
+
   useEffect(() => {
     const getAddress = async () => {
       if (X_WGS84 === undefined) {

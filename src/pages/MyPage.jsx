@@ -37,7 +37,7 @@ const Autolayout = styled.div`
 const Sublayout = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   padding: 20px;
   gap: 24px;
   width: 100%;
@@ -135,8 +135,6 @@ const ToiletNameReviewContainer = styled.div`
   justify-content: space-between;
   gap: 12px;
   cursor: pointer;
-
-
 `;
 
 const ToiletName = styled.p`
@@ -326,16 +324,16 @@ function MyPage() {
       <Autolayout>
         <RegisterWhite>
           <Sublayout>
-            {!member?.provider && (
-              <CardActions>
+            <CardActions>
+              {!member?.provider && (
                 <EditIcons onClick={() => navigate("/mypage/modify")}>
                   <TbMoodEdit />
                 </EditIcons>
-                <CartIcons onClick={() => navigate("/cart")}>
-                  <PiShoppingCartSimpleBold />
-                </CartIcons>
-              </CardActions>
-            )}
+              )}
+              <CartIcons onClick={() => navigate("/cart")}>
+                <PiShoppingCartSimpleBold />
+              </CartIcons>
+            </CardActions>
             <NameCard>
               <CardImg
                 src={member?.memGrade === "FAMILY" ? familyImg : vipImg}
@@ -357,8 +355,8 @@ function MyPage() {
                       key={comment.reviewNo}
                     >
                       <ToiletName>{comment.toiletTitle}</ToiletName>
-                    <ToiletComment comment={comment} />
-                </ToiletNameReviewContainer>
+                      <ToiletComment comment={comment} />
+                    </ToiletNameReviewContainer>
                   );
                 })}
               </ToiletReviewContainer>
