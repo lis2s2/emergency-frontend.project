@@ -17,6 +17,10 @@ const FooterInner = styled.div`
   align-items: center;
   padding: 0 40px;
   color: #999;
+  @media screen and (max-width: 767px) {
+    padding: 0 10px;
+    font-size: 12px;
+  }
 `;
 
 function Footer() {
