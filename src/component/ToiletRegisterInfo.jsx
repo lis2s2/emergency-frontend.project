@@ -143,6 +143,10 @@ function ToiletRegisterInfo(props) {
   };
 
   const handleToileRegistor = async () => {
+    if (!member) {
+      alert('로그인을 하세요.');
+      return;
+    }
     if (address && toiletTitle) {
       const toiletNo = uuid();
       const result = await registerToilet(
