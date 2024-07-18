@@ -16,7 +16,9 @@ const ToiletInfoWrapper = styled.div`
   padding: 12px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 12px;
+  min-height : 82px;
 `;
 
 const StyledTitle = styled.p`
