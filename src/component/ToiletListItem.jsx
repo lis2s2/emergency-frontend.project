@@ -17,6 +17,10 @@ const ItemContainer = styled.div`
   border-radius: 16px;
   display: flex;
   justify-content: space-between;
+  &:hover {
+    box-shadow: 2px 2px 4px #555;
+    border: 2px solid #555;
+  }
 `;
 
 const ItemInfoContainer = styled.div`
