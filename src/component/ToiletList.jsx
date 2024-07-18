@@ -64,6 +64,7 @@ const ListContainer = styled.div`
   overflow-y: auto;
   max-height: 734px;
   height: 100%;
+  padding-right: 4px;
   &::-webkit-scrollbar {
     width: 4px;
   }
