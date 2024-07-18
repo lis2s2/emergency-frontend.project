@@ -132,6 +132,10 @@ const SearchButton = styled.button`
     flex: 1;
     justify-content: center;
   }
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 4px #aaa;
+  }
 `;
 
 const GoToListButton = styled.button`
@@ -149,6 +153,10 @@ const GoToListButton = styled.button`
   align-items: center;
   flex: 1;
   white-space: nowrap;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 4px #aaa;
+  }
 `;
 
 const StyledTbRoadSign = styled(TbRoadSign)`
@@ -207,6 +215,10 @@ const ToiletRegisterButton = styled.button`
   justify-content: center;
   align-items: center;
   flex: 1;
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 2px 2px 4px #aaa;
+  }
 `;
 
 const StyledFormCheck = styled(Form.Check)`

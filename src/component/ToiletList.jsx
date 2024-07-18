@@ -27,6 +27,10 @@ const ToggleButton = styled.button`
   @media screen and (max-width: 767px) {
     padding: 10px;
   }
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 4px #777;
+  }
 `;
 
 const ToggleButtonToggled = styled.button`
