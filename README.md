@@ -19,3 +19,5 @@ code={인가코드}&client_id={client-id}&redirect_uri={REDIRECT_URI}&grant_type
 https://kapi.kakao.com/v2/user/me
 https://kapi.kakao.com/v1/user/access_token_info
 Authorization Bearer {access_token}
+
+![image](https://github.com/user-attachments/assets/836a2d69-9293-42c4-9b51-213086ab613d)
