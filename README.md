@@ -20,4 +20,5 @@ https://kapi.kakao.com/v2/user/me
 https://kapi.kakao.com/v1/user/access_token_info
 Authorization Bearer {access_token}
 
+리액트 설치 라이브러리
 ![image](https://github.com/user-attachments/assets/836a2d69-9293-42c4-9b51-213086ab613d)
