@@ -1,15 +1,15 @@
 # 🚀나 지금 급해 (2024.06.21 ~ 2024.07.18)
 
 
-<img src="https://img.shields.io/badge/E34F26?style=for-the-badge&logo=html5&logoColor=white">
-<img src="https://img.shields.io/badge/1572B6?style=for-the-badge&logo=css3&logoColor=white">
-<img src="https://img.shields.io/badge/61DAFB?style=for-the-badge&logo=react&logoColor=white">
-<img src="https://img.shields.io/badge/764ABC?style=for-the-badge&logo=redux&logoColor=white">
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+<img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
+<img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white">
 
 
 ***
-### 웹 사이트 가로 1440px 세로 1024px
-### 반응형 max-width 767px
++ 웹 사이트 가로 1440px 세로 1024px
++ 반응형 max-width 767px
 ***
 ### Backend
 https://github.com/lis2s2/emergengy-backend.project
